@@ -298,7 +298,7 @@ Do not claim that a Linux container validates macOS or Windows behavior.
   with the tmpfs size option; a separate option controls the private
   workspace mount.
 - Set `read_only: true`, `no-new-privileges:true`, `cap_drop: [ALL]`, and a finite `pids_limit`.
-- Keep the default real-CLI services on `network_mode: none`. Add network access
+- Keep the default services on `network_mode: none`. Add network access
   only through a visibly named opt-in service for an authenticated provider
   session; never make it an accidental environment-driven default.
 - Create only the writable temporary paths the tool needs.

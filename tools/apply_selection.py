@@ -454,6 +454,18 @@ FIXUPS = {
             "such as `AGENTS.md` and `CLAUDE_MAP.md`.",
         ),
     ],
+    "skills/coding-standards/SKILL.md": [
+        # Upstream points at its own nested rules file, which this fork does
+        # not carry: the repair pass drops the whole bullet. The fork ships
+        # the equivalent as a flat rule, so the bullet is repointed there
+        # instead of being lost.
+        (
+            "- Use `rules/common/coding-style.md` when you need the shortest "
+            "reusable rule layer instead of a full skill walkthrough.",
+            "- Use `rule://fork-coding-style` when you need the shortest "
+            "reusable rule layer instead of a full skill walkthrough.",
+        ),
+    ],
     "skills/docker-patterns/SKILL.md": [
         # The two environment variables are set by the upstream harness whose
         # compose file the section above no longer carries. Name the knob,
@@ -463,6 +475,12 @@ FIXUPS = {
             "the private\n  workspace mount.",
             "with the tmpfs size option; a separate option controls the "
             "private\n  workspace mount.",
+        ),
+        # The real-CLI services were defined in the harness section that was
+        # dropped, so the surviving sentence has no referent left.
+        (
+            "- Keep the default real-CLI services on `network_mode: none`.",
+            "- Keep the default services on `network_mode: none`.",
         ),
     ],
     "commands/aside.md": [

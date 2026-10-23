@@ -12,6 +12,7 @@ Baseline coding conventions applicable across projects.
 This skill is the shared floor, not the detailed framework playbook.
 
 - Use `backend-patterns` or `api-design` for repository/service layers, endpoint design, validation, and server-specific concerns.
+- Use `rule://fork-coding-style` when you need the shortest reusable rule layer instead of a full skill walkthrough.
 
 ## When to Activate
 
