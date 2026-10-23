@@ -850,8 +850,6 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
             name = m.group(1)
             add(idx, name, "rule", resolves("rules", name),
                 "rule:// reference, no such rule", m)
-        # --- kind-qualified references --------------------------------------
-        # "skill: foo" names the kind inline. Upstream writes it in two
         # --- kind-qualified references ---------------------------------------
         # "skill: foo" names the kind inline. Two rules own the other
         # spellings, so only what they cannot see reaches this one: the
