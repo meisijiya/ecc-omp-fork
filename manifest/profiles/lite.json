@@ -1,0 +1,43 @@
+{
+  "profile": "lite",
+  "description": "最小可用集：只保留后端核心规范 + Java/Python 主力 + 通用评审 agent。每轮提示开销最低。",
+  "skills": {
+    "groups": ["G1", "G2", "G3", "G4", "G6"],
+    "exclude": [
+      "api-connector-builder",
+      "mcp-server-patterns",
+      "content-hash-cache-pattern",
+      "living-docs-governance",
+      "module-regression",
+      "production-audit",
+      "parallel-execution-optimizer",
+      "benchmark",
+      "benchmark-optimization-loop",
+      "latency-critical-systems",
+      "kotlin-coroutines-flows",
+      "kotlin-exposed-patterns",
+      "kotlin-ktor-patterns",
+      "jpa-patterns",
+      "mybatis-patterns",
+      "django-celery",
+      "prisma-patterns",
+      "clickhouse-io",
+      "data-throughput-accelerator"
+    ],
+    "include": []
+  },
+  "commands": {
+    "groups": ["C1", "C2", "C3", "C4", "C5", "C8"],
+    "exclude": [],
+    "include": []
+  },
+  "agents": {
+    "groups": ["A1", "A3", "A4"],
+    "exclude": [
+      "pr-test-analyzer",
+      "type-design-analyzer",
+      "comment-analyzer"
+    ],
+    "include": []
+  }
+}

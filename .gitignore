@@ -1,0 +1,6 @@
+# 上游 ECC 的本地克隆（sync_upstream.py 维护，不入库）
+.upstream/
+
+# Python
+__pycache__/
+*.pyc

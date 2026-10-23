@@ -1,0 +1,22 @@
+{
+  "name": "ecc-omp-fork",
+  "version": "0.1.0",
+  "description": "ECC 的 omp 编程子集 fork：编程向 skills / commands / agents + omp 专属 rules",
+  "license": "MIT",
+  "keywords": [
+    "omp",
+    "omp-plugin",
+    "ecc",
+    "skills",
+    "agents",
+    "commands"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ],
+    "prompts": [
+      "./commands"
+    ]
+  }
+}

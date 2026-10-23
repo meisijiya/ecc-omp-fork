@@ -1,0 +1,53 @@
+{
+  "profile": "java-python",
+  "description": "Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。",
+  "skills": {
+    "groups": ["G1", "G2", "G3", "G4", "G5", "G6", "G7"],
+    "exclude": [
+      "api-connector-builder",
+      "mcp-server-patterns",
+      "living-docs-governance",
+      "module-regression",
+      "production-audit",
+      "parallel-execution-optimizer",
+      "benchmark",
+      "benchmark-optimization-loop",
+      "latency-critical-systems",
+      "kotlin-coroutines-flows",
+      "kotlin-exposed-patterns",
+      "kotlin-ktor-patterns",
+      "quarkus-patterns",
+      "quarkus-security",
+      "quarkus-tdd",
+      "quarkus-verification",
+      "laravel-patterns",
+      "laravel-security",
+      "laravel-tdd",
+      "laravel-verification",
+      "rails-patterns",
+      "dotnet-patterns",
+      "clickhouse-io",
+      "data-throughput-accelerator",
+      "react-performance",
+      "nuxt4-patterns",
+      "frontend-patterns",
+      "frontend-a11y",
+      "accessibility",
+      "angular-developer"
+    ],
+    "include": []
+  },
+  "commands": {
+    "groups": ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8"],
+    "exclude": [],
+    "include": []
+  },
+  "agents": {
+    "groups": ["A1", "A2", "A3", "A4", "A7"],
+    "exclude": [
+      "rag-pipeline-reviewer",
+      "mle-reviewer"
+    ],
+    "include": []
+  }
+}

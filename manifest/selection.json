@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "active_profile": "java-python",
+  "comment": "当前生效 profile 由 manifest/profiles/<name>.json 定义；本文件只记录指针与额外追加项。",
+  "extra": {
+    "skills": [],
+    "commands": [],
+    "agents": []
+  }
+}
