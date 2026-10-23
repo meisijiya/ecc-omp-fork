@@ -89,12 +89,15 @@ ALWAYS write tests first, then implement code to make tests pass.
 
 Do not assume `npm test`. The commands in the steps and examples below use `<test>`, `<test-watch>`, and `<coverage>` as placeholders for the project's actual runner. Resolve them once before starting:
 
-1. **Run the package-manager detector** (ships with ECC):
+1. **Detect the package manager** from the lockfile or the
+   `packageManager` field:
 
-   ```bash
-   node scripts/setup-package-manager.js --detect
-   ```
-
+   | File Exists | Package Manager | Runner |
+   |---|---|---|
+   | `bun.lockb` | bun | `bun run` |
+   | `pnpm-lock.yaml` | pnpm | `pnpm run` |
+   | `yarn.lock` | yarn | `yarn` |
+   | `package-lock.json` | npm | `npm run` |
 
 2. **Distinguish the package manager from the test runner — they are not the same.** A project can use Bun to install dependencies yet still run Jest or Vitest. Inspect `package.json` `scripts.test` and the test files:
    - `scripts.test` invokes `jest` / `vitest` -> run through the detected PM (`npm test`, `pnpm test`, `yarn test`, or `bun run test`).

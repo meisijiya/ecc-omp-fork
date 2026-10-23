@@ -424,11 +424,45 @@ FIXUPS = {
             "If the repository already keeps its TDD evidence in a local "
             "directory, that location is also acceptable.",
         ),
+        # Upstream points at a detector script that ships with the ECC
+        # repository. This fork does not carry it, so the step is replaced
+        # by the same detection the sibling commands describe: read the
+        # lockfile, then the packageManager field.
+        (
+            "1. **Run the package-manager detector** (ships with ECC):\n"
+            "\n"
+            "   ```bash\n"
+            "   node scripts/setup-package-manager.js --detect\n"
+            "   ```\n"
+            "\n"
+            "\n",
+            "1. **Detect the package manager** from the lockfile or the\n"
+            "   `packageManager` field:\n"
+            "\n"
+            "   | File Exists | Package Manager | Runner |\n"
+            "   |---|---|---|\n"
+            "   | `bun.lockb` | bun | `bun run` |\n"
+            "   | `pnpm-lock.yaml` | pnpm | `pnpm run` |\n"
+            "   | `yarn.lock` | yarn | `yarn` |\n"
+            "   | `package-lock.json` | npm | `npm run` |\n"
+            "\n",
+        ),
     ],
     "skills/test-collaboration/SKILL.md": [
         (
             "such as `AGENTS.md`, `AGENTS.md`, and `CLAUDE_MAP.md`.",
             "such as `AGENTS.md` and `CLAUDE_MAP.md`.",
+        ),
+    ],
+    "skills/docker-patterns/SKILL.md": [
+        # The two environment variables are set by the upstream harness whose
+        # compose file the section above no longer carries. Name the knob,
+        # not the variable.
+        (
+            "with `ECC_TMPFS_SIZE`; `ECC_WORKSPACE_SIZE` separately controls "
+            "the private\n  workspace mount.",
+            "with the tmpfs size option; a separate option controls the "
+            "private\n  workspace mount.",
         ),
     ],
     "commands/aside.md": [
@@ -445,6 +479,40 @@ def apply_fixups(text, rel_path):
     for old, new in FIXUPS.get(rel_path, ()):
         if old in text:
             text = text.replace(old, new)
+    return text
+
+
+# Upstream sections that document the upstream ECC repository's own
+# development harness. Those files do not travel with this fork, so the
+# text points at paths that exist nowhere in the runtime tree. Each entry
+# names the heading that opens the block and the heading that closes it;
+# the closing heading is kept.
+DROP_SECTIONS = {
+    "skills/docker-patterns/SKILL.md": [
+        ("### Exercise the ECC Plugin Setup Harness", "## .dockerignore"),
+    ],
+}
+
+
+def drop_sections(text, rel_path):
+    """Remove the heading-bounded blocks listed for `rel_path`.
+
+    A block runs from the heading that opens it up to, but not including,
+    the heading that closes it. A pair whose headings are not both present
+    is left alone: upstream text drifts, and a stale entry must not delete
+    the wrong range.
+    """
+    for opener, closer in DROP_SECTIONS.get(rel_path, ()):
+        lines = text.split("\n")
+        try:
+            first = next(i for i, line in enumerate(lines)
+                         if line.strip() == opener)
+            last = next(i for i, line in enumerate(lines)
+                        if i > first and line.strip() == closer)
+        except StopIteration:
+            continue
+        del lines[first:last]
+        text = "\n".join(lines)
     return text
 
 
@@ -485,6 +553,7 @@ def materialize_skills(names, report, ctx):
                         # file will have in the runtime tree, not against the
                         # pool snapshot it was copied from
                         rel = os.path.relpath(p, dst).replace(os.sep, "/")
+                        text = drop_sections(text, "skills/%s/%s" % (n, rel))
                         text = apply_fixups(text, "skills/%s/%s" % (n, rel))
                         base = refscan.link_context("skills/%s/%s" % (n, rel))
                         text, notes = refscan.repair_text(
