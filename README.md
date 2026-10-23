@@ -160,6 +160,9 @@ python tools/build_catalog.py
   未提供的资产的会被剪掉。
 - **变空的小节标题会一并删除**：清掉悬空引用后只剩标题的小节被删掉，上游本来就空的
   小节保持原样。
+- **上游仓库内部的小节会被整段删除**：上游技能里引用本 fork 不随附的 harness 文件的
+  章节（例如 docker-patterns 的 ECC plugin setup 段）会被整段删掉，免得模型去找
+  不存在的路径。
 
 判定逻辑只有一份：`tools/refscan.py`。物化器用它来改写，`tools/check_refs.py`
 用它来卡门禁 —— 两边不会各写一套启发式而互相漂移。门禁对
