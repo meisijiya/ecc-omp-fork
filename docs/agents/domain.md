@@ -11,6 +11,12 @@ How the engineering skills should consume this repo's domain documentation when 
 
 If any of these files don't exist, **proceed silently**. Don't flag their absence; don't suggest creating them upfront. The `/domain-modeling` skill (reached via `/grill-with-docs` and `/improve-codebase-architecture`) creates them lazily when terms or decisions actually get resolved.
 
+## 本 fork 的域文档
+
+`GLOSSARY.md` 与 `docs/adr/` 是本 fork 自有的仓库文档：**不参与物化，也不随 profile 裁剪**，
+描述的是整个 fork 的术语与决定，不是当前 profile 的资产清单。
+决定索引见 `docs/adr/README.md`。
+
 ## File structure
 
 ```

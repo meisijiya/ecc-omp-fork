@@ -341,6 +341,8 @@ hide: true
 | `tools/` | 更新、裁剪、部署、生成目录、各项门禁的脚本 |
 | `.github/workflows/sync-upstream.yml` | 定时 / 手动上游同步，自动开 PR 并跑全套门禁 |
 | `docs/CATALOG.md` | 人类可读的资产目录（生成物） |
+| `GLOSSARY.md` | 本 fork 的统一术语表（术语 + 含义 + 不要写的同义词） |
+| `docs/adr/` | 本 fork 的决定记录（ADR），索引见 `docs/adr/README.md` |
 
 ---
 
