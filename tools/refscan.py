@@ -296,6 +296,38 @@ def pool_sets():
     return out
 
 
+def fork_owned_paths():
+    """Repo-relative paths of the fork's own catalog files.
+
+    The fork writes two things itself: `own/skills/` and `own/rules/`. They
+    are copied into the runtime tree verbatim, so the materialized copies are
+
+        own/skills/<name>/<file>   ->  skills/<name>/<file>
+        own/rules/<name>.md        ->  rules/<name>.md
+
+    Those files describe the fork as a whole -- the router lists the skills,
+    agents and commands of every profile -- so a reference to an asset that
+    the active profile cropped is expected there. The scanner already labels
+    such a reference ("not enabled in the active profile"); this function
+    tells the gates which files may carry that label without being a defect.
+    """
+    out = set()
+    own_dir = os.path.join(ROOT, "own")
+    for dirpath, dirnames, filenames in os.walk(own_dir):
+        dirnames.sort()
+        for fn in sorted(filenames):
+            if not fn.endswith(".md"):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, fn), ROOT)
+            rel = rel.replace(os.sep, "/")
+            out.add(rel)
+            if rel.startswith("own/skills/"):
+                out.add("skills/" + rel[len("own/skills/"):])
+            elif rel.startswith("own/rules/"):
+                out.add("rules/" + rel[len("own/rules/"):])
+    return out
+
+
 def external_refs():
     """Assets this fork does NOT ship but may legitimately point at.
 
