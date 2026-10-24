@@ -121,4 +121,4 @@ description: 本 fork（ECC 编程子集）的选路索引——把任务类型�
 - 规则（`rule://`）里是硬约束（工具名、验证纪律、密钥处理），skill 里是做法建议。
   两者冲突时以规则为准。
 - 如果某个 skill 读不到，说明当前 profile 没启用它；查 `manifest/selection.json` 或换 profile。
-- 本表没提到的技能不代表不存在，查 `skills/` 目录；表里的名字则保证在当前 profile 下真实存在。
+- 本表没提到的技能不代表不存在，查 `skills/` 目录；表里的名字属于本 fork 的完整目录，在当前 profile 下可能被裁掉（`lite` 只留一部分语言栈）。

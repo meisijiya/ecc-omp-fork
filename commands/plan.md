@@ -1,5 +1,5 @@
 ---
-description: Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code. Use for a single-model inline or PRD-driven implementation plan; for a dual-model (Codex/Antigravity) plan use /multi-plan, and for visual annotate-and-approve review of the resulting plan use /plan-canvas.
+description: Restate requirements, assess risks, and create step-by-step implementation plan. WAIT for user CONFIRM before touching any code. Use for a single-model inline or PRD-driven implementation plan; for a lean PRD first use /plan-prd.
 argument-hint: "[feature description | path/to/*.prd.md]"
 ---
 
@@ -110,10 +110,6 @@ When called with a `.prd.md` file, write the plan to `docs/plans/{kebab-case-nam
 ````
 
 After writing the artifact, report its path and WAIT for confirmation before writing code.
-
-> **Visual review:** instead of asking for a typed confirmation, you can open the
-> the user annotates the plan in place and clicks **Approve plan** or **Request
-> changes**, which arrives as your confirmation signal.
 
 ## Example Usage
 

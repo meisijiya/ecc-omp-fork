@@ -107,7 +107,10 @@ LINE_DROP_PATTERNS = [
     r"^\s*PostToolUse\b",
     r"^\s*UserPromptSubmit\b",
     r"^\s*SessionStart\b",
+    # The path rename runs before the line drop, so the detector path is
+    # already spelled `.omp/package-manager.json` when the drop is checked.
     r"\.claude/package-manager\.json",
+    r"\.omp/package-manager\.json",
     r"\bCLAUDE_PACKAGE_MANAGER\b",
     r"`/plan-canvas`",
     r"`/review-pr`",
@@ -145,6 +148,20 @@ PATH_RENAMES = [
     (r"\.claude/tdd", "docs/tdd"),
     (r"\.claude/docs/", "docs/"),
     (r"\.claude/PRPs/", "docs/prp/"),
+    # The remaining `.claude` paths are the harness directories themselves.
+    # omp keeps its user-level state in `~/.omp/agent/` (user skills live in
+    # `~/.omp/agent/skills/`) and its project-level state in `.omp/`, so the
+    # directories move rather than disappear. The settings file has no
+    # same-named counterpart: the omp config is `config.yml`, at
+    # `~/.omp/agent/config.yml` for the user level and `.omp/config.yml` for
+    # the project level. These come last so the more specific
+    # `.claude/docs/` and `.claude/PRPs/` rules above keep winning, and the
+    # user-level rules come before the generic directory rule so they are
+    # not rewritten to `~/.omp/skills/` or `.omp/settings.json`.
+    (r"~/\.claude/settings\.json", "~/.omp/agent/config.yml"),
+    (r"~/\.claude\b", "~/.omp/agent"),
+    (r"\.claude/settings\.json", ".omp/config.yml"),
+    (r"\.claude\b", ".omp"),
 ]
 
 # Claude Code tool names -> omp tool names, for the `tools:` frontmatter of
@@ -488,6 +505,155 @@ FIXUPS = {
         ("code Claude is currently editing",
          "code the assistant is currently editing"),
         ("before Claude proceeds", "before the assistant proceeds"),
+    ],
+    "commands/plan.md": [
+        # The upstream description points at two upstream-only commands
+        # (`/multi-plan`, `/plan-canvas`). The fork ships neither, and a
+        # description that names a command the runtime does not have sends
+        # the model after a command that does not exist. The fork's sibling
+        # command for the PRD-first flow is `/plan-prd`, and it ships in
+        # every profile.
+        (
+            "Use for a single-model inline or PRD-driven implementation plan; "
+            "for a dual-model (Codex/Antigravity) plan use /multi-plan, and "
+            "for visual annotate-and-approve review of the resulting plan "
+            "use /plan-canvas.",
+            "Use for a single-model inline or PRD-driven implementation plan; "
+            "for a lean PRD first use /plan-prd.",
+        ),
+        # The line that mentioned the browser plan canvas was dropped with
+        # the rest of the `/plan-canvas` block, which left half a sentence
+        # behind ("you can open the / the user annotates the plan in
+        # place..."). The confirmation flow is already stated in the
+        # sentence above, so the leftover quote goes as a whole.
+        (
+            "> **Visual review:** instead of asking for a typed confirmation, "
+            "you can open the\n> the user annotates the plan in place and "
+            "clicks **Approve plan** or **Request\n> changes**, which arrives "
+            "as your confirmation signal.\n\n",
+            "",
+        ),
+    ],
+    "commands/code-review.md": [
+        # Same as `/plan`: the upstream description points at `/review-pr`
+        # and `/orch-review`, which the fork does not ship.
+        (
+            "Use for a step-by-step PRP-style checklist review; for a "
+            "multi-agent pass use /review-pr, and for the "
+            "adversarially-verified Workflow pass use /orch-review.",
+            "Use for a step-by-step PRP-style checklist review; for a "
+            "multi-agent pass dispatch the `code-reviewer` agent.",
+        ),
+    ],
+    "skills/dotnet-patterns/SKILL.md": [
+        # The gate reads a backticked `Task` as the Claude Code tool name.
+        # Here it is the C# type, so it is written out in full: the
+        # anti-pattern row keeps pointing at the real return type.
+        (
+            "| `async void` methods | Return `Task` (except event handlers) |",
+            "| `async void` methods | Return `System.Threading.Tasks.Task` "
+            "(except event handlers) |",
+        ),
+    ],
+    "agents/csharp-reviewer.md": [
+        # Same as the dotnet-patterns row: `Task` is the C# type, and the
+        # backticked spelling collides with the Claude Code tool name.
+        (
+            "- **Fire-and-forget**: `async void` except event handlers — "
+            "return `Task`",
+            "- **Fire-and-forget**: `async void` except event handlers — "
+            "return `System.Threading.Tasks.Task`",
+        ),
+    ],
+    "agents/opensource-packager.md": [
+        # This agent writes the packaging for a repository that the user then
+        # drives with the fork's harness, so every "Claude Code" mention
+        # becomes "omp". The generated context file is `AGENTS.md` after the
+        # path rename, and the start command is the fork's own binary.
+        (
+            "Using with Claude Code",
+            "Using with omp",
+        ),
+        (
+            "Using Claude Code? AGENTS.md has all the context.",
+            "Using omp? AGENTS.md has all the context.",
+        ),
+        (
+            "immediately usable with Claude Code.",
+            "immediately usable with omp.",
+        ),
+        (
+            "especially with Claude Code.",
+            "especially with omp.",
+        ),
+        (
+            "gives Claude Code full context",
+            "gives omp full context",
+        ),
+        (
+            "claude    # Start Claude Code — reads AGENTS.md automatically",
+            "omp    # Start omp — reads AGENTS.md automatically",
+        ),
+        # The CONTRIBUTING checklist names the README section added above.
+        # It quotes the section title without "with", so the shorter form
+        # needs its own pair.
+        (
+            "Using Claude Code",
+            "Using with omp",
+        ),
+    ],
+    "skills/agent-eval/SKILL.md": [
+        # The skill compares third-party coding agents, so the name stays a
+        # product name; the tool identifies it by its agent id, which the
+        # same file already uses in the command line and the result table.
+        (
+            "(Claude Code, Aider, Codex, etc.)",
+            "(the claude-code agent, Aider, Codex, etc.)",
+        ),
+    ],
+    "skills/blueprint/SKILL.md": [
+        # Here "Claude Code" is the harness itself, so it becomes omp; the
+        # skill loader in this fork is omp's native Markdown skill loader.
+        (
+            "Nothing runs on install or invocation beyond Claude Code's "
+            "native Markdown skill loader.",
+            "Nothing runs on install or invocation beyond omp's native "
+            "Markdown skill loader.",
+        ),
+        # The requirement names the harness that runs the skill; the fork
+        # ships the skill as a file, not as a slash command.
+        (
+            "- Claude Code (for `/blueprint` slash command)",
+            "- omp (for the `blueprint` skill)",
+        ),
+    ],
+    "skills/living-docs-governance/SKILL.md": [
+        # Upstream contrasts the harness that is running with the other
+        # instruction surfaces. In this fork the running harness is omp, and
+        # `AGENTS.md` is its context file, so the bullet names omp instead
+        # of the harness the file was written for.
+        (
+            "- Claude Code projects commonly use `AGENTS.md`.",
+            "- This fork's harness (omp) reads `AGENTS.md` (project) and "
+            "`~/.omp/agent/AGENTS.md` (user level).",
+        ),
+        # The path rename turned the upstream list into a duplicated entry.
+        (
+            "- harness instructions such as `AGENTS.md`, `AGENTS.md`, "
+            "`.cursor/rules`, or their equivalent;",
+            "- harness instructions such as `AGENTS.md`, `.cursor/rules`, or "
+            "their equivalent;",
+        ),
+    ],
+    "skills/product-capability/SKILL.md": [
+        # The list names the harnesses a plan can be reused in; the fork's
+        # own harness replaces the one the file was written for.
+        (
+            "- The resulting plan is reusable across Claude Code, Codex, "
+            "Cursor, OpenCode, and ECC 2.0 planning surfaces.",
+            "- The resulting plan is reusable across omp, Codex, Cursor, "
+            "OpenCode, and ECC 2.0 planning surfaces.",
+        ),
     ],
 }
 
