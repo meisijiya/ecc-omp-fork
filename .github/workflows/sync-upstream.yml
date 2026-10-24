@@ -23,8 +23,14 @@ on:
       - main
     paths:
       - "pool/**"
+      - "own/**"
+      - "skills/**"
+      - "commands/**"
+      - "agents/**"
+      - "rules/**"
       - "tools/**"
       - "manifest/**"
+      - ".github/workflows/**"
 
 permissions:
   contents: write
