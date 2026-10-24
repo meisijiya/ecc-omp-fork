@@ -13,3 +13,15 @@ The five canonical triage roles use identically-named labels: `needs-triage`, `n
 ### Domain docs
 
 Single-context layout: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+## Gates
+
+Four gates guard this repo. Run them before declaring work done; each one fails loudly instead of
+silently letting a broken asset reach the runtime. Details in `README.md` → 「门禁清单」.
+
+| Command | Guards |
+| --- | --- |
+| `python tools/check_refs.py` | Dangling references: assets this fork does not provide |
+| `python tools/check_adapt.py` | omp adaptation invariants (INV-01..INV-15) |
+| `python tools/check_upstream_pin.py` | Upstream pin, its mirror and the pool digest agree |
+| `python tools/check_plugin_isolation.py --toggle-test` | Plugin enable/disable visibility (local only; it toggles the plugin) |
