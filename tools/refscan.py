@@ -310,6 +310,11 @@ def fork_owned_paths():
     the active profile cropped is expected there. The scanner already labels
     such a reference ("not enabled in the active profile"); this function
     tells the gates which files may carry that label without being a defect.
+
+    `own/patches/` is deliberately left out: a patch replaces an upstream
+    asset verbatim, so a dangling reference inside it reaches the runtime
+    tree unchanged and stays a defect (the contract in
+    tools/apply_selection.py says the same).
     """
     out = set()
     own_dir = os.path.join(ROOT, "own")
@@ -320,11 +325,11 @@ def fork_owned_paths():
                 continue
             rel = os.path.relpath(os.path.join(dirpath, fn), ROOT)
             rel = rel.replace(os.sep, "/")
+            if rel.startswith("own/patches/"):
+                continue
             out.add(rel)
-            if rel.startswith("own/skills/"):
-                out.add("skills/" + rel[len("own/skills/"):])
-            elif rel.startswith("own/rules/"):
-                out.add("rules/" + rel[len("own/rules/"):])
+            if rel.startswith(("own/skills/", "own/rules/")):
+                out.add(runtime_path(rel))
     return out
 
 
