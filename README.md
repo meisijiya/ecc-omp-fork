@@ -140,6 +140,12 @@ python tools/check_plugin_isolation.py --toggle-test
 `omp skill list` 同时从 ours=68 变成 ours=0。提示行的总条目数会随别的插件增减而浮动，
 所以只认差值，不认某个绝对值。commands 24、rules 5、agents 31 是逐条按描述比对过的。
 
+禁用只决定「本插件提供哪些资产」，不决定「文件还在不在磁盘上」：`omp plugin disable` 只是把
+lockfile 里的 `enabled` 置成 false，插件目录（junction）仍然留在
+`~/.omp/plugins/node_modules/` 下面。实测禁用后 `omp read skill://api-design` 照样能读到这个
+文件 —— read 的 URI 解析按插件目录找路径，不看 `enabled` 标志；卸载之后同一个 URI 才会报
+`File not found`。想要「连文件都够不着」，走卸载。
+
 ### 卸载
 
 ```bash
@@ -159,8 +165,8 @@ rm -rf ~/.omp/agent/local/ecc-omp-fork
 
 注意：**link 型插件不会出现在 `~/.omp/plugins/installed_plugins.json`** —— 那个文件只记
 marketplace 安装的插件。link 型插件的启停状态记在
-`~/.omp/plugins/omp-plugins.lock.json`（形如
-`"ecc-omp-fork": {"version":"0.1.0","enabledFeatures":null,"enabled":true}`）。
+`~/.omp/plugins/omp-plugins.lock.json` 的 `plugins` 段里（形如
+`"plugins": {"ecc-omp-fork": {"version":"0.1.0","enabledFeatures":null,"enabled":true}}`）。
 
 ### 升级
 
@@ -247,7 +253,8 @@ CI 侧有定时任务 `.github/workflows/sync-upstream.yml`：
 
 CI 用 `GITHUB_TOKEN` + `peter-evans/create-pull-request` 自动开 PR（分支
 `chore/sync-upstream-<sha>`），**不直接推 main**。PR 里会跑全套门禁，并对
-`full` / `java-python` / `lite` 三个 profile 依次物化 + 校验。
+`full` / `java-python` / `lite` 三个 profile 依次物化 + 校验。上游内容没有变化时同步不产生
+差异，也就不会有 PR —— PR 只在确实有变化时出现。
 
 **pin 的唯一事实源是 `manifest/upstream.json`**（字段 `repo` / `commit` / `version` /
 `pool_digest`）。其中 `pool_digest` 是 `pool/` 全部文件内容与相对路径的 sha256 摘要
