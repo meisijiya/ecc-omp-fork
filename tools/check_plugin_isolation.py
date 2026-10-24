@@ -7,10 +7,15 @@ plugin must make all four surfaces disappear. This tool verifies that against a
 real omp process rather than against the repository layout.
 
 Attribution is content-based: an asset counts as "served by this plugin" only
-when the description omp advertises matches the description in this repo (the
-runtime truncates long descriptions with an ellipsis, so prefix matching is
-used). That distinguishes our `security-review` from the identically named
-builtin, so name collisions do not produce false leaks.
+when the text the runtime resolved for that name is the text in this repo.
+The line the session prompt prints is not that text: omp shortens long skill
+descriptions before it puts them in the prompt and caches the result in
+`~/.omp/agent/skill-descriptions.db`, so a skill this repo ships is regularly
+printed with a shorter description than its frontmatter carries. For skills
+the resolved text comes from `omp skill list`; for the other kinds the prompt
+line is the only view there is. Comparing the resolved text is what separates
+our `security-reviewer` from the identically named builtin, so name
+collisions do not produce false leaks.
 
 The expected asset set is read from the *installed* plugin root omp links this
 fork from, because that directory is what omp actually scans. The tool also
@@ -504,31 +509,54 @@ def compare(
     seen: dict[str, dict[str, str]],
     listed: dict[str, str] | None = None,
 ) -> dict:
-    """Split each kind into served / missing / shadowed relative to this repo.
+    """Split each kind into served / compressed / conflict / missing.
 
-    For skills, `listed` is the `omp skill list` view. It adds a
-    description-level answer to the question the session prompt cannot answer
-    on its own: does omp serve *this repo's* text under that name, or the text
-    of a same-named skill from another provider?
+    Ownership of a name is decided by the text the runtime *resolved* for it,
+    not by the line the session prompt prints. omp shortens long skill
+    descriptions before they go into the prompt and caches the result in
+    `~/.omp/agent/skill-descriptions.db`, so the prompt line of a skill this
+    repo ships regularly differs from the frontmatter text without the skill
+    belonging to anybody else. For skills the resolved text comes from
+    `omp skill list`; for commands, rules and agents the prompt line is the
+    only view there is.
+
+    served    the name is advertised with this repo's text
+    compressed the name is advertised and resolves to this repo's skill, but
+              the prompt shows a shortened description
+    conflict  the name is advertised with text that is not this repo's, so
+              somebody else owns the name
+    missing   the name is not advertised at all
     """
     result: dict[str, dict] = {}
     for kind in KINDS:
         want, have = expected[kind], seen[kind]
         served: list[str] = []
+        compressed: list[str] = []
+        conflict: list[str] = []
         missing: list[str] = []
-        shadowed: list[str] = []
         for name, description in want.items():
             if name not in have:
                 missing.append(name)
-            elif same_description(description, have[name]):
+                continue
+            advertised = have[name]
+            if kind == "skills" and listed is not None:
+                if name not in listed or not same_description(description, listed[name]):
+                    conflict.append(name)
+                    continue
+                if same_description(description, advertised):
+                    served.append(name)
+                else:
+                    compressed.append(name)
+            elif same_description(description, advertised):
                 served.append(name)
             else:
-                shadowed.append(name)
+                conflict.append(name)
         item = {
             "expected": len(want),
             "served": sorted(served),
+            "compressed": sorted(compressed),
+            "conflict": sorted(conflict),
             "missing": sorted(missing),
-            "shadowed": sorted(shadowed),
         }
         if kind == "skills" and listed is not None:
             ours_listed = [
@@ -555,11 +583,16 @@ def print_report(label: str, data: dict, meta: dict) -> None:
         item = data[kind]
         print(
             f"  {kind:<9} expected={item['expected']:<3} served={len(item['served']):<3} "
-            f"missing={len(item['missing']):<3} shadowed={len(item['shadowed']):<3} "
+            f"compressed={len(item['compressed']):<3} conflict={len(item['conflict']):<3} "
+            f"missing={len(item['missing']):<3} "
             f"advertised={meta['advertised'][kind]:<4} "
             f"block={'yes' if meta['blocks'][kind] else 'no'}"
         )
-        for label_text, key in (("missing", "missing"), ("shadowed", "shadowed")):
+        for label_text, key in (
+            ("missing", "missing"),
+            ("conflict", "conflict"),
+            ("compressed", "compressed"),
+        ):
             if item[key]:
                 print(f"            {label_text}: {', '.join(item[key][:12])}")
         if kind == "skills" and "listed_ours" in item:
@@ -573,6 +606,13 @@ def print_report(label: str, data: dict, meta: dict) -> None:
         + " advertised="
         + (", ".join(meta["control"]) or "none")
     )
+    compressed = len(data["skills"]["compressed"])
+    if compressed:
+        print(
+            f"  note: {compressed} skills are advertised with a shortened description; "
+            "omp caches those in ~/.omp/agent/skill-descriptions.db, `omp skill list` "
+            "shows the full text"
+        )
 
 
 def verdict(
@@ -623,10 +663,11 @@ def verdict(
                     f"{kind}: {len(item['missing'])} assets missing while the plugin is enabled"
                     + (f" -> {', '.join(item['missing'][:12])}" if item["missing"] else "")
                 )
-            if item["shadowed"]:
-                warnings.append(
-                    f"{kind}: {len(item['shadowed'])} assets shadowed by another provider while enabled"
-                    + (f" -> {', '.join(item['shadowed'][:12])}" if item["shadowed"] else "")
+            if item["conflict"]:
+                failures.append(
+                    f"{kind}: {len(item['conflict'])} assets are advertised with another "
+                    "provider's text while the plugin is enabled"
+                    + (f" -> {', '.join(item['conflict'][:12])}" if item["conflict"] else "")
                 )
         else:
             if item["served"]:
@@ -644,7 +685,7 @@ def verdict(
                 + (f" -> {', '.join(skills['listed_absent'][:12])}" if skills["listed_absent"] else "")
             )
         if skills.get("listed_foreign"):
-            warnings.append(
+            failures.append(
                 f"skills: {len(skills['listed_foreign'])} skills are listed under another "
                 "provider's description while the plugin is enabled"
                 + (f" -> {', '.join(skills['listed_foreign'][:12])}" if skills["listed_foreign"] else "")

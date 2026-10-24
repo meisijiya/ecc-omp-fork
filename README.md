@@ -99,7 +99,8 @@ python tools/check_plugin_isolation.py --toggle-test
 
 - `--toggle-test`：临时禁用/启用本插件，验证四类资产在两种状态下的可见性是否符合预期。
 - `--probe`：只观察当前状态，不改变任何东西（默认模式就是它）。
-- `--omp <path>`：指定 omp 可执行文件（默认 `C:/Users/22923/AppData/Local/Tern/omp/bin/omp.exe`）；
+- `--omp <path>`：指定 omp 可执行文件（默认依次找 `OMP_BIN` 环境变量、`PATH` 上的 `omp`、
+  Windows 启动器目录）；
   `--cwd` 覆盖运行 omp 的工作目录；`--root` 覆盖「定义本 fork 资产的那棵树」（默认取 omp
   实际链接的安装根，取不到才回落到仓库树）；`--json` 输出机器可读结果。
 
@@ -115,8 +116,23 @@ python tools/check_plugin_isolation.py --toggle-test
 | 1 | 不一致：打印 FAIL 明细（禁用后仍有资产泄漏、启用后有资产缺失，或安装根与仓库树不一致） |
 | 2 | 工具自身错误（例如找不到 omp 可执行文件、参数用法错误） |
 
-同名 skill 的判定用**描述前缀匹配**，因为 omp 在系统提示里会截断描述并加省略号；
-「描述不同但名字相同」记为 shadowed（WARN，不算泄漏），不会被误判成本插件的资产。
+归属看的是**运行时解析出来的描述**，不是系统提示里那一行：omp 会把过长的 skill 描述压短
+再写进提示行，压缩结果缓存在 `~/.omp/agent/skill-descriptions.db`。所以本仓 68 个 skill
+里有 44 个在提示行里显示的是压缩后的短句（`omp skill list` 里仍是完整描述）——它们照样
+属于本插件。判定规则：
+
+| 观察 | 含义 |
+| --- | --- |
+| 名字被提示，且 `omp skill list` 里是本仓的描述 | 本插件的资产（提示行可能是压缩过的短句） |
+| 名字被提示，但 `omp skill list` 里不是本仓的描述 | 同名冲突：这个名字归别人 |
+| 名字不被提示 | 本插件没有提供它 |
+
+当前唯一真实的同名冲突是 omp 内建的 `security-reviewer` agent：插件启用时本仓版本胜出，
+禁用后由内建版本接管。skill 侧没有重名。
+
+判定「本插件有没有泄漏」靠的是差值而不是名字表：提示行里的 skill 条目数在启用态是 243、
+禁用态是 175，差值 68 正好等于本仓的 skill 总数，且少掉的正是这 68 个名字；同一轮探测里
+`omp skill list` 从 ours=68 变成 ours=0。commands 24、rules 5、agents 31 是逐条按描述比对过的。
 
 ### 卸载
 
@@ -392,7 +408,8 @@ python tools/build_catalog.py
 | agent 发现 | `<root>/agents/*.md`，裸名注册。**物化时剥掉 `model: sonnet\|opus\|haiku`** —— omp 无这些别名，留着会让 agent 解析不到模型而不可用 |
 | rule 发现 | `<root>/rules/*.md`，带 `description` 的进 rulebook（system prompt 列名 + 描述，正文按需 `rule://` 读）；**不使用 `alwaysApply`**，避免每轮全文注入 |
 | 工具名 | 上游 ECC 规则与 skill 里残留的 Claude Code 工具名（`TodoWrite` / `Task(subagent_type=)` / `Agent(`）由 fork 规则 `omp-tooling` 给出 omp 对照表 |
-| 同名 skill 冲突 | 当本 fork 的 skill 名与 omp 内置或别的插件的 skill 重名时，系统提示里显示的是**胜出那一份**的描述（优先级：authored > registry-installed 包、custom-directory > provider，否则先注册者胜），另一份会退化成 `<namespace>/<name>` 变体名；但 `skill://<name>` 仍然解析到**本插件的文件**。这是名称冲突，**不是内容泄漏** —— 两份内容各自独立，不会互相串 |
+| 提示行里的描述 | omp 会把过长的 skill 描述压短后写进系统提示，压缩结果缓存在 `~/.omp/agent/skill-descriptions.db`；所以提示行不等于 frontmatter，判定归属用 `omp skill list` 的完整描述 |
+| 真正重名的资产 | 目前只有 `security-reviewer` agent 与 omp 内建同名：插件启用时本仓版本胜出，禁用后由内建版本接管。skill 侧没有重名；`skill://<name>` 始终解析到**本插件的文件** |
 
 fork 自有的 5 条 rules：
 
