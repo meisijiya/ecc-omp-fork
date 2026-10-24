@@ -3,7 +3,7 @@
   "upstream": {
     "repo": "https://github.com/affaan-m/ECC",
     "version": "2.2.3",
-    "commit": "07971588f8ac7a60080ba8c1b7920c9e8e733e7d",
+    "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
     "skill_source": "pi/core/skills",
     "command_source": "pi/core/commands",
     "agent_source": "agents"

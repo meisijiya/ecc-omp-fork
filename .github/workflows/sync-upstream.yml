@@ -1,0 +1,205 @@
+# Keep the upstream ECC snapshot in pool/ in sync with the upstream repository
+# and prove that every profile this fork ships still materializes cleanly.
+#
+# The workflow never pushes to the default branch: it opens a pull request
+# carrying the refreshed pool and the updated pin, and the gates below decide
+# whether that pull request is worth reviewing.  A gate failure fails the job
+# and names the profile that broke.
+name: sync-upstream
+
+on:
+  schedule:
+    # Weekly, Monday 03:17 UTC.
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Upstream ECC commit to pin (blank = keep the pin recorded in manifest/upstream.json)"
+        required: false
+        default: ""
+        type: string
+  push:
+    branches:
+      - main
+    paths:
+      - "pool/**"
+      - "tools/**"
+      - "manifest/**"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync upstream ECC and gate every profile
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out this repository (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Resolve the target upstream commit
+        id: target
+        env:
+          # Empty on schedule/push: the target is derived from the trigger.
+          REQUESTED_COMMIT: ${{ inputs.commit }}
+          EVENT_NAME: ${{ github.event_name }}
+          UPSTREAM_REPO: https://github.com/affaan-m/ECC
+        run: |
+          set -euo pipefail
+          TARGET="${REQUESTED_COMMIT}"
+          SOURCE="manual-input"
+          if [ -z "${TARGET}" ] && [ "${EVENT_NAME}" = "schedule" ]; then
+            # The weekly run is the one that has to move the pin forward, so it
+            # asks the remote for its current HEAD instead of re-pinning the
+            # commit this repository already records.
+            TARGET="$(git ls-remote "${UPSTREAM_REPO}" HEAD | cut -f1)"
+            SOURCE="upstream-head"
+          fi
+          if [ -z "${TARGET}" ]; then
+            TARGET="$(python -c 'import json;print(json.load(open("manifest/upstream.json", encoding="utf-8"))["commit"])')"
+            SOURCE="recorded-pin"
+          fi
+          if [ -z "${TARGET}" ]; then
+            echo "::error::could not resolve an upstream commit to sync"
+            exit 1
+          fi
+          echo "commit=${TARGET}" >> "$GITHUB_OUTPUT"
+          echo "source=${SOURCE}" >> "$GITHUB_OUTPUT"
+          echo "target upstream commit: ${TARGET} (${SOURCE})"
+
+      - name: Clone upstream ECC at the pinned commit
+        env:
+          SHA: ${{ steps.target.outputs.commit }}
+        run: |
+          set -euo pipefail
+          rm -rf .upstream
+          git init --quiet .upstream
+          git -C .upstream remote add origin https://github.com/affaan-m/ECC
+          # GitHub serves a commit by id; fall back to the full history for
+          # remotes that refuse a fetch by id.
+          if ! git -C .upstream fetch --depth 1 origin "${SHA}"; then
+            git -C .upstream fetch origin
+          fi
+          git -C .upstream checkout --detach "${SHA}"
+          git -C .upstream rev-parse HEAD
+
+      - name: Refresh pool/ from the pinned commit and update the pin
+        env:
+          SHA: ${{ steps.target.outputs.commit }}
+        run: python tools/sync_upstream.py --checkout "${SHA}" --no-fetch
+
+      - name: Build the catalog
+        run: python tools/build_catalog.py
+
+      - name: Reference gate (committed profile)
+        run: python tools/check_refs.py
+
+      - name: Upstream pin gate
+        run: python tools/check_upstream_pin.py
+
+      # The three profiles share one working tree, so they run one after the
+      # other instead of as a parallel matrix.  check_refs.py judges the tree
+      # against the active profile, so it runs inside the loop as well: the
+      # single run above only covers the committed profile.
+      - name: Profile gates (full, java-python, lite)
+        env:
+          PROFILES: "full java-python lite"
+        run: |
+          set -uo pipefail
+          GATES="${RUNNER_TEMP}/profile_gates.md"
+          {
+            echo "| profile | apply_selection | check_adapt | check_refs |"
+            echo "|---|---|---|---|"
+          } > "$GATES"
+          failed=0
+          for profile in $PROFILES; do
+            echo "::group::profile ${profile}"
+            python -c 'import json, sys; path = "manifest/selection.json"; data = json.load(open(path, encoding="utf-8")); data["active_profile"] = sys.argv[1]; open(path, "w", encoding="utf-8", newline="").write(json.dumps(data, ensure_ascii=False, indent=2) + "\n")' "$profile"
+            rc_apply=0; rc_adapt=0; rc_refs=0
+            python tools/apply_selection.py || rc_apply=$?
+            python tools/check_adapt.py || rc_adapt=$?
+            python tools/check_refs.py || rc_refs=$?
+            apply_result=ok; adapt_result=ok; refs_result=ok
+            if [ "$rc_apply" -ne 0 ]; then apply_result=FAIL; failed=1; fi
+            if [ "$rc_adapt" -ne 0 ]; then adapt_result=FAIL; failed=1; fi
+            if [ "$rc_refs" -ne 0 ]; then refs_result=FAIL; failed=1; fi
+            echo "| ${profile} | ${apply_result} | ${adapt_result} | ${refs_result} |" >> "$GATES"
+            if [ "$failed" -ne 0 ]; then
+              echo "::error::profile ${profile} failed a gate (apply_selection=${rc_apply}, check_adapt=${rc_adapt}, check_refs=${rc_refs})"
+            fi
+            echo "::endgroup::"
+          done
+          git checkout -- manifest/selection.json
+          if [ "$failed" -ne 0 ]; then
+            echo "::error::at least one profile failed the gates"
+            exit 1
+          fi
+
+      # The loop left the tree materialized for the last profile; rebuild it
+      # for the committed profile so the pull request carries the pool and the
+      # pin, not a foreign profile snapshot.
+      - name: Restore the committed profile and rebuild the catalog
+        run: |
+          set -euo pipefail
+          git checkout -- manifest/selection.json
+          python tools/apply_selection.py
+          python tools/build_catalog.py
+          git checkout -- manifest/selection.json
+
+      - name: Collect the change summary
+        env:
+          SHA: ${{ steps.target.outputs.commit }}
+          SOURCE: ${{ steps.target.outputs.source }}
+        run: |
+          set -euo pipefail
+          VERSION="$(python -c 'import json;print(json.load(open("manifest/upstream.json", encoding="utf-8"))["version"])')"
+          DIGEST="$(python -c 'import json;print(json.load(open("manifest/upstream.json", encoding="utf-8"))["pool_digest"])')"
+          {
+            echo "### Upstream sync"
+            echo
+            echo "- upstream repo: https://github.com/affaan-m/ECC"
+            echo "- upstream commit: \`${SHA}\`"
+            echo "- upstream version: ${VERSION}"
+            echo "- pool digest: \`${DIGEST}\`"
+            echo "- target source: ${SOURCE}"
+            echo
+            echo "### Profile gates"
+            echo
+            cat "${RUNNER_TEMP}/profile_gates.md"
+            echo
+            echo "### Changed files"
+            echo
+            echo '```'
+            git status --porcelain
+            echo '```'
+            echo
+            echo "```"
+            git diff --stat
+            echo "```"
+          } > "${RUNNER_TEMP}/pr_body.md"
+          cat "${RUNNER_TEMP}/pr_body.md"
+
+      # .upstream/ is gitignored, so the action never commits the upstream
+      # clone; it only carries pool/, the pin files and the rebuilt tree.
+      - name: Open the sync pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: chore/sync-upstream-${{ steps.target.outputs.commit }}
+          delete-branch: true
+          title: "chore(sync): upstream ECC ${{ steps.target.outputs.commit }}"
+          commit-message: "chore(sync): upstream ECC ${{ steps.target.outputs.commit }}"
+          body-file: ${{ runner.temp }}/pr_body.md

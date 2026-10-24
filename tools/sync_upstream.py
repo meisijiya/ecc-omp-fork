@@ -4,6 +4,8 @@
     python tools/sync_upstream.py            # fetch + refresh pool + replay selection
     python tools/sync_upstream.py --pool-only # only refresh pool
     python tools/sync_upstream.py --no-fetch  # reuse the existing .upstream clone
+    python tools/sync_upstream.py --checkout <sha>            # pin one upstream commit
+    python tools/sync_upstream.py --checkout <sha> --no-fetch # pin a commit already cloned
 
 Pool layout mirrors the upstream repo paths the assets come from:
     pool/skills/   <- upstream pi/core/skills/
@@ -21,6 +23,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -29,6 +32,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 UPSTREAM_DIR = os.path.join(ROOT, ".upstream")
 POOL = os.path.join(ROOT, "pool")
 UPSTREAM_MANIFEST = os.path.join(ROOT, "manifest", "upstream.json")
+GROUPS_MANIFEST = os.path.join(ROOT, "manifest", "groups.json")
 REPO_URL = "https://github.com/affaan-m/ECC"
 MARKETPLACE_CACHE = os.path.join(
     os.path.expanduser("~"), ".omp", "plugins", "cache", "marketplaces", "ecc"
@@ -95,10 +99,132 @@ def files_equal(a, b):
 
 
 # --------------------------------------------------------------------------
+# pool digest
+# --------------------------------------------------------------------------
+
+def compute_pool_digest(pool_dir=POOL):
+    """SHA-256 over the whole pool/ tree: relative path + file content.
+
+    Algorithm (this is the single implementation of the pin digest; the gate
+    tools/check_upstream_pin.py imports THIS function, so the writer and the
+    checker can never disagree):
+
+      1. Collect every regular file under `pool_dir`.  Symlinks and other
+         non-regular entries are skipped, exactly like tree_digest() above.
+         A file is addressed by its relative path with "/" as separator.
+      2. Sort those relative paths by their UTF-8 bytes.  The sort is on the
+         encoded path, not on the OS string, so the digest does not depend on
+         the platform's locale collation.
+      3. Feed one SHA-256 hasher with, for every file in that order:
+
+             b"\\x00" + relpath.encode("utf-8") + b"\\x00"
+             + file_sha256(file).encode("ascii") + b"\\n"
+
+         The per file hash is the sha256 of the raw file bytes, so line ending
+         and mtime differences do not leak into the digest, while the path
+         and the content are both covered.  The NUL separators keep a
+         renamed file from colliding with a renamed content.
+      4. The hex digest of that hasher is the pool digest: 64 lowercase hex
+         characters.
+
+    The digest is stable across checkouts of the same upstream content and
+    changes as soon as any file under pool/ is added, removed or edited.
+    """
+    files = tree_digest(pool_dir)
+    h = hashlib.sha256()
+    for rel in sorted(files, key=lambda p: p.encode("utf-8")):
+        h.update(b"\x00")
+        h.update(rel.encode("utf-8"))
+        h.update(b"\x00")
+        h.update(files[rel].encode("ascii"))
+        h.update(b"\n")
+    return h.hexdigest()
+
+
+# --------------------------------------------------------------------------
+# pin files: manifest/upstream.json + manifest/groups.json
+# --------------------------------------------------------------------------
+
+def write_upstream_manifest(meta):
+    """Write manifest/upstream.json (UTF-8, LF, trailing newline)."""
+    with open(UPSTREAM_MANIFEST, "w", encoding="utf-8", newline="\n") as f:
+        json.dump(meta, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+
+
+def _match_brace(text, start):
+    """Index just past the "}" that closes the "{" at `start`."""
+    depth = 0
+    in_string = False
+    escaped = False
+    for i in range(start, len(text)):
+        ch = text[i]
+        if in_string:
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            continue
+        if ch == '"':
+            in_string = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return i + 1
+    raise SystemExit(f"unbalanced braces in {GROUPS_MANIFEST}")
+
+
+def update_groups_upstream(commit, version=None):
+    """Patch the top level `upstream` block of manifest/groups.json.
+
+    Only `commit` (and `version`, when it is known) are rewritten; every other
+    byte of the file is preserved.  A JSON round-trip is not an option here:
+    the file is hand formatted (compact member arrays), so re-dumping it
+    would reformat the whole document and bury the real change in noise.
+    """
+    with open(GROUPS_MANIFEST, encoding="utf-8", newline="") as f:
+        text = f.read()
+
+    match = re.search(r'(?m)^  "upstream"\s*:\s*\{', text)
+    if not match:
+        raise SystemExit(
+            f'cannot find the top level "upstream" block in {GROUPS_MANIFEST}'
+        )
+    start = text.index("{", match.start())
+    end = _match_brace(text, start)
+    block = text[start:end]
+
+    def replace_value(block, key, value):
+        pattern = re.compile(r'("' + key + r'"\s*:\s*)"(?:[^"\\]|\\.)*"')
+        new_block, count = pattern.subn(
+            lambda m: m.group(1) + json.dumps(value), block, count=1
+        )
+        if count != 1:
+            raise SystemExit(
+                f'cannot find "{key}" in the upstream block of {GROUPS_MANIFEST}'
+            )
+        return new_block
+
+    new_block = replace_value(block, "commit", commit)
+    if version is not None:
+        new_block = replace_value(new_block, "version", version)
+
+    if new_block == block:
+        print(f"groups.json upstream block already at {commit}")
+        return
+    with open(GROUPS_MANIFEST, "w", encoding="utf-8", newline="") as f:
+        f.write(text[:start] + new_block + text[end:])
+
+
+# --------------------------------------------------------------------------
 # source resolution / fetching
 # --------------------------------------------------------------------------
 
-def resolve_source():
+def resolve_source(need_writable=False):
     """Return an ECC checkout to read from, and whether it is ours to update.
 
     Preference order:
@@ -106,10 +232,14 @@ def resolve_source():
       2. the omp marketplace cache clone (same upstream, kept fresh by
          `omp plugin marketplace update ecc`) -- treated as READ ONLY
       3. a fresh clone into .upstream
+
+    `need_writable` skips step 2: a checkout of a specific commit has to
+    happen inside a clone this repo owns, so the read-only marketplace cache
+    is not a candidate and a private clone is created instead.
     """
     if os.path.isdir(os.path.join(UPSTREAM_DIR, ".git")):
         return UPSTREAM_DIR, True
-    if os.path.isdir(os.path.join(MARKETPLACE_CACHE, ".git")):
+    if not need_writable and os.path.isdir(os.path.join(MARKETPLACE_CACHE, ".git")):
         return MARKETPLACE_CACHE, False
     if os.path.isdir(UPSTREAM_DIR):
         shutil.rmtree(UPSTREAM_DIR)
@@ -191,6 +321,101 @@ def is_ancestor(path, older, newer):
         capture_output=True, text=True,
     )
     return r.returncode == 0
+
+
+# --------------------------------------------------------------------------
+# commit pinning
+# --------------------------------------------------------------------------
+
+SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+
+
+def normalize_sha(value):
+    """Validate a --checkout argument; exit 2 when it is not a commit id."""
+    sha = value.strip().lower()
+    if not SHA_RE.match(sha):
+        print(
+            f"error: --checkout expects a 40 character hex commit id, got {value!r}",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
+    return sha
+
+
+def commit_present(path, sha):
+    """True when the clone at `path` already contains the commit `sha`."""
+    r = subprocess.run(
+        ["git", "-C", path, "cat-file", "-e", f"{sha}^{{commit}}"],
+        capture_output=True, text=True,
+    )
+    return r.returncode == 0
+
+
+def fetch_commit(path, sha):
+    """Fetch one commit from origin.  False when the remote refused it."""
+    print(f"fetching {sha} from origin")
+    r = subprocess.run(
+        ["git", "-c", "http.version=HTTP/1.1", "-C", path,
+         "fetch", "--depth", "1", "origin", sha],
+        capture_output=True, text=True,
+    )
+    if r.returncode != 0:
+        sys.stderr.write(r.stderr)
+        return False
+    # Persist HTTP/1.1 for this clone so later manual fetches behave too.
+    run(["git", "-C", path, "config", "http.version", "HTTP/1.1"])
+    return True
+
+
+def checkout_commit(path, sha, ours):
+    """Check `sha` out (detached) inside the clone at `path`.
+
+    A commit that cannot be reached is a hard error: falling back to origin
+    HEAD would repin the pool to a commit nobody asked for, and the pin files
+    would then claim a commit the pool does not come from.
+    """
+    if not ours:
+        head = upstream_commit(path)
+        if head != sha:
+            raise SystemExit(
+                f"cannot check out {sha}: {path} is the read-only omp marketplace "
+                f"cache clone and sits at {head}. Clone upstream ECC into "
+                f"{UPSTREAM_DIR} (or drop --no-fetch) and retry."
+            )
+        print(f"read-only source already at {sha}")
+        return
+    if not commit_present(path, sha):
+        raise SystemExit(
+            f"commit {sha} is not available in {path}. Run without --no-fetch so "
+            f"it can be fetched from {REPO_URL}, or clone a history that contains it."
+        )
+    run(["git", "-C", path, "checkout", "--detach", sha])
+
+
+def resolve_offline_source(sha):
+    """Pick a local clone for an offline (`--no-fetch`) `--checkout` run.
+
+    `.upstream` (owned by this repo) is preferred.  The read-only omp
+    marketplace cache may only be used when its HEAD already is the requested
+    commit, because checking out inside it would mutate a clone this repo
+    does not own.
+    """
+    if os.path.isdir(os.path.join(UPSTREAM_DIR, ".git")):
+        return UPSTREAM_DIR, True
+    if os.path.isdir(os.path.join(MARKETPLACE_CACHE, ".git")):
+        head = upstream_commit(MARKETPLACE_CACHE)
+        if head == sha:
+            print(f"using omp marketplace cache clone (read-only) at {sha}")
+            return MARKETPLACE_CACHE, False
+        raise SystemExit(
+            f"--checkout {sha} --no-fetch needs a local clone that contains {sha}; "
+            f"the omp marketplace cache clone is read-only and sits at {head}. "
+            f"Clone upstream ECC into {UPSTREAM_DIR} first, or drop --no-fetch."
+        )
+    raise SystemExit(
+        f"--checkout {sha} --no-fetch needs an existing local clone; none found at "
+        f"{UPSTREAM_DIR}. Drop --no-fetch to fetch the commit from {REPO_URL}."
+    )
 
 
 def read_recorded_commit():
@@ -353,28 +578,63 @@ def refresh_pool(path, report, commit, version):
         "repo": REPO_URL,
         "commit": commit,
         "version": version if version is not None else "unknown",
+        "pool_digest": compute_pool_digest(POOL),
     }
-    with open(UPSTREAM_MANIFEST, "w", encoding="utf-8") as f:
-        json.dump(meta, f, ensure_ascii=False, indent=2)
+    write_upstream_manifest(meta)
+    # The hand written copy in groups.json may not drift away from the pin.
+    # Only commit (and a known version) are patched there.
+    update_groups_upstream(commit, version)
     print("upstream:", meta)
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--pool-only", action="store_true")
-    ap.add_argument("--no-fetch", action="store_true")
+    ap = argparse.ArgumentParser(
+        description="Fetch upstream ECC, refresh pool/, and replay the local selection.",
+    )
+    ap.add_argument("--pool-only", action="store_true",
+                    help="only refresh pool/ and the pin files; do not replay the selection")
+    ap.add_argument("--no-fetch", action="store_true",
+                    help="do not contact the network; work with the existing clone")
+    ap.add_argument("--checkout", metavar="SHA", default=None,
+                    help="pin the upstream to this commit (40 hex chars): fetch it and "
+                         "check it out detached; with --no-fetch use the commit that is "
+                         "already in the local clone")
     args = ap.parse_args()
 
-    source, ours = resolve_source()
-    if not args.no_fetch:
-        fetch(source, ours)
-    else:
+    sha = normalize_sha(args.checkout) if args.checkout is not None else None
+
+    if sha is None:
+        source, ours = resolve_source()
+        if not args.no_fetch:
+            fetch(source, ours)
+        else:
+            print("fetch skipped (--no-fetch)")
+            if not ours:
+                print(f"using omp marketplace cache clone (read-only): {source}")
+                check_clean_cache(source)
+    elif args.no_fetch:
+        source, ours = resolve_offline_source(sha)
         print("fetch skipped (--no-fetch)")
-        if not ours:
-            print(f"using omp marketplace cache clone (read-only): {source}")
-            check_clean_cache(source)
+    else:
+        # A specific commit has to be checked out inside a clone this repo
+        # owns, so the read-only marketplace cache is not a candidate here.
+        source, ours = resolve_source(need_writable=True)
+
+    if sha is not None:
+        if not args.no_fetch:
+            if not fetch_commit(source, sha):
+                raise SystemExit(
+                    f"cannot fetch commit {sha} from {REPO_URL}: the commit does not "
+                    f"exist upstream, or the remote refuses to serve it by id"
+                )
+        checkout_commit(source, sha, ours)
 
     commit, version = report_source(source, ours)
+    if sha is not None and commit != sha:
+        raise SystemExit(
+            f"checked out {sha} but the source reports {commit}; refusing to pin a "
+            f"commit the pool was not taken from"
+        )
 
     report = []
     refresh_pool(source, report, commit, version)
