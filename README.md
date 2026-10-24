@@ -18,12 +18,14 @@
 ### 一条命令装好
 
 ```bash
-git clone https://github.com/meisijiya/ecc-omp-fork.git
+git clone git@github.com:meisijiya/ecc-omp-fork.git   # 私有库，走 SSH
 cd ecc-omp-fork
 python tools/apply_selection.py     # 按当前 profile 物化 skills/commands/agents/rules
 python tools/build_catalog.py        # 刷新 docs/CATALOG.md（可选，但建议跟上游一起提交）
 python tools/deploy.py              # 同步到 omp 安装目录并 link
 ```
+
+仓库是私有的，克隆需要你对 `meisijiya/ecc-omp-fork` 的 SSH 读权限；匿名 https 克隆会 404。
 
 `deploy.py` 做四件事：
 
@@ -62,14 +64,16 @@ omp plugin list                                     # 应能看到 ecc-omp-fork@
 ### 手工安装（不想用脚本）
 
 ```bash
-git clone https://github.com/meisijiya/ecc-omp-fork.git
+git clone git@github.com:meisijiya/ecc-omp-fork.git   # 私有库，走 SSH
 cd ecc-omp-fork
 python tools/apply_selection.py
-# 把 skills/ commands/ agents/ rules/ package.json 复制到任意目录，例如：
+# 把 skills/ commands/ agents/ rules/ package.json LICENSE NOTICE.md 复制到任意目录，例如：
 mkdir -p ~/.omp/agent/local/ecc-omp-fork
-cp -r skills commands agents rules package.json ~/.omp/agent/local/ecc-omp-fork/
+cp -r skills commands agents rules package.json LICENSE NOTICE.md ~/.omp/agent/local/ecc-omp-fork/
 omp plugin link ~/.omp/agent/local/ecc-omp-fork
 ```
+
+`LICENSE` 与 `NOTICE.md` 要一起复制：隔离门禁比对安装根与仓库树的 sha256，缺了会报 drift。
 
 `omp plugin link <目录>` 直接把该目录挂进 `~/.omp/plugins/node_modules/<package name>`，
 Windows 下是 junction。装完同样要 `/reload-plugins` 才在会话里生效。
@@ -117,9 +121,10 @@ python tools/check_plugin_isolation.py --toggle-test
 | 2 | 工具自身错误（例如找不到 omp 可执行文件、参数用法错误） |
 
 归属看的是**运行时解析出来的描述**，不是系统提示里那一行：omp 会把过长的 skill 描述压短
-再写进提示行，压缩结果缓存在 `~/.omp/agent/skill-descriptions.db`。所以本仓 68 个 skill
-里有 44 个在提示行里显示的是压缩后的短句（`omp skill list` 里仍是完整描述）——它们照样
-属于本插件。判定规则：
+再写进提示行，压缩结果缓存在 `~/.omp/agent/skill-descriptions.db`（表 `skill_descriptions`）。
+所以本仓 68 个 skill 里有 44 个在提示行里显示的是压缩后的短句（`omp skill list` 里仍是
+完整描述）——它们照样属于本插件。注意缓存里有行**不等于**该 skill 现在被启用（表里留着历史
+残留）；启用性只由上面的差值与 `omp skill list` 证明。判定规则：
 
 | 观察 | 含义 |
 | --- | --- |
@@ -130,9 +135,10 @@ python tools/check_plugin_isolation.py --toggle-test
 当前唯一真实的同名冲突是 omp 内建的 `security-reviewer` agent：插件启用时本仓版本胜出，
 禁用后由内建版本接管。skill 侧没有重名。
 
-判定「本插件有没有泄漏」靠的是差值而不是名字表：提示行里的 skill 条目数在启用态是 243、
-禁用态是 175，差值 68 正好等于本仓的 skill 总数，且少掉的正是这 68 个名字；同一轮探测里
-`omp skill list` 从 ours=68 变成 ours=0。commands 24、rules 5、agents 31 是逐条按描述比对过的。
+判定「本插件有没有泄漏」靠的是差值而不是名字表：同一轮探测里，提示行里的 skill 条目数在
+启用态与禁用态之间的**差值恰好等于本仓的 skill 总数（68）**，少掉的正是这 68 个名字；
+`omp skill list` 同时从 ours=68 变成 ours=0。提示行的总条目数会随别的插件增减而浮动，
+所以只认差值，不认某个绝对值。commands 24、rules 5、agents 31 是逐条按描述比对过的。
 
 ### 卸载
 
