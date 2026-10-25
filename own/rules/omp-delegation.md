@@ -5,36 +5,37 @@ globs: ["**/*"]
 
 # 委派与并行（fork 专属）
 
-## 本 fork 的 agent 清单（裸名）
+## 本 fork 的 agent 清单（带前缀的裸名）
 
 | 用途 | Agent |
 | --- | --- |
-| 通用代码评审 | `code-reviewer` |
-| 提交信息 | `commit-reviewer` |
-| PR 测试覆盖审查 | `pr-test-analyzer` |
-| 注释质量 | `comment-analyzer` |
-| 静默失败排查 | `silent-failure-hunter` |
-| 类型设计评估 | `type-design-analyzer` |
-| 安全审查 | `security-reviewer` |
-| 代码简化 | `code-simplifier` |
-| 死代码清理 | `refactor-cleaner` |
-| 系统设计 | `architect` |
-| 特性架构 | `code-architect` |
-| 代码库探索 | `code-explorer` |
-| 实施计划 | `planner` |
-| 构建报错修复 | `build-error-resolver` |
-| 性能优化 | `performance-optimizer` |
-| TDD 指导 | `tdd-guide` |
-| 端到端测试 | `e2e-runner` |
-| 规格提取 | `spec-miner` |
-| Java / Kotlin | `java-reviewer` `java-build-resolver` `kotlin-reviewer` `kotlin-build-resolver` |
-| Python | `python-reviewer` `django-reviewer` `django-build-resolver` `fastapi-reviewer` |
-| 数据 / 网络 / 运维 | `database-reviewer` `network-architect` `network-config-reviewer` `network-troubleshooter` `homelab-architect` |
+| 通用代码评审 | `ecc-omp-code-reviewer` |
+| 提交信息 | `ecc-omp-commit-reviewer` |
+| PR 测试覆盖审查 | `ecc-omp-pr-test-analyzer` |
+| 注释质量 | `ecc-omp-comment-analyzer` |
+| 静默失败排查 | `ecc-omp-silent-failure-hunter` |
+| 类型设计评估 | `ecc-omp-type-design-analyzer` |
+| 安全审查 | `ecc-omp-security-reviewer` |
+| 代码简化 | `ecc-omp-code-simplifier` |
+| 死代码清理 | `ecc-omp-refactor-cleaner` |
+| 系统设计 | `ecc-omp-architect` |
+| 特性架构 | `ecc-omp-code-architect` |
+| 代码库探索 | `ecc-omp-code-explorer` |
+| 实施计划 | `ecc-omp-planner` |
+| 构建报错修复 | `ecc-omp-build-error-resolver` |
+| 性能优化 | `ecc-omp-performance-optimizer` |
+| TDD 指导 | `ecc-omp-tdd-guide` |
+| 端到端测试 | `ecc-omp-e2e-runner` |
+| 规格提取 | `ecc-omp-spec-miner` |
+| Java / Kotlin | `ecc-omp-java-reviewer` `ecc-omp-java-build-resolver` `ecc-omp-kotlin-reviewer` `ecc-omp-kotlin-build-resolver` |
+| Python | `ecc-omp-python-reviewer` `ecc-omp-django-reviewer` `ecc-omp-django-build-resolver` `ecc-omp-fastapi-reviewer` |
+| 数据 / 网络 / 运维 | `ecc-omp-database-reviewer` `ecc-omp-network-architect` `ecc-omp-network-config-reviewer` `ecc-omp-network-troubleshooter` `ecc-omp-homelab-architect` |
 
-omp 自带的通用 agent（`scout` `reviewer` `security-reviewer` `task` `sonic`）不在此表。
-两点例外：
+omp 自带的通用 agent（`scout`、`reviewer`、`task`、`sonic` 等）不在此表。
+一点例外：
 
-- 本 fork 自带同名 `security-reviewer`，它会**遮蔽** omp 内置的那个（本 fork 版本优先）。
+- 本 fork 的 agent 名一律带 `ecc-omp-` 前缀（如 `ecc-omp-security-reviewer`），
+  因此与 omp 内置的 agent 不重名：派子代理时用带前缀的那个。
 - `seance` 是 omp 自带的会话回溯 agent，**不是始终可用**：它只在可生成时才会被列出，
   plan 模式下会被隐藏，而且必须额外提供 `sourceSession` 等专属参数。
 

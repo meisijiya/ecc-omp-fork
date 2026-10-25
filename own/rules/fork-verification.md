@@ -7,8 +7,9 @@ globs: ["**/*"]
 
 ## 测试覆盖口径
 
-上游 ECC 的技能与 agent（`tdd-workflow`、`python-testing`、`test-coverage` 等）默认要求
-**80%+ 覆盖率**。本 fork 沿用这个默认门槛，但项目自身的约定优先：
+上游 ECC 的技能与 agent 默认要求 **80%+ 覆盖率**（本 fork 物化后是
+`skill://ecc-omp-tdd-workflow`、`skill://ecc-omp-python-testing`、`/ecc-omp-test-coverage` 等）。
+本 fork 沿用这个默认门槛，但项目自身的约定优先：
 
 1. **先看项目自己的门槛**。仓库里有 `pytest.ini` / `pom.xml` / `coverage` 配置，
    以配置里的阈值为准（更严就按更严的）；项目明确不设覆盖率门槛时，

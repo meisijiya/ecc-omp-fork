@@ -298,6 +298,28 @@ def strip_frontmatter_key(text, key):
     return "---" + fm + rest
 
 
+def set_frontmatter_name(text, name):
+    """Set the `name:` field of the frontmatter of `text`.
+
+    The runtime tree renames every asset of the upstream pool, so the name
+    an asset declares has to be the name it is shipped under. Only the
+    first `name:` line inside the frontmatter is touched; a file without
+    frontmatter is returned unchanged.
+    """
+    if not text.startswith("---"):
+        return text
+    end = text.find("\n---", 3)
+    if end == -1:
+        return text
+    fm = text[3:end]
+    rest = text[end:]
+    fm, hits = re.subn(r"^name:[^\n]*$", "name: " + name, fm, count=1,
+                       flags=re.M)
+    if not hits:
+        return text
+    return "---" + fm + rest
+
+
 def rewrite_agent_tools(text):
     """Rewrite the `tools:` frontmatter entry to omp tool names.
 
@@ -711,6 +733,20 @@ def write_text(path, text):
     open(path, "w", encoding="utf-8", newline="\n").write(text)
 
 
+def rename_patched_skill(directory, runtime):
+    """Give a fork replacement the name it is shipped under.
+
+    A patch replaces an upstream asset, so it is copied into the runtime
+    directory of that asset; the name it declares has to match the
+    directory it lands in.
+    """
+    p = os.path.join(directory, "SKILL.md")
+    if not os.path.isfile(p):
+        return
+    text = open(p, encoding="utf-8").read()
+    write_text(p, set_frontmatter_name(text, runtime))
+
+
 def materialize_skills(names, report, ctx):
     out = os.path.join(ROOT, "skills")
     tmp = out + ".tmp"
@@ -719,13 +755,15 @@ def materialize_skills(names, report, ctx):
     os.makedirs(tmp)
     count = 0
     for n in names:
+        rt = refscan.runtime_name(n)
         patch = patch_source("skills", n)
         if patch:
-            shutil.copytree(patch, os.path.join(tmp, n))
+            shutil.copytree(patch, os.path.join(tmp, rt))
+            rename_patched_skill(os.path.join(tmp, rt), rt)
             report.append(f"  patched skill (fork replacement): {n}")
         else:
             src = os.path.join(POOL, "skills", n)
-            dst = os.path.join(tmp, n)
+            dst = os.path.join(tmp, rt)
             shutil.copytree(src, dst)
             for root, _dirs, files in os.walk(dst):
                 for f in files:
@@ -739,15 +777,17 @@ def materialize_skills(names, report, ctx):
                         rel = os.path.relpath(p, dst).replace(os.sep, "/")
                         text = drop_sections(text, "skills/%s/%s" % (n, rel))
                         text = apply_fixups(text, "skills/%s/%s" % (n, rel))
-                        base = refscan.link_context("skills/%s/%s" % (n, rel))
+                        if rel == "SKILL.md":
+                            text = set_frontmatter_name(text, rt)
+                        base = refscan.link_context("skills/%s/%s" % (rt, rel))
                         text, notes = refscan.repair_text(
-                            text, ctx["mat"], ctx["pool"], ctx["kinds"],
-                            owner=n, external=ctx["external"],
+                            text, ctx["mat"], ctx["pool"],
+                            owner=rt, external=ctx["external"],
                             link_base=base["base"] if base else None,
                             link_exists=refscan.source_exists)
                         for note in notes:
                             report.append(
-                                f"  skills/{n}/{os.path.relpath(p, dst)}:"
+                                f"  skills/{rt}/{os.path.relpath(p, dst)}:"
                                 f"{note['line']}: {note['action']} "
                                 f"`{note['name']}`")
                         write_text(p, text)
@@ -777,8 +817,9 @@ def materialize_commands(names, report, ctx):
     os.makedirs(tmp)
     count = 0
     for n in names:
+        rt = refscan.runtime_name(n)
         patch = patch_source("commands", n)
-        dst = os.path.join(tmp, n + ".md")
+        dst = os.path.join(tmp, rt + ".md")
         if patch:
             shutil.copy2(patch, dst)
             report.append(f"  patched command (fork replacement): {n}")
@@ -788,11 +829,11 @@ def materialize_commands(names, report, ctx):
             text = adapt_text(text)
             text = apply_fixups(text, "commands/%s.md" % n)
             text, notes = refscan.repair_text(
-                text, ctx["mat"], ctx["pool"], ctx["kinds"],
-                owner=n, external=ctx["external"], owner_kind="command",
+                text, ctx["mat"], ctx["pool"],
+                owner=rt, external=ctx["external"], owner_kind="command",
                 link_base="commands", link_exists=refscan.source_exists)
             for note in notes:
-                report.append(f"  commands/{n}.md:{note['line']}: "
+                report.append(f"  commands/{rt}.md:{note['line']}: "
                               f"{note['action']} `{note['name']}`")
             write_text(dst, text)
         count += 1
@@ -810,10 +851,13 @@ def materialize_agents(names, report, ctx):
     os.makedirs(tmp)
     count = 0
     for n in names:
+        rt = refscan.runtime_name(n)
         patch = patch_source("agents", n)
-        dst = os.path.join(tmp, n + ".md")
+        dst = os.path.join(tmp, rt + ".md")
         if patch:
             shutil.copy2(patch, dst)
+            text = open(dst, encoding="utf-8").read()
+            write_text(dst, set_frontmatter_name(text, rt))
             report.append(f"  patched agent (fork replacement): {n}")
         else:
             src = os.path.join(POOL, "agents", n + ".md")
@@ -822,12 +866,13 @@ def materialize_agents(names, report, ctx):
             text = rewrite_agent_tools(text)
             text = adapt_agent_text(text)
             text = apply_fixups(text, "agents/%s.md" % n)
+            text = set_frontmatter_name(text, rt)
             text, notes = refscan.repair_text(
-                text, ctx["mat"], ctx["pool"], ctx["kinds"],
-                owner=n, external=ctx["external"], owner_kind="agent",
+                text, ctx["mat"], ctx["pool"],
+                owner=rt, external=ctx["external"], owner_kind="agent",
                 link_base="agents", link_exists=refscan.source_exists)
             for note in notes:
-                report.append(f"  agents/{n}.md:{note['line']}: "
+                report.append(f"  agents/{rt}.md:{note['line']}: "
                               f"{note['action']} `{note['name']}`")
             write_text(dst, text)
         count += 1
@@ -881,14 +926,16 @@ def main():
 
     own_skills = os.path.join(OWN, "skills")
     own_rules = os.path.join(OWN, "rules")
+    # the materialized set is spelled the way the runtime tree spells it:
+    # every asset of the upstream pool carries the prefix of this fork
     mat = {
-        "skills": set(resolved["skills"]) | (
+        "skills": {refscan.runtime_name(n) for n in resolved["skills"]} | (
             {n for n in os.listdir(own_skills)
              if os.path.isdir(os.path.join(own_skills, n))}
             if os.path.isdir(own_skills) else set()
         ),
-        "commands": set(resolved["commands"]),
-        "agents": set(resolved["agents"]),
+        "commands": {refscan.runtime_name(n) for n in resolved["commands"]},
+        "agents": {refscan.runtime_name(n) for n in resolved["agents"]},
         "rules": ({os.path.splitext(f)[0] for f in os.listdir(own_rules)
                    if f.endswith(".md")}
                   if os.path.isdir(own_rules) else set()),
@@ -897,7 +944,6 @@ def main():
     ctx = {
         "mat": mat,
         "pool": pool,
-        "kinds": refscan.pool_kind_of(pool),
         "external": refscan.external_refs(),
     }
 

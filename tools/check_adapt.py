@@ -252,7 +252,7 @@ def cropped_command_names(tree):
     base = os.path.join(REPO_ROOT, "pool", "commands")
     known = set()
     if os.path.isdir(base):
-        known = {name[:-3] for name in os.listdir(base)
+        known = {refscan.runtime_name(name[:-3]) for name in os.listdir(base)
                  if name.endswith(".md")
                  and os.path.isfile(os.path.join(base, name))}
     return known - command_names(tree)

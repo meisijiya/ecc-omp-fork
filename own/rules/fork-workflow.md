@@ -22,8 +22,8 @@ globs: ["**/*"]
 
 改动跨多个文件、涉及架构决策、或需求本身含糊时，先产出计划再动手：
 
-- 命令：`/plan`（重述需求 + 风险 + 步骤），`/plan-prd`（问题优先的精简 PRD）。
-- agent：`planner`（实施计划）、`architect`（系统设计）、`code-architect`（特性架构）。
+- 命令：`/ecc-omp-plan`（重述需求 + 风险 + 步骤），`/ecc-omp-plan-prd`（问题优先的精简 PRD）。
+- agent：`ecc-omp-planner`（实施计划）、`ecc-omp-architect`（系统设计）、`ecc-omp-code-architect`（特性架构）。
 - 产出计划后等用户确认，不要边猜边改。
 
 改动是单点、机械性的（改个文案、加个分支、换常量），跳过计划直接做。
@@ -32,25 +32,25 @@ globs: ["**/*"]
 
 - 动手前先读目标文件，读到真实内容再改。
 - 改动尽量小而完整：不要留下半成品状态。
-- 新增行为先写测试（见 `fork-verification` 规则）。
+- 新增行为先写测试（见 `rule://fork-verification` 规则）。
 
 ## 3. 验证
 
-按 `fork-verification` 规则验证：改完必须跑一遍受影响的东西，
+按 `rule://fork-verification` 规则验证：改完必须跑一遍受影响的东西，
 并把**实际输出**贴出来。没跑过就说没跑过。
-本仓自己的四个门禁（悬空引用、omp 适配、上游 pin、插件启停可见性）列在 `fork-verification` 规则里，
+本仓自己的四个门禁（悬空引用、omp 适配、上游 pin、插件启停可见性）列在 `rule://fork-verification` 规则里，
 改了资产就必须全绿。
 
 ## 4. 收尾
 
-- 提交信息用 `commit-reviewer` agent 或 `/prp-commit` 生成，遵循 Conventional Commits。
-- 更新文档：用 `/update-docs` 命令。
+- 提交信息用 `ecc-omp-commit-reviewer` agent 或 `/ecc-omp-prp-commit` 生成，遵循 Conventional Commits。
+- 更新文档：用 `/ecc-omp-update-docs` 命令。
 - 清理：确认没有遗留的临时文件、调试输出、被注释掉的死代码。
 
 ## 与 skill / command / agent 的分工
 
 - **skill** 是知识（怎么做对），按需 `read skill://<name>`。
-- **command** 是流程入口（`/plan`、`/code-review`、`/test-coverage`），直接当命令用。
-- **agent** 是并行子任务（评审、探索、修复），用 `task` 派，agent 名用裸名。
+- **command** 是流程入口（`/ecc-omp-plan`、`/ecc-omp-code-review`、`/ecc-omp-test-coverage`），直接当命令用。
+- **agent** 是并行子任务（评审、探索、修复），用 `task` 派，agent 名用带 `ecc-omp-` 前缀的裸名。
 
-三者配合使用，不要只用一个。委派纪律见 `omp-delegation` 规则。
+三者配合使用，不要只用一个。委派纪律见 `rule://omp-delegation` 规则。

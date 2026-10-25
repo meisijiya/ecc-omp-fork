@@ -21,6 +21,11 @@ that mismatch is a hard error instead of a silent preference for one of them.
 
 import json
 import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import refscan  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KINDS = ("skills", "commands", "agents")
@@ -179,19 +184,28 @@ def main():
             f"| `{name}` | {p.get('description','')} | " + " | ".join(counts) + " |"
         )
 
+    lines += [
+        "",
+        "> 表里的**运行名**是本 fork 物化后实际使用的名字：上游原名统一加 "
+        "`ecc-omp-` 前缀（skill / command / agent）。",
+        "> 「上游名」是 affaan-m/ECC 里的原名，用于回溯上游来源。",
+    ]
+
     for kind in KINDS:
         lines += ["", f"## {kind.capitalize()}", ""]
-        lines.append("| 组 | 名称 | 生效 profile |")
-        lines.append("| --- | --- | --- |")
+        lines.append("| 组 | 名称（运行名） | 上游名 | 生效 profile |")
+        lines.append("| --- | --- | --- | --- |")
         for name, cell in rows[kind]:
             on = [
                 pname for pname in sorted(profiles)
                 if name in members_by_profile[pname][kind]
             ]
-            mark = "✅" if name in enabled[kind] else "⬜"
+            runtime = refscan.runtime_name(name)
+            mark = "✅" if runtime in enabled[kind] else "⬜"
             tag = " (extra)" if name in extras[kind] else ""
             lines.append(
-                f"| {cell} | {mark} `{name}`{tag} | {', '.join(on) or '—'} |"
+                f"| {cell} | {mark} `{runtime}`{tag} | `{name}` | "
+                f"{', '.join(on) or '—'} |"
             )
 
     lines += [

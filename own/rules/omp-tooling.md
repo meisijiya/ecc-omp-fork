@@ -32,8 +32,8 @@ globs: ["**/*"]
    无 tag 的锚定编辑会被 `hashline` 拒绝。
 3. **搜索优先用 `grep` / `glob`**，不要用 `bash` 跑 `grep`/`find`/`ls` 去遍历目录。
 4. **委派用 `task`**，并在 `agent` 字段里给出本 fork 存在的 agent 名。
-   本 fork 的 agent 名是**裸名**（如 `code-reviewer`、`java-reviewer`），
-   不是 Claude Code 的 `ecc:` 前缀形式。并行就是同一条消息里的多个 `task` 调用；
+   本 fork 的 agent 名是**裸名**（如 `ecc-omp-code-reviewer`、`ecc-omp-java-reviewer`），
+   带本 fork 的 `ecc-omp-` 前缀，但不是 Claude Code 的 `ecc:` 前缀形式。并行就是同一条消息里的多个 `task` 调用；
    用 `task.batch` 的批量形态时必须提供非空的共享 `context`。
 5. **不要臆造不存在的工具**。上游 ECC 规则里出现的 `Agent(subagent_type:)`、
    `mcp__playwright__*`、`mcp__context7__*` 在本机不一定可用，

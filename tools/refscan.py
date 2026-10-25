@@ -63,6 +63,21 @@ How a relative link is judged
   A link that maps to nothing readable (a nested `rules/react/hooks.md`, a
   `docs/` file, a skill outside the active profile) is dangling.
 
+Asset names
+  Upstream assets are installed under a prefix: the runtime name of the
+  upstream asset `api-design` is `ecc-omp-api-design`. The prefix is part of
+  this plugin's public surface -- it is what distinguishes the asset from the
+  same-named asset of another plugin.
+
+  A reference may be written with either spelling -- the upstream one (how
+  the upstream text says it) or the runtime one (how the model has to call
+  it) -- and both are judged against the same asset. The canonical form the
+  repair writes is always the runtime name.
+
+  The fork's own assets (own/skills, own/rules) keep their name, and so do
+  the assets another plugin provides (manifest/external_refs.json): those
+  names belong to somebody else and must not be renamed.
+
 How it is judged
   A reference is OK when the name exists in the materialized set:
     skills/<name>/   commands/<name>.md   agents/<name>.md   rules/<name>.md
@@ -78,9 +93,9 @@ How dangling references are repaired
   either chases it or invents it. The repair therefore removes the pointer:
 
     * a relative link that resolves becomes the canonical URI
-      (`[react-testing](../react-testing/SKILL.md)` -> `skill://react-testing`),
-      because a relative path that leaves the skill directory cannot be
-      followed at runtime,
+      (`[react-testing](../react-testing/SKILL.md)` ->
+      `skill://ecc-omp-react-testing`), because a relative path that leaves
+      the skill directory cannot be followed at runtime,
     * a slash command that names the owning skill ("User types
       `/my-skill`") is the upstream spelling of "the user invokes this skill"
       -- it is rewritten to the skill URI instead of being cut,
@@ -120,6 +135,22 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCAN_DIRS = ("skills", "commands", "agents", "rules", "own")
 KINDS = ("skills", "commands", "agents", "rules")
 
+# The name an upstream asset carries in the runtime tree. This fork installs
+# its skills, commands and agents under a prefix, so that an asset of this
+# plugin can never be mistaken for the same-named asset of another plugin:
+# the prefix is part of the fork's public surface -- it is what the user
+# types and what the model reads. The fork's own assets keep their name.
+RUNTIME_PREFIX = "ecc-omp-"
+
+# The singular kind names the reports use.
+SINGULAR = {"skills": "skill", "commands": "command",
+            "agents": "agent", "rules": "rule"}
+
+
+def runtime_name(upstream):
+    """The runtime name of an upstream asset."""
+    return RUNTIME_PREFIX + upstream
+
 # --- reference syntax ------------------------------------------------------
 
 RE_SKILL_URI = re.compile(r"skill://([A-Za-z0-9][A-Za-z0-9._-]*)")
@@ -143,7 +174,12 @@ RE_NESTED_RULE_PATH = re.compile(
 # shape and the two would otherwise both match the same text.
 PATH_FORMS = (RE_NESTED_RULE_PATH, RE_FLAT_PATH, RE_SKILL_PATH)
 RE_CMD_BACK = re.compile(r"`(/[a-z][a-z0-9]*(?:-[a-z0-9]+)*)`")
-RE_CMD_INLINE = re.compile(r"(?<![\w`<>/.:\\-])(/[a-z][a-z0-9]*(?:-[a-z0-9]+)*)(?![\w/.\\-])")
+# A slash command at the end of a sentence is followed by a period; a slash
+# command that is the stem of a file name is followed by an extension. The
+# lookahead therefore rejects a dot only when a word character follows it,
+# so "/plan-prd." is a command and "/plan-prd.md" is a file.
+RE_CMD_INLINE = re.compile(
+    r"(?<![\w`<>/.:\\-])(/[a-z][a-z0-9]*(?:-[a-z0-9]+)*)(?![\w/-])(?!\.[A-Za-z0-9])")
 RE_BARE = re.compile(r"`([A-Za-z0-9][A-Za-z0-9._-]*)`")
 # A reference that names its kind inline. Upstream writes it in two shapes:
 # the whole token inside one pair of backticks ("`skill: foo`") and the
@@ -364,15 +400,81 @@ def external_refs():
     return out
 
 
-def pool_kind_of(pool=None):
-    """Map an upstream asset name to its kind (skills win over commands)."""
-    pool = pool if pool is not None else pool_sets()
-    out = {}
-    for kind, singular in (("skills", "skill"), ("commands", "command"),
-                           ("agents", "agent")):
-        for n in pool[kind]:
-            out.setdefault(n, singular)
-    return out
+class Assets:
+    """The two spellings of every asset this fork ships.
+
+    An upstream asset has a name in the pool ("api-design") and a name in
+    the runtime tree ("ecc-omp-api-design"). The fork's own assets are not
+    renamed: their name is their name.
+
+    Every lookup goes through this object. A reference is judged in either
+    spelling and answered in the runtime spelling -- that is the name the
+    model can read.
+    """
+
+    def __init__(self, mat, pool):
+        self.mat = mat
+        self.pool = pool
+        # kind -> {upstream name: runtime name}
+        self.runtime_of = {}
+        # kind -> {runtime name: upstream name}
+        self.upstream_of = {}
+        for kind in KINDS:
+            upstream = set(pool.get(kind, ()))
+            runtime_of, upstream_of = {}, {}
+            for r in sorted(mat.get(kind, ())):
+                u = (r[len(RUNTIME_PREFIX):]
+                     if r.startswith(RUNTIME_PREFIX) else "")
+                if not u or u not in upstream:
+                    continue  # a fork-owned asset: its name is its own
+                if u in runtime_of:
+                    raise SystemExit(
+                        f"{kind}: the runtime names {runtime_of[u]!r} and "
+                        f"{r!r} both name the upstream asset {u!r}; "
+                        f"rename one of them"
+                    )
+                runtime_of[u] = r
+                upstream_of[r] = u
+            self.runtime_of[kind] = runtime_of
+            self.upstream_of[kind] = upstream_of
+
+    def lookup(self, kind, name):
+        """Resolve one spelling of an asset of `kind`.
+
+        Returns (state, runtime name):
+
+          "live"    the asset is in the runtime tree
+          "cropped" the asset exists upstream, the active profile does not
+                    ship it
+          "unknown" no such asset
+        """
+        if name in self.mat.get(kind, ()):
+            return "live", name
+        r = self.runtime_of[kind].get(name)
+        if r is not None:
+            return "live", r
+        if name in self.pool.get(kind, ()):
+            return "cropped", runtime_name(name)
+        if name.startswith(RUNTIME_PREFIX):
+            u = name[len(RUNTIME_PREFIX):]
+            if u in self.pool.get(kind, ()):
+                return "cropped", name
+        return "unknown", name
+
+    def find(self, name):
+        """Find the asset a bare name refers to, whatever its kind.
+
+        Returns (kind, state, runtime name); kind is singular.
+        """
+        for kind in KINDS:
+            state, rt = self.lookup(kind, name)
+            if state != "unknown":
+                return SINGULAR[kind], state, rt
+        return None, "unknown", name
+
+    def upstream_spelling(self, kind, name):
+        """The pool spelling of a runtime name, or None for a fork asset."""
+        return self.upstream_of.get(kind, {}).get(name)
 
 
 # --- relative link resolution ----------------------------------------------
@@ -432,14 +534,15 @@ def runtime_exists(rel_path):
 # rewritten to the canonical URI of the asset it names. A path that names
 # no asset of the active profile is a dangling reference like any other.
 
-def classify_path_form(target, mat, exists):
+def classify_path_form(target, assets, exists):
     """Classify one path-form asset reference.
 
     `target` is the path text as written, e.g. "skills/react-testing/".
-    Returns a dict with the asset kind, the name, whether it resolves in
-    the active profile and the canonical way to address the asset (None
-    when the path is the only way to name it, or when it resolves to
-    nothing).
+    The name in the path may be spelled the upstream way or the runtime
+    way; both are accepted. Returns a dict with the asset kind, the name,
+    whether it resolves in the active profile and the canonical way to
+    address the asset (None when the path is the only way to name it, or
+    when it resolves to nothing).
     """
     root, _, rest = target.partition("/")
     rest = rest.rstrip("/")
@@ -447,38 +550,42 @@ def classify_path_form(target, mat, exists):
         parts = [p for p in rest.split("/") if p]
         name = parts[0]
         subpath = "/".join(parts[1:])
-        if name not in mat["skills"]:
+        state, rt = assets.lookup("skills", name)
+        if state != "live":
             return {"kind": "skill", "name": name, "ok": False,
                     "reason": "skills/<name>/, no such skill in the active profile",
                     "canonical": None}
         if subpath and subpath != "SKILL.md" \
-                and not exists("skills/" + name + "/" + subpath):
+                and not exists("skills/" + rt + "/" + subpath):
             return {"kind": "skill", "name": name, "ok": False,
                     "reason": "skills/<name>/<file>, the skill does not ship that file",
                     "canonical": None}
-        canonical = "skill://" + name
+        canonical = "skill://" + rt
         if subpath and subpath != "SKILL.md":
             canonical += "/" + subpath
         return {"kind": "skill", "name": name, "ok": True, "reason": "",
                 "canonical": canonical}
     if root == "commands":
         name = rest[:-3] if rest.endswith(".md") else rest
-        ok = name in mat["commands"]
+        state, rt = assets.lookup("commands", name)
+        ok = state == "live"
         return {"kind": "command", "name": name, "ok": ok,
                 "reason": "" if ok else
                 "commands/<name>.md, no such command in the active profile",
-                "canonical": ("/" + name) if ok else None}
+                "canonical": ("/" + rt) if ok else None}
     if root == "agents":
         # An agent definition has no readable URI: omp dispatches agents
         # by bare name. The path itself is the file's location inside the
         # plugin, which the model cannot open either -- so it is checked
-        # for existence and otherwise kept as written.
+        # for existence and otherwise kept as written, with the runtime
+        # name of the file it points at.
         name = rest[:-3] if rest.endswith(".md") else rest
-        ok = name in mat["agents"]
+        state, rt = assets.lookup("agents", name)
+        ok = state == "live"
         return {"kind": "agent", "name": name, "ok": ok,
                 "reason": "" if ok else
                 "agents/<name>.md, no such agent in the active profile",
-                "canonical": None}
+                "canonical": ("agents/" + rt + ".md") if ok else None}
     # rules
     parts = [p for p in rest.split("/") if p]
     if len(parts) > 1:
@@ -487,11 +594,12 @@ def classify_path_form(target, mat, exists):
                            "discoverable at runtime"),
                 "canonical": None}
     name = parts[0][:-3] if parts[0].endswith(".md") else parts[0]
-    ok = name in mat["rules"]
+    state, rt = assets.lookup("rules", name)
+    ok = state == "live"
     return {"kind": "rule", "name": name, "ok": ok,
             "reason": "" if ok else
             "rules/<name>.md, no such rule in the active profile",
-            "canonical": ("rule://" + name) if ok else None}
+            "canonical": ("rule://" + rt) if ok else None}
 
 
 # --- relative markdown links ----------------------------------------------
@@ -518,13 +626,14 @@ def fenced_lines(lines):
     return inside
 
 
-def classify_link(base, target, mat, exists):
+def classify_link(base, target, assets, exists):
     """Classify one relative markdown link target.
 
     Returns None for targets that are not local (http:, mailto:, #anchor,
     absolute paths). Otherwise a dict with the asset kind, the name, whether
     it resolves in the active profile and the canonical URI the model can
-    actually follow.
+    actually follow. The name in the link may be spelled the upstream way
+    or the runtime way; both are accepted.
     """
     if RE_EXTERNAL_TARGET.match(target) or target.startswith("/"):
         return None
@@ -542,39 +651,43 @@ def classify_link(base, target, mat, exists):
         return {"kind": "file", "name": info["resolved"], "subpath": "",
                 "ok": False, "reason": reason, "canonical": None}
     if kind == "skill":
-        if name not in mat["skills"]:
+        state, rt = assets.lookup("skills", name)
+        if state != "live":
             return {"kind": "skill", "name": name, "subpath": subpath,
                     "ok": False,
                     "reason": "link points at a skill outside the active profile",
                     "canonical": None}
         if subpath and subpath != "SKILL.md" \
-                and not exists("skills/" + name + "/" + subpath):
+                and not exists("skills/" + rt + "/" + subpath):
             return {"kind": "skill", "name": name, "subpath": subpath,
                     "ok": False,
                     "reason": "link points at a file the skill does not ship",
                     "canonical": None}
-        canonical = "skill://" + name
+        canonical = "skill://" + rt
         if subpath and subpath != "SKILL.md":
             canonical += "/" + subpath
         return {"kind": "skill", "name": name, "subpath": subpath, "ok": True,
                 "reason": "", "canonical": canonical}
     if kind == "command":
-        ok = name in mat["commands"]
+        state, rt = assets.lookup("commands", name)
+        ok = state == "live"
         return {"kind": "command", "name": name, "subpath": "", "ok": ok,
                 "reason": "" if ok else
                 "link points at a command outside the active profile",
-                "canonical": "/" + name}
+                "canonical": "/" + rt}
     if kind == "agent":
-        ok = name in mat["agents"]
+        state, rt = assets.lookup("agents", name)
+        ok = state == "live"
         return {"kind": "agent", "name": name, "subpath": "", "ok": ok,
                 "reason": "" if ok else
                 "link points at an agent outside the active profile",
-                "canonical": name}
-    ok = name in mat["rules"]
+                "canonical": rt}
+    state, rt = assets.lookup("rules", name)
+    ok = state == "live"
     return {"kind": "rule", "name": name, "subpath": "", "ok": ok,
             "reason": "" if ok else
             "link points at a rule outside the active profile",
-            "canonical": "rule://" + name}
+            "canonical": "rule://" + rt}
 
 
 def source_exists(rel_path):
@@ -590,20 +703,27 @@ def source_exists(rel_path):
         return False
     name = parts[1]
     rest = parts[2:]
-    # a fork replacement wins over the upstream snapshot, and the fork's own
-    # skills win over both -- exactly the order the materializer copies in
-    for base in (os.path.join(ROOT, "own", "patches", "skills", name),
-                 os.path.join(ROOT, "own", "skills", name),
-                 os.path.join(ROOT, "pool", "skills", name)):
-        if not os.path.isdir(base):
-            continue
-        if not rest:
-            return True
-        if os.path.isfile(os.path.join(base, *rest)):
-            return True
-        # this source is the one that will be copied -- a file it does not
-        # have will not be in the runtime tree
-        return False
+    # the runtime name carries the prefix, the source directory does not
+    upstream = (name[len(RUNTIME_PREFIX):]
+                if name.startswith(RUNTIME_PREFIX) else name)
+    candidates = [upstream] if upstream != name else []
+    candidates.append(name)
+    for candidate in candidates:
+        # a fork replacement wins over the upstream snapshot, and the fork's
+        # own skills win over both -- exactly the order the materializer
+        # copies in
+        for base in (os.path.join(ROOT, "own", "patches", "skills", candidate),
+                     os.path.join(ROOT, "own", "skills", candidate),
+                     os.path.join(ROOT, "pool", "skills", candidate)):
+            if not os.path.isdir(base):
+                continue
+            if not rest:
+                return True
+            if os.path.isfile(os.path.join(base, *rest)):
+                return True
+            # this source is the one that will be copied -- a file it does
+            # not have will not be in the runtime tree
+            return False
     return False
 
 
@@ -784,7 +904,7 @@ def prefixed_refs(line):
     return out
 
 
-def scan_text(text, mat, pool, pool_kind_of, external=None,
+def scan_text(text, mat, pool, external=None,
               link_base=None, link_exists=None):
     """Scan a document; returns one record per reference found.
 
@@ -793,16 +913,23 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
     token that is dangling.
 
     `external` names assets that live in another omp plugin. A reference to
-    one of them resolves for the user, so it is not reported as dangling.
+    one of them resolves for the user, so it is not reported as dangling --
+    and it keeps its own name, because the prefix of this fork applies to
+    this fork's assets only.
 
     `link_base` is the runtime directory that holds the document. When it is
     given, relative markdown links are resolved against it and checked the
     same way; `link_exists` answers whether a file inside a skill is shipped.
     """
     external = external if external is not None else external_refs()
+    assets = Assets(mat, pool)
 
-    def resolves(kind, name):
-        return name in mat[kind] or name in external[kind]
+    def external_kind(name):
+        """The kind of the asset another plugin provides, if any."""
+        for kind in KINDS:
+            if name in external[kind]:
+                return SINGULAR[kind]
+        return None
 
     lines = text.split("\n")
     ctx = _Context()
@@ -810,7 +937,7 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
 
     def add(idx, name, kind, ok, reason, m, canonical=None, link=False,
             path_form=False, prefixed=False, wrap=False, start=None,
-            end=None):
+            end=None, replace=None, runtime=None, stale=False):
         records.append({
             "line": idx + 1,
             "name": name,
@@ -824,6 +951,9 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
             "path_form": path_form,
             "prefixed": prefixed,
             "wrap": wrap,
+            "replace": replace,
+            "runtime": runtime,
+            "stale": stale,
         })
 
     fenced = fenced_lines(lines)
@@ -850,13 +980,18 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
                 target = m.group(2)
                 if RE_EXTERNAL_TARGET.match(target) or target.startswith("/"):
                     continue
-                info = classify_link(link_base, target, mat,
+                info = classify_link(link_base, target, assets,
                                      link_exists or runtime_exists)
                 if info is None:
                     continue
                 link_spans.append((m.start(), m.end()))
+                rt = None
+                if info["ok"] and info["kind"] in PREFIXED_KIND_KEY:
+                    _s, rt = assets.lookup(PREFIXED_KIND_KEY[info["kind"]],
+                                           info["name"])
                 add(idx, info["name"], info["kind"], info["ok"],
-                    info["reason"], m, canonical=info["canonical"], link=True)
+                    info["reason"], m, canonical=info["canonical"], link=True,
+                    runtime=rt, stale=bool(info["ok"] and info["name"] != rt))
 
         def in_link(pos):
             return any(s <= pos < e for s, e in link_spans)
@@ -876,8 +1011,19 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
             if in_link(m.start()):
                 continue
             name = m.group(1)
-            add(idx, name, "skill", resolves("skills", name),
-                "skill:// reference, no such skill", m)
+            if name in external["skills"]:
+                # another plugin's skill: it keeps its own name
+                add(idx, name, "skill", True, "", m)
+                continue
+            state, rt = assets.lookup("skills", name)
+            if state == "live":
+                # the name inside the URI is the only part that changes
+                add(idx, name, "skill", True, "", m,
+                    canonical="skill://" + rt, start=m.start(1), end=m.end(1),
+                    replace=rt, runtime=rt, stale=name != rt)
+            else:
+                add(idx, name, "skill", False,
+                    "skill:// reference, no such skill", m)
         # rule:// is the URI omp uses to read a rule. agent:// is not
         # checked: in omp it addresses the output of a sub-agent run, not
         # an asset of this plugin.
@@ -885,7 +1031,9 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
             if in_link(m.start()):
                 continue
             name = m.group(1)
-            add(idx, name, "rule", resolves("rules", name),
+            state, _rt = assets.lookup("rules", name)
+            ok = state == "live" or name in external["rules"]
+            add(idx, name, "rule", ok,
                 "rule:// reference, no such rule", m)
         # --- kind-qualified references ---------------------------------------
         # "skill: foo" names the kind inline. Two rules own the other
@@ -898,9 +1046,10 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
             kind = ref["kind"]
             plural = PREFIXED_KIND_KEY[kind]
             name = ref["name"]
-            if name in mat.get(plural, ()):
+            state, rt = assets.lookup(plural, name)
+            if state == "live":
                 ok, reason = True, ""
-            elif name in pool.get(plural, ()):
+            elif state == "cropped":
                 ok = False
                 reason = f"upstream {kind} not enabled in the active profile"
             elif "/" in name or "." in name:
@@ -918,10 +1067,11 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
             if ok and ref["whole"]:
                 # only the single-token shape can be rewritten: the span
                 # covers the prefix and the name, the backticks stay
-                canonical = PREFIXED_CANONICAL[plural](name)
+                canonical = PREFIXED_CANONICAL[plural](rt)
             add(idx, name, kind, ok, reason, None, canonical=canonical,
                 prefixed=True, wrap=ref["whole"], start=ref["start"],
-                end=ref["end"])
+                end=ref["end"], runtime=rt if ok else None,
+                stale=bool(ok and name != rt))
 
         # --- path-form references -------------------------------------------
         # A path form names an asset by its location in the plugin tree
@@ -934,11 +1084,16 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
             for hit in m.finditer(raw):
                 if in_any_link(hit.start()):
                     continue
-                info = classify_path_form(hit.group(0), mat,
+                info = classify_path_form(hit.group(0), assets,
                                           link_exists or runtime_exists)
+                rt = None
+                if info["ok"]:
+                    _s, rt = assets.lookup(PREFIXED_KIND_KEY[info["kind"]],
+                                           info["name"])
                 add(idx, info["name"], info["kind"], info["ok"],
                     info["reason"], hit, canonical=info["canonical"],
-                    path_form=True)
+                    path_form=True, runtime=rt,
+                    stale=bool(info["ok"] and info["name"] != rt))
 
         # --- command references --------------------------------------------
         cmd_tokens = []
@@ -950,9 +1105,16 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
         for m, name, backticked in cmd_tokens:
             if in_link(m.start()):
                 continue
-            if resolves("commands", name):
+            state, rt = assets.lookup("commands", name)
+            if state == "live":
+                # the command carries the prefix in the runtime tree, so the
+                # slash form the user types changes with it
+                add(idx, name, "command", True, "", m,
+                    canonical="/" + rt, start=m.start(1), end=m.end(1),
+                    replace="/" + rt, runtime=rt, stale=name != rt)
+            elif name in external["commands"]:
                 add(idx, name, "command", True, "", m)
-            elif name in pool["commands"]:
+            elif state == "cropped":
                 add(idx, name, "command", False,
                     "command not enabled in the active profile", m)
             elif name in PATH_NOISE:
@@ -970,44 +1132,53 @@ def scan_text(text, mat, pool, pool_kind_of, external=None,
                 continue
             if "." in name or "/" in name:
                 continue  # file names, domains, paths
-            if resolves("skills", name) or resolves("agents", name) \
-                    or resolves("commands", name) or resolves("rules", name):
-                add(idx, name, pool_kind_of.get(name, "skill"), True, "", m)
+            kind, state, rt = assets.find(name)
+            if state == "live":
+                # the name in the text has to carry the prefix of the
+                # runtime tree, in the form the model can follow
+                canonical = PREFIXED_CANONICAL[PREFIXED_KIND_KEY[kind]](rt)
+                add(idx, name, kind, True, "", m, canonical=canonical,
+                    start=m.start(1), end=m.end(1), replace=canonical,
+                    runtime=rt, stale=name != rt)
                 continue
-            in_pool = pool_kind_of.get(name)
-            if in_pool is None:
-                cues = line_cues | section_cues
-                if not (cues & set(ENABLE_CUES)):
-                    continue
-                if name in STOP_WORDS:
-                    continue
-                if RE_ASSET_SHAPE.match(name):
-                    shape_ok = True
-                elif RE_SINGLE_WORD.match(name) and ctx.strong_list \
-                        and BULLET.match(raw):
-                    # a single word is only an asset id inside an explicit
-                    # "Related Skills" style list
-                    shape_ok = True
-                else:
-                    shape_ok = False
-                if not shape_ok:
-                    continue
-                kind = "skill|agent"
-                for k in ENABLE_CUES:
-                    if k in cues:
-                        kind = k
-                        break
+            ext = external_kind(name)
+            if ext:
+                # another plugin's asset: it keeps its own name
+                add(idx, name, ext, True, "", m)
+                continue
+            if state == "cropped":
                 add(idx, name, kind, False,
-                    "named in an asset context, but no such asset in the "
-                    "active profile", m)
+                    f"upstream {kind} not enabled in the active profile", m)
+                continue
+            cues = line_cues | section_cues
+            if not (cues & set(ENABLE_CUES)):
+                continue
+            if name in STOP_WORDS:
+                continue
+            if RE_ASSET_SHAPE.match(name):
+                shape_ok = True
+            elif RE_SINGLE_WORD.match(name) and ctx.strong_list \
+                    and BULLET.match(raw):
+                # a single word is only an asset id inside an explicit
+                # "Related Skills" style list
+                shape_ok = True
             else:
-                add(idx, name, in_pool, False,
-                    f"upstream {in_pool} not enabled in the active profile", m)
+                shape_ok = False
+            if not shape_ok:
+                continue
+            kind = "skill|agent"
+            for k in ENABLE_CUES:
+                if k in cues:
+                    kind = k
+                    break
+            add(idx, name, kind, False,
+                "named in an asset context, but no such asset in the "
+                "active profile", m)
 
     return records
 
 
-def check_file(path, mat, pool, pool_kind_of, external=None):
+def check_file(path, mat, pool, external=None):
     """Return the list of dangling references found in one file."""
     rel = os.path.relpath(path, ROOT).replace(os.sep, "/")
     try:
@@ -1022,9 +1193,21 @@ def check_file(path, mat, pool, pool_kind_of, external=None):
     link_base = ctx["base"] if ctx else None
 
     findings = []
-    for r in scan_text(text, mat, pool, pool_kind_of, external,
+    for r in scan_text(text, mat, pool, external,
                        link_base=link_base, link_exists=runtime_exists):
         if r["ok"]:
+            if r.get("stale"):
+                # the reference resolves, but it is spelled the way the
+                # upstream pool spells it -- the runtime tree ships the
+                # prefixed name, so the text points at nothing
+                findings.append({
+                    "file": rel,
+                    "line": r["line"],
+                    "name": r["name"],
+                    "type": r["kind"],
+                    "reason": (f"upstream spelling of a renamed {r['kind']}; "
+                               f"the runtime tree spells it {r['runtime']}"),
+                })
             continue
         findings.append({
             "file": rel,
@@ -1281,17 +1464,21 @@ def _same_ending(lines, want):
     return lines + [""] * (want - have)
 
 
-def repair_text(text, mat, pool, pool_kind_of, owner=None, external=None,
+def repair_text(text, mat, pool, owner=None, external=None,
                 owner_kind="skill", link_base=None, link_exists=None):
     """Make every reference in a document followable.
 
-    Three things happen here:
+    Four things happen here:
 
     * a relative markdown link that resolves becomes the canonical URI
       (``[react-testing](../react-testing/SKILL.md)`` ->
-      ``skill://react-testing``). The model reads the markdown source, and a
-      relative path that leaves the skill directory cannot be followed at
-      runtime, so the link text is replaced by the URI that works.
+      ``skill://ecc-omp-react-testing``). The model reads the markdown
+      source, and a relative path that leaves the skill directory cannot be
+      followed at runtime, so the link text is replaced by the URI that
+      works.
+    * a name that resolves is written the way the runtime tree spells it,
+      so that the text points at the asset that is actually shipped
+      (``api-design`` -> ``skill://ecc-omp-api-design``).
     * a slash command that names the owner itself ("User types
       `/my-skill`") is the upstream spelling of "the user invokes this
       skill" -- it is rewritten to the skill URI instead of being cut.
@@ -1306,7 +1493,7 @@ def repair_text(text, mat, pool, pool_kind_of, owner=None, external=None,
 
     Returns (new_text, notes) where notes describe what was changed.
     """
-    records = scan_text(text, mat, pool, pool_kind_of, external,
+    records = scan_text(text, mat, pool, external,
                         link_base=link_base, link_exists=link_exists)
     if not records:
         return text, []
@@ -1320,6 +1507,18 @@ def repair_text(text, mat, pool, pool_kind_of, owner=None, external=None,
     notes = []
     drop = set()
 
+    assets = Assets(mat, pool)
+    owner_upstream = (assets.upstream_spelling("skills", owner)
+                      if owner and owner_kind == "skill" else None)
+
+    def is_self_command(entry):
+        """Is this slash command the owning skill's own name?"""
+        if entry["kind"] != "command" or owner_kind != "skill" or not owner:
+            return False
+        if owner not in mat["skills"]:
+            return False
+        return entry["name"] in (owner, owner_upstream)
+
     for line_no in sorted(by_line):
         entries = by_line[line_no]
         idx = line_no - 1
@@ -1329,7 +1528,14 @@ def repair_text(text, mat, pool, pool_kind_of, owner=None, external=None,
         edits = []
         for e in entries:
             if e["ok"]:
-                if e.get("link") and e.get("canonical"):
+                if e.get("replace"):
+                    # the name has to carry the prefix of the runtime tree
+                    edits.append((e["start"], e["end"], e["replace"]))
+                    notes.append({
+                        "line": line_no, "name": e["name"],
+                        "action": "rewrote reference as " + e["replace"],
+                    })
+                elif e.get("link") and e.get("canonical"):
                     edits.append((e["start"], e["end"],
                                   "`" + e["canonical"] + "`"))
                     notes.append({
@@ -1352,8 +1558,7 @@ def repair_text(text, mat, pool, pool_kind_of, owner=None, external=None,
                                   + e["canonical"],
                     })
                 continue
-            if (e["kind"] == "command" and owner_kind == "skill" and owner
-                    and e["name"] == owner and owner in mat["skills"]):
+            if is_self_command(e):
                 edits.append((e["start"], e["end"], "skill://" + owner))
                 notes.append({
                     "line": line_no, "name": e["name"],
@@ -1362,10 +1567,7 @@ def repair_text(text, mat, pool, pool_kind_of, owner=None, external=None,
 
         bad = [e for e in entries if not e["ok"]]
         # a self command that was rewritten is no longer dangling
-        bad = [e for e in bad
-               if not (e["kind"] == "command" and owner_kind == "skill"
-                       and owner and e["name"] == owner
-                       and owner in mat["skills"])]
+        bad = [e for e in bad if not is_self_command(e)]
 
         if bad:
             resolvable = [e for e in entries if e["ok"]]

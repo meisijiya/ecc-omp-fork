@@ -14,8 +14,10 @@ descriptions before it puts them in the prompt and caches the result in
 printed with a shorter description than its frontmatter carries. For skills
 the resolved text comes from `omp skill list`; for the other kinds the prompt
 line is the only view there is. Comparing the resolved text is what separates
-our `security-reviewer` from the identically named builtin, so name
-collisions do not produce false leaks.
+our assets from a builtin of the same shape, so name collisions do not
+produce false leaks. This fork's assets carry the `ecc-omp-` prefix, so the
+builtin `security-reviewer` and our `ecc-omp-security-reviewer` no longer
+share a name at all.
 
 The expected asset set is read from the *installed* plugin root omp links this
 fork from, because that directory is what omp actually scans. The tool also

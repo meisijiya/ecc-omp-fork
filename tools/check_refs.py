@@ -43,10 +43,9 @@ CROPPED = "not enabled in the active profile"
 def collect():
     mat = refscan.materialized_sets()
     pool = refscan.pool_sets()
-    kinds = refscan.pool_kind_of(pool)
     findings = []
     for path in refscan.scan_files():
-        findings.extend(refscan.check_file(path, mat, pool, kinds))
+        findings.extend(refscan.check_file(path, mat, pool))
     # a reference is reported once per (file, line, name, type)
     seen = set()
     unique = []
