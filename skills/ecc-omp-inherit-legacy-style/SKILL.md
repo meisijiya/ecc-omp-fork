@@ -11,7 +11,7 @@ Prevents AI code style drift in legacy projects by scanning the codebase for imp
 
 ## When to Activate
 
-- User types skill://ecc-omp-inherit-legacy-style
+- User types `skill://ecc-omp-inherit-legacy-style`
 - User mentions onboarding AI onto a hand-written legacy project
 - User is worried about AI-generated code "drifting" from existing project conventions
 - User wants to extract and codify their project's implicit coding rules

@@ -1031,6 +1031,18 @@ def scan_text(text, mat, pool, external=None,
                     canonical="/" + rt, start=m.start(1), end=m.end(1),
                     replace="/" + rt, runtime=rt, stale=name != rt)
                 continue
+            skill_state, skill_rt = assets.lookup("skills", name)
+            if skill_state == "live":
+                # Upstream writes the slash form of a skill ("/design-system
+                # audit") for "run this skill". This fork ships skills as
+                # skill:// URIs, so the reference is rewritten to the URI of
+                # the skill instead of naming a command that does not exist.
+                add(idx, name, "skill", True, "", m,
+                    canonical="skill://" + skill_rt,
+                    start=m.start(1), end=m.end(1),
+                    replace="skill://" + skill_rt,
+                    runtime=skill_rt, stale=name != skill_rt)
+                continue
             if in_fence:
                 # Inside a fence a command the profile does not ship is not
                 # a defect: the example names it on purpose. The one

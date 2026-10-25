@@ -15,7 +15,7 @@ the work and its risk.
 - Request touches security, authentication, persistent data, migrations, external APIs, or compliance
 - User wants to prepare a handoff artifact for another agent or team
 - Request is ambiguous enough that the expected outcome is not yet observable or testable
-- User explicitly invokes this skill with skill://ecc-omp-intent-driven-development
+- User explicitly invokes this skill with `skill://ecc-omp-intent-driven-development`
 
 Do not activate for trivial edits, straightforward one-line fixes, active debugging sessions,
 code review requests, or implementation requests whose acceptance conditions are already clear.
