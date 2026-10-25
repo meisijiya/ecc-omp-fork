@@ -4,7 +4,7 @@
 
 - 上游许可：MIT，版权归 Affaan Mustafa（完整文本见 `LICENSE`）。
 - 上游版本：2.2.3
-- 上游 commit：`07971588f8ac7a60080ba8c1b7920c9e8e733e7d`（2026-10-20）
+- 上游 commit：`90606c8315ee09cafc303515c5f33024db6b9882`（2026-10-20，与 `manifest/upstream.json` 的 pin 一致）
 - 上游内容来源：仓库的 `pi/core/`（132 skills + 24 commands，官方为 Pi 生态生成的精简档）
   与 `agents/`（71 个 agent 定义）。
 
