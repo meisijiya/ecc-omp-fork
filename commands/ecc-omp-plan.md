@@ -114,7 +114,7 @@ After writing the artifact, report its path and WAIT for confirmation before wri
 ## Example Usage
 
 ```
-User: /plan I need to add real-time notifications when markets resolve
+User: /ecc-omp-plan I need to add real-time notifications when markets resolve
 
 Assistant:
 # Implementation Plan: Real-Time Market Resolution Notifications

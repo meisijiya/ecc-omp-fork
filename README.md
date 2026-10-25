@@ -4,14 +4,14 @@
 > 把 ECC 里跟编程相关的能力抽出来，做成可版本化、可增量更新的独立 omp 插件，
 > 同时把每轮系统提示的 token 开销压到可控范围。
 
-本仓库是**唯一事实源**。运行态安装目录（`~/.omp/agent/local/ecc-omp-fork`）由
-`tools/deploy.py` 从这里同步过去，omp 通过 `omp plugin link` 指向该安装目录。
+本仓库是**唯一事实源**。运行态安装根（`~/.omp/agent/local/ecc-omp-fork`）由
+`tools/deploy.py` 从这里同步过去，omp 通过 `omp plugin link` 指向该安装根。
 
 默认 profile（`java-python`）下的生效规模：**68 skills + 24 commands + 31 agents + 5 rules**
 （68 = 上游选中的 67 个 skill + 本 fork 自带的 `ecc-omp-router`）；换 profile 后的规模见
 「切换 profile」一节的表。
 
-物化出来的 skill / command / agent 名统一带 `ecc-omp-` 前缀（上游原名不带），例如
+物化出来的 skill / command / agent 名统一带 `ecc-omp-` 前缀（上游名不带），例如
 `skill://ecc-omp-api-design`、`/ecc-omp-code-review`、agent `ecc-omp-code-reviewer`。
 前缀只用于**区分**：别的插件提供的同名资产仍用它自己的名字，本 fork 在
 `manifest/external_refs.json` 里声明这些名字。
@@ -27,7 +27,7 @@ git clone git@github.com:meisijiya/ecc-omp-fork.git   # 私有库，走 SSH
 cd ecc-omp-fork
 python tools/apply_selection.py     # 按当前 profile 物化 skills/commands/agents/rules
 python tools/build_catalog.py        # 刷新 docs/CATALOG.md（可选，但建议跟上游一起提交）
-python tools/deploy.py              # 同步到 omp 安装目录并 link
+python tools/deploy.py              # 同步到 omp 安装根并 link
 ```
 
 仓库是私有的，克隆需要你对 `meisijiya/ecc-omp-fork` 的 SSH 读权限；匿名 https 克隆会 404。
@@ -47,8 +47,8 @@ python tools/deploy.py              # 同步到 omp 安装目录并 link
 会让同一批 skill 被注入系统提示两次，所以 `deploy.py` 每次都会顺手 uninstall + 删目录。
 
 `omp plugin link` 在 Windows 上建的是**目录 junction**，目标是
-`~/.omp/plugins/node_modules/ecc-omp-fork`，它指向安装目录
-`~/.omp/agent/local/ecc-omp-fork`（安装目录里必须有 `package.json`，插件名取自其中的
+`~/.omp/plugins/node_modules/ecc-omp-fork`，它指向安装根
+`~/.omp/agent/local/ecc-omp-fork`（安装根里必须有 `package.json`，插件名取自其中的
 `name: ecc-omp-fork`）。链接关系可以直接查：
 
 ```bash
@@ -155,7 +155,7 @@ lockfile 里的 `enabled` 置成 false，插件目录（junction）仍然留在
 ### 卸载
 
 ```bash
-# 方式一：脚本（会先跑 omp plugin uninstall，再删安装目录）
+# 方式一：脚本（会先跑 omp plugin uninstall，再删安装根）
 python tools/deploy.py --uninstall
 
 # 方式二：手工
@@ -164,10 +164,10 @@ rm -rf ~/.omp/agent/local/ecc-omp-fork
 ```
 
 `omp plugin uninstall` 会移除 `~/.omp/plugins/node_modules/ecc-omp-fork` 里的链接，
-并清掉 lockfile 里的运行时状态。安装目录 `~/.omp/agent/local/ecc-omp-fork` 是本仓
+并清掉 lockfile 里的运行时状态。安装根 `~/.omp/agent/local/ecc-omp-fork` 是本仓
 `deploy.py` 生成的产物，`omp plugin uninstall` 不会碰它，需要自己删
 （或用 `python tools/deploy.py --uninstall` 一步删掉：它先跑 `omp plugin uninstall`，
-再 `rmtree` 安装目录）。
+再 `rmtree` 安装根）。
 
 注意：**link 型插件不会出现在 `~/.omp/plugins/installed_plugins.json`** —— 那个文件只记
 marketplace 安装的插件。link 型插件的启停状态记在
@@ -180,7 +180,7 @@ marketplace 安装的插件。link 型插件的启停状态记在
 git pull
 python tools/apply_selection.py     # 上游文本变了就重新物化
 python tools/build_catalog.py        # 刷新 docs/CATALOG.md
-python tools/deploy.py               # 同步到安装目录并重新 link
+python tools/deploy.py               # 同步到安装根并重新 link
 ```
 
 然后在 omp 会话里 `/reload-plugins`：**skills / 斜杠命令即时生效，新增的 agent 需要开一个
@@ -226,7 +226,8 @@ skills 数 = 上表数字 + 1（自有 `ecc-omp-router`），commands / agents �
 命令与 agent 的名单同样带前缀，`java-python` 下命令名 +192、agent 名 +248。
 
 `full` 物化后实际进系统提示的是 133 个 skill（132 个上游 + 自有 `ecc-omp-router`），
-合计 38,178 + 181（router 描述）+ 14（router 名）= 38,373 字符，约 ~9.6K token。
+合计 38,178（132 个上游 skill 的描述）+ 3,333（这 132 个 skill 的运行名）+ 181（router 描述）
++ 14（router 名）= 41,706 字符，约 ~10.4K token。
 
 切完 profile 若不想把指针改动留在工作区，用下面这条还原（物化/部署脚本都只读它，
 但手工或脚本重写这个 JSON 文件容易改掉缩进或末尾换行，还原后 diff 才干净）：
@@ -283,21 +284,21 @@ CI 用 `GITHUB_TOKEN` + `peter-evans/create-pull-request` 自动开 PR（分支
 
 | 命令 | 查什么 | 退出码 | 什么时候跑 |
 | --- | --- | --- | --- |
-| `python tools/check_refs.py [--json]` | **引用自洽**：物化树与 `own/` 里是否还有指向「本 fork 不提供的资产」的悬空引用（`skill://`、`skills/<name>/`、`commands\|agents\|rules/<name>.md`、斜杠命令、反引号裸名） | 0 = 无缺陷悬空（fork 自有目录里的 profile 裁剪引用只列出、不算缺陷）；1 = 有缺陷悬空（打印明细）；2 = profile 指针读不出来（`active_profile` 缺失或未知） | 每次改完物化树或上游文本后；提交前必跑 |
-| `python tools/check_adapt.py [--tree <dir>] [--json]` | **omp 适配不变式**：INV-01..INV-15（无 `model:`、无 `CLAUDE.md`、无 `.claude/`、无 Claude CLI 调用、无 Claude 工具名、skill/agent/rule/command 的 frontmatter 完整性、`/name` 引用必须落在物化 commands 名单内、无「Claude Code」措辞等） | 0 = 无违规；1 = 有违规（逐条给 `文件:行号` + token）；2 = 用法错误或树不可读 | 每次改完物化树后；提交前必跑 |
-| `python tools/check_upstream_pin.py` | **上游 pin 一致性**：`manifest/upstream.json` 形状（`commit` 必须是 40 位小写 hex、`repo` 非空）、`manifest/groups.json` 的 upstream.commit 镜像与 pin 一致、`pool/` 摘要等于 pin 的 `pool_digest` | 0 = 三项全过；1 = 有校验项不符（逐条打印）；2 = `manifest/upstream.json` / `manifest/groups.json` 读不出来 | 每次同步上游之后；提交前必跑 |
+| `python tools/check_refs.py [--json]` | **引用自洽**：运行树与 `own/` 里是否还有指向「本 fork 不提供的资产」的悬空引用（`skill://`、`skills/<name>/`、`commands\|agents\|rules/<name>.md`、斜杠命令、反引号裸名） | 0 = 无缺陷悬空（fork 自有目录里的 profile 裁剪引用只列出、不算缺陷）；1 = 有缺陷悬空（打印明细）；2 = profile 指针读不出来（`active_profile` 缺失或未知） | 每次改完运行树或上游文本后；提交前必跑 |
+| `python tools/check_adapt.py [--tree <dir>] [--json]` | **omp 适配不变式**：INV-01..INV-15（无 `model:`、无 `CLAUDE.md`、无 `.claude/`、无 Claude CLI 调用、无 Claude 工具名、skill/agent/rule/command 的 frontmatter 完整性、`/name` 引用必须落在物化 commands 名单内、无「Claude Code」措辞等） | 0 = 无违规；1 = 有违规（逐条给 `文件:行号` + token）；2 = 用法错误或树不可读 | 每次改完运行树后；提交前必跑 |
+| `python tools/check_upstream_pin.py` | **上游 pin 一致性**：`manifest/upstream.json` 形状（`commit` 必须是 40 位小写 hex、`repo` 非空）、`manifest/groups.json` 的 upstream.commit 镜像与 pin 一致、`pool/` 摘要等于 pin 的 `pool_digest`、`NOTICE.md` 引用的上游 commit 等于 pin 的 commit | 0 = 四项全过；1 = 有校验项不符（逐条打印）；2 = `manifest/upstream.json` / `manifest/groups.json` 读不出来 | 每次同步上游之后；提交前必跑 |
 | `python tools/check_plugin_isolation.py [--probe\|--toggle-test] [--omp <path>] [--cwd <dir>] [--root <dir>] [--json]` | **插件启停可见性**：本插件四类资产在启用态是否被 omp 提供、禁用态是否全部消失 | 0 = 符合预期；1 = 不一致（打印 FAIL 明细）；2 = 工具错误 | 改了部署方式、插件启停状态或 omp 版本之后 |
 
 补充说明：
 
-- `check_refs.py` 与 `check_adapt.py` 都是**检测型**门禁，只读不改物化树。
+- `check_refs.py` 与 `check_adapt.py` 都是**检测型**门禁，只读不改运行树。
 - **profile 裁剪与悬空引用的分界**：上游正文在物化时会把当前 profile 没有的资产引用删掉，
-  所以物化树里剩下的「裁剪引用」只可能出现在 fork 自有的目录文件（`own/skills/`、`own/rules/`
+  所以运行树里剩下的「裁剪引用」只可能出现在 fork 自有的目录文件（`own/skills/`、`own/rules/`
   及其物化副本）——那两份文件描述的是整个 fork 的目录，本来就会点名别的 profile 的资产。
   这类引用被单独列出（`check_refs.py` 的 `profile_cropped_in_fork_catalog`），
   但不算缺陷；名字在 `pool/` 里根本不存在的引用在任何文件里都仍然是缺陷。
   `check_adapt.py` 的 INV-14 用同一条分界。
-- `check_adapt.py` 只扫物化树 `skills/ commands/ agents/ rules/`（含子目录里的脚本文件），
+- `check_adapt.py` 只扫运行树 `skills/ commands/ agents/ rules/`（含子目录里的脚本文件），
   不扫 `own/`、`pool/`、`.github/`；`rules/omp-tooling.md` 在 INV-05 / INV-15 上是硬编码豁免
   （它是专门讲 Claude ↔ omp 工具对照的规则）。
 - `Claude API`、`Claude Desktop`、`claude-haiku`、ECC CLI 的 `claude-project` 参数、
@@ -312,9 +313,9 @@ CI 用 `GITHUB_TOKEN` + `peter-evans/create-pull-request` 自动开 PR（分支
   skill 还多一路 `omp skill list` 描述级比对：它回答的是「omp 在这个名字下服务的是不是
   本仓的文本」，禁用态要求本仓的 skill 一条都不再带着本仓的描述被服务。
 - 引用判定只有一份实现：`tools/refscan.py`，物化器与 `check_refs.py` 共用它。
-- **上游旧拼写按缺陷处理**：物化树里若还出现上游原名（`api-design`）而运行名是
+- **上游名残留按缺陷处理**：运行树里若还出现上游名（`api-design`）而运行名是
   `ecc-omp-api-design`，`check_refs.py` 报 `upstream spelling of a renamed …` 并以退出码 1
-  结束 —— 运行树里按旧名读不到资产。别的插件提供的资产（`manifest/external_refs.json`
+  结束 —— 运行树里按上游名读不到资产。别的插件提供的资产（`manifest/external_refs.json`
   声明的）用它们自己的名字，不受这条约束。
 
 ### 其他可选配置
@@ -389,13 +390,13 @@ python tools/check_plugin_isolation.py --toggle-test
 # 只观察当前插件可见性，不改变状态
 python tools/check_plugin_isolation.py --probe
 
-# 部署到 omp 的安装目录并 link
+# 部署到 omp 的安装根并 link
 python tools/deploy.py
 
 # 部署但跳过 omp skill list 校验
 python tools/deploy.py --skip-verify
 
-# 卸载：omp plugin uninstall + 删除安装目录
+# 卸载：omp plugin uninstall + 删除安装根
 python tools/deploy.py --uninstall
 
 # 重新生成资产目录文档
@@ -409,7 +410,7 @@ python tools/build_catalog.py
 - Claude 专有工具名与机制 → omp 的对应写法（`AskUserQuestion` → `ask`、
   `TodoWrite` → `todo`、删掉 `PreToolUse` hook 段等）。
 - 路径约定（`CLAUDE.md` → `AGENTS.md`、`.claude/prds/` → `docs/prds/`）。
-- **资产名统一加前缀**：上游原名在物化时改名为运行名（`api-design` →
+- **资产名统一加前缀**：上游名在物化时改名为运行名（`api-design` →
   `ecc-omp-api-design`、`plan` → `ecc-omp-plan`），正文里对它们的引用一并改写
   （`skill://api-design` → `skill://ecc-omp-api-design`、`/plan` → `/ecc-omp-plan`、
   反引号裸名 → 带前缀的运行名）。散文里不是资产引用的普通词（"plan a meeting" 之类）
@@ -425,7 +426,7 @@ python tools/build_catalog.py
   未提供的资产的会被剪掉。
 - **变空的小节标题会一并删除**：清掉悬空引用后只剩标题的小节被删掉，上游本来就空的
   小节保持原样。
-- **上游仓库内部的小节会被整段删除**：上游技能里引用本 fork 不随附的 harness 文件的
+- **上游资产池内部的小节会被整段删除**：上游技能里引用本 fork 不随附的 harness 文件的
   章节（例如 docker-patterns 的 ECC plugin setup 段）会被整段删掉，免得模型去找
   不存在的路径。
 

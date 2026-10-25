@@ -17,7 +17,7 @@
 
 前缀必须只落在**运行树**这一层：`pool/` 是上游快照（只有 `tools/sync_upstream.py` 能写，
 `check_upstream_pin.py` 校验摘要），`manifest/groups.json` 的成员必须与 pool 完全一致，
-两者都保留上游原名。
+两者都保留上游名。
 
 ## Decision
 
@@ -77,6 +77,6 @@ rules 与 fork 自有资产（`ecc-omp-router`、5 条 rules）不改名——�
 
 ### Risks
 
-- 上游旧拼写若残留在运行树里，模型按旧名读不到资产。`check_refs.py` 把这种引用判为
+- 上游名若残留在运行树里，模型按上游名读不到资产。`check_refs.py` 把这种引用判为
   缺陷（`upstream spelling of a renamed …`），但判定本身是启发式的：散文里的普通词
   （例如不带反引号的 `plan`）不会被改写，也不会被判成缺陷。

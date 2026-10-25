@@ -47,7 +47,7 @@ flutter test --update-goldens 2>&1
 ## Example Session
 
 ````text
-User: /flutter-test
+User: /ecc-omp-flutter-test
 
 Agent:
 # Flutter Test Run

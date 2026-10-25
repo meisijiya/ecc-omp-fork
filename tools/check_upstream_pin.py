@@ -6,7 +6,7 @@
 The pin is written by tools/sync_upstream.py right after it refreshes pool/:
 manifest/upstream.json holds the upstream commit plus a digest of the pool
 content, and manifest/groups.json keeps a hand written copy of the same
-commit.  Three things can drift, and each of them is a defect:
+commit.  Four things can drift, and each of them is a defect:
 
   1. manifest/upstream.json is malformed -- the commit is not a 40 character
      hex id, or the repo is missing.  Everything downstream (the CI pin, the
@@ -16,6 +16,9 @@ commit.  Three things can drift, and each of them is a defect:
   3. pool/ was changed by hand (or by a partial sync) without the pin being
      updated.  Then the pin describes a pool that is no longer in the
      repository.
+  4. NOTICE.md quotes an upstream commit that is not the pinned one.  The
+     notice is shipped with the plugin and read by humans, so a stale sha
+     there claims a provenance the repository does not have.
 
 The pool digest is recomputed with compute_pool_digest() imported from
 tools/sync_upstream.py -- the writer and the checker share one implementation
@@ -27,7 +30,7 @@ variables, no clock, no randomness.  The same tree always produces the same
 output and the same exit code.
 
 Exit codes
-  0  the pin is consistent (all three checks pass)
+  0  the pin is consistent (all four checks pass)
   1  at least one check failed; every failure is printed
   2  the pin files could not be read (missing file, invalid JSON, unreadable
      pool tree)
@@ -43,11 +46,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from sync_upstream import (  # noqa: E402
     GROUPS_MANIFEST,
     POOL,
+    ROOT,
     UPSTREAM_MANIFEST,
     compute_pool_digest,
 )
 
 SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+NOTICE_SHA_RE = re.compile(r"[0-9a-f]{40}", re.IGNORECASE)
+NOTICE = os.path.join(ROOT, "NOTICE.md")
 
 
 class Unreadable(Exception):
@@ -117,6 +123,30 @@ def check_pool_digest(pin):
     ]
 
 
+def check_notice_cites_pin(pin):
+    """Check 4: NOTICE.md cites exactly the pinned upstream commit."""
+    try:
+        with open(NOTICE, encoding="utf-8") as f:
+            text = f.read()
+    except OSError as exc:
+        return [f"NOTICE.md cannot be read: {exc}"]
+    shas = NOTICE_SHA_RE.findall(text)
+    if not shas:
+        return ["NOTICE.md does not cite the upstream commit"]
+    if len(shas) > 1:
+        return [
+            f"NOTICE.md cites {len(shas)} upstream commit shas; expected exactly one"
+        ]
+    cited = shas[0].lower()
+    pinned = pin.get("commit")
+    pinned = pinned.lower() if isinstance(pinned, str) else pinned
+    if cited != pinned:
+        return [
+            f"NOTICE.md cites upstream commit {cited}, but the pin is {pinned}"
+        ]
+    return []
+
+
 def main():
     try:
         pin = load_json(UPSTREAM_MANIFEST)
@@ -126,9 +156,16 @@ def main():
         return 2
 
     results = [
-        ("manifest/upstream.json shape", check_manifest_shape(pin)),
-        ("manifest/groups.json mirror", check_groups_mirror(pin, groups)),
-        ("pool/ digest", check_pool_digest(pin)),
+        # (label, failure prefix, failures): the prefix is what the legacy
+        # checks put in front of their detail lines.  The NOTICE.md check
+        # states whole sentences, so its prefix stays empty.
+        ("manifest/upstream.json shape", "manifest/upstream.json shape: ",
+         check_manifest_shape(pin)),
+        ("manifest/groups.json mirror", "manifest/groups.json mirror: ",
+         check_groups_mirror(pin, groups)),
+        ("pool/ digest", "pool/ digest: ", check_pool_digest(pin)),
+        ("NOTICE.md cites the pinned upstream commit", "",
+         check_notice_cites_pin(pin)),
     ]
 
     print("upstream pin check")
@@ -138,11 +175,11 @@ def main():
     print(f"pool_digest: {pin.get('pool_digest')!r}")
 
     failed = 0
-    for label, failures in results:
+    for label, prefix, failures in results:
         if failures:
             failed += 1
             for failure in failures:
-                print(f"[FAIL] {label}: {failure}")
+                print(f"[FAIL] {prefix}{failure}")
         else:
             print(f"[ok] {label}")
 

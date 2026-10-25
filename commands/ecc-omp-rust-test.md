@@ -36,7 +36,7 @@ REPEAT  -> Next test case
 ## Example Session
 
 ````text
-User: /rust-test I need a function to validate user registration
+User: /ecc-omp-rust-test I need a function to validate user registration
 
 Agent:
 # TDD Session: Registration Validator

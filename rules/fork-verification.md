@@ -53,10 +53,10 @@ globs: ["**/*"]
 | --- | --- |
 | `python tools/check_refs.py` | 悬空引用：指向本 fork 不提供的资产 |
 | `python tools/check_adapt.py` | omp 适配不变式（INV-01..INV-15） |
-| `python tools/check_upstream_pin.py` | 上游 pin、同步镜像与池摘要三者一致 |
+| `python tools/check_upstream_pin.py` | 上游 pin、同步镜像、池摘要与 `NOTICE.md` 引用的 commit 四者一致 |
 | `python tools/check_plugin_isolation.py --toggle-test` | 插件启停后四类资产的可见性（本机跑，会临时禁用再启用插件） |
 
-前三个是纯检测、只读不改物化树。改了上游资产池、profile、物化规则或安装方式时，
+前三个是纯检测、只读不改运行树。改了上游资产池、profile、物化规则或安装方式时，
 对应的那条门禁必须重跑；提交前至少跑前三个。
 
 ## 依赖与供应链

@@ -17,7 +17,7 @@ description: 本 fork（ECC 编程子集）的选路索引——把任务类型�
 | **agent** | 并行子任务（评审、探索、修复） | `task` 的 `agent` 字段，用**带前缀的裸名** |
 | **command** | 流程入口（规划、评审、提 PR） | 直接当斜杠命令用 |
 
-本 fork 物化出来的 skill / command / agent 全部带 `ecc-omp-` 前缀（上游原名不带），
+本 fork 物化出来的 skill / command / agent 全部带 `ecc-omp-` 前缀（上游名不带），
 这样和其他插件的同名资产不会撞车；下面表里写的就是运行时的名字。
 
 下面的组合按「典型任务 → 读哪些 skill / 派哪些 agent / 跑哪些命令」给出。

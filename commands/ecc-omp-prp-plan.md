@@ -451,7 +451,7 @@ If this plan was generated from a PRD phase:
 - **Risks**: [top risk or "none identified"]
 - **Confidence Score**: [1-10] — likelihood of single-pass implementation
 
-> Next step: Run `/prp-implement docs/prp/plans/{name}.plan.md` to execute this plan.
+> Next step: Run `/ecc-omp-prp-implement docs/prp/plans/{name}.plan.md` to execute this plan.
 ```
 
 ---
@@ -496,7 +496,7 @@ A developer unfamiliar with this codebase should be able to implement the featur
 
 ## Next Steps
 
-- Run `/prp-implement <plan-path>` to execute this plan
+- Run `/ecc-omp-prp-implement <plan-path>` to execute this plan
 - Run `/ecc-omp-plan` for quick conversational planning without artifacts
 - Run `/ecc-omp-prp-prd` to create a PRD first if scope is unclear
 ````

@@ -106,7 +106,7 @@ We'll know we're right when **{measurable outcome}**.
 - {item} — {why deferred}
 
 ## Delivery Milestones
-<!-- Business outcomes, not engineering tasks. /plan turns each into a plan. -->
+<!-- Business outcomes, not engineering tasks. /ecc-omp-plan turns each into a plan. -->
 <!-- Status: pending | in-progress | complete -->
 
 | # | Milestone | Outcome | Status | Plan |
@@ -122,7 +122,7 @@ We'll know we're right when **{measurable outcome}**.
 |---|---|---|---|
 
 ---
-*Status: DRAFT — requirements only. Implementation planning pending via /plan.*
+*Status: DRAFT — requirements only. Implementation planning pending via /ecc-omp-plan.*
 ```
 
 #### Report to user
@@ -141,13 +141,13 @@ Validation status:
 
 Open questions: {count}
 
-Next step: /plan docs/prds/{name}.prd.md
-  → /plan will pick the next pending milestone and produce an implementation plan.
+Next step: /ecc-omp-plan docs/prds/{name}.prd.md
+ → /ecc-omp-plan will pick the next pending milestone and produce an implementation plan.
 ```
 
 ## Integration
 
-- `/plan <prd-path>` — consume the PRD and produce an implementation plan for the next pending milestone.
+- `/ecc-omp-plan <prd-path>` — consume the PRD and produce an implementation plan for the next pending milestone.
 - `skill://ecc-omp-tdd-workflow` skill — implement the plan test-first.
 - `/ecc-omp-pr` — open a PR that references the PRD and plan.
 

@@ -9,7 +9,7 @@ Invoke the `ecc-omp-fastapi-reviewer` agent for a focused FastAPI review.
 ## Usage
 
 ```text
-/fastapi-review [file-or-directory]
+/ecc-omp-fastapi-review [file-or-directory]
 ```
 
 ## Review Areas

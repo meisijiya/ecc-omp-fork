@@ -11,8 +11,8 @@
 ## 本 fork 的改动
 
 1. **裁剪**：`pool/` 保留上游全量快照，`skills/` `commands/` `agents/` 只物化被选中的部分。
-   物化出来的 skill / command / agent 统一带 `ecc-omp-` 前缀（上游原名不带），前缀只用于
-   与别的插件的同名资产区分；`pool/` 与 `manifest/` 里保留上游原名。
+   物化出来的 skill / command / agent 统一带 `ecc-omp-` 前缀（上游名不带），前缀只用于
+   与别的插件的同名资产区分；`pool/` 与 `manifest/` 里保留上游名。
 2. **omp 适配**：
    - 移除 agent frontmatter 的 `model: sonnet|opus|haiku`（Claude 专有别名，omp 无对应模型，
      保留会导致 agent 无法解析模型而不可用）。

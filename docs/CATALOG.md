@@ -11,8 +11,8 @@
 | `java-python` | Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。 | 67 | 24 | 31 |
 | `lite` | 最小可用集：只保留后端核心规范 + Java/Python 主力 + 通用评审 agent。每轮提示开销最低。 | 43 | 15 | 14 |
 
-> 表里的**运行名**是本 fork 物化后实际使用的名字：上游原名统一加 `ecc-omp-` 前缀（skill / command / agent）。
-> 「上游名」是 affaan-m/ECC 里的原名，用于回溯上游来源。
+> 表里的**运行名**是本 fork 物化后实际使用的名字：上游名统一加 `ecc-omp-` 前缀（skill / command / agent）。
+> 「上游名」是 affaan-m/ECC 里的名称，用于回溯上游来源。
 
 ## Skills
 

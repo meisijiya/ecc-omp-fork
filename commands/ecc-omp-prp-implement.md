@@ -61,7 +61,7 @@ Extract these sections from the plan:
 If the file doesn't exist or isn't a valid plan:
 ```
 Error: Plan file not found or invalid.
-Run /prp-plan <feature-description> to create a plan first.
+Run /ecc-omp-prp-plan <feature-description> to create a plan first.
 ```
 
 **CHECKPOINT**: Plan loaded. All sections identified. Tasks extracted.
@@ -267,8 +267,8 @@ Write report to `docs/prp/reports/{plan-name}-report.md`:
 | `path/to/test` | N tests | [area covered] |
 
 ## Next Steps
-- [ ] Code review via `/code-review`
-- [ ] Create PR via `/prp-pr`
+- [ ] Code review via `/ecc-omp-code-review`
+- [ ] Create PR via `/ecc-omp-prp-pr`
 ```
 
 ### Update PRD (if applicable)
@@ -326,7 +326,7 @@ Report to user:
 | Phase 2 | [next] |
 | ... | ... |
 
-> Next step: Run `/prp-pr` to create a pull request, or `/code-review` to review changes first.
+> Next step: Run `/ecc-omp-prp-pr` to create a pull request, or `/ecc-omp-code-review` to review changes first.
 ```
 
 ---
@@ -382,4 +382,4 @@ Report to user:
 - Run `/ecc-omp-code-review` to review changes before committing
 - Run `/ecc-omp-prp-commit` to commit with a descriptive message
 - Run `/ecc-omp-prp-pr` to create a pull request
-- Run `/prp-plan <next-phase>` if the PRD has more phases
+- Run `/ecc-omp-prp-plan <next-phase>` if the PRD has more phases

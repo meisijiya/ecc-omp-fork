@@ -36,7 +36,7 @@ REPEAT  → Next test case
 ## Example Session
 
 ````
-User: /cpp-test I need a function to validate email addresses
+User: /ecc-omp-cpp-test I need a function to validate email addresses
 
 Agent:
 # TDD Session: Email Validator

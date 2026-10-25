@@ -36,7 +36,7 @@ REPEAT  -> Next test case
 ## Example Session
 
 ````text
-User: /kotlin-test I need a function to validate user registration requests
+User: /ecc-omp-kotlin-test I need a function to validate user registration requests
 
 Agent:
 # TDD Session: Registration Validator

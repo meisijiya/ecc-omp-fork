@@ -173,7 +173,12 @@ RE_NESTED_RULE_PATH = re.compile(
 # The nested rule shape is matched first: it is a superset of the flat rule
 # shape and the two would otherwise both match the same text.
 PATH_FORMS = (RE_NESTED_RULE_PATH, RE_FLAT_PATH, RE_SKILL_PATH)
-RE_CMD_BACK = re.compile(r"`(/[a-z][a-z0-9]*(?:-[a-z0-9]+)*)`")
+# A slash command in backticks. The command may carry arguments
+# ("`/prp-commit staged`"): group(1) is the name, group(2) the arguments.
+# The two are separate so that a repair rewrites the name and leaves the
+# arguments as they are.
+RE_CMD_BACK = re.compile(
+    r"`(/[a-z][a-z0-9]*(?:-[a-z0-9]+)*)((?:\s[^`]*)?)`")
 # A slash command at the end of a sentence is followed by a period; a slash
 # command that is the stem of a file name is followed by an extension. The
 # lookahead therefore rejects a dot only when a word character follows it,
@@ -916,8 +921,25 @@ def prefixed_refs(line):
     return out
 
 
+def self_command_name(name, mat, assets, owner, owner_kind):
+    """Does this slash command name the owning skill itself?
+
+    A skill that writes "/my-skill" points at itself. The name may be
+    spelled the way the runtime tree spells it ("ecc-omp-my-skill") or the
+    way the upstream pool spells it ("my-skill"). Only a skill that this
+    profile ships may be addressed this way.
+    """
+    if owner_kind != "skill" or not owner:
+        return False
+    if owner not in mat["skills"]:
+        return False
+    upstream = assets.upstream_spelling("skills", owner)
+    return name in (owner, upstream)
+
+
 def scan_text(text, mat, pool, external=None,
-              link_base=None, link_exists=None):
+              link_base=None, link_exists=None, owner=None,
+              owner_kind="skill"):
     """Scan a document; returns one record per reference found.
 
     Each record: line (1-based), name, kind, ok (bool), reason, start, end.
@@ -932,6 +954,10 @@ def scan_text(text, mat, pool, external=None,
     `link_base` is the runtime directory that holds the document. When it is
     given, relative markdown links are resolved against it and checked the
     same way; `link_exists` answers whether a file inside a skill is shipped.
+
+    `owner` names the asset the text belongs to and `owner_kind` says
+    whether that is a skill. A slash command that names the owning skill
+    itself is a reference to that skill, not to a command.
     """
     external = external if external is not None else external_refs()
     assets = Assets(mat, pool)
@@ -968,14 +994,93 @@ def scan_text(text, mat, pool, external=None,
             "stale": stale,
         })
 
+    def is_self_command(name):
+        """Does this slash command name the owning skill itself?"""
+        return self_command_name(name, mat, assets, owner, owner_kind)
+
+    def scan_commands(raw, idx, link_spans, in_fence):
+        """Judge the slash commands of one line.
+
+        `in_fence` marks a line inside a fenced code block. There the
+        command is a sample of what the user types, so only a command this
+        tree ships is rewritten: a command the profile does not ship is
+        left as it is written, because the example names it on purpose.
+
+        `link_spans` are the markdown links of the line; a command that
+        sits inside a link belongs to the link, not to the text.
+        """
+        def in_link(pos):
+            return any(s <= pos < e for s, e in link_spans)
+
+        cmd_tokens = []
+        for m in RE_CMD_BACK.finditer(raw):
+            # group(1) is the name of the command, group(2) the arguments it
+            # may carry inside the same pair of backticks
+            cmd_tokens.append((m, m.group(1)[1:], True, bool(m.group(2))))
+        for m in RE_CMD_INLINE.finditer(raw):
+            cmd_tokens.append((m, m.group(1)[1:], False, False))
+
+        for m, name, backticked, has_args in cmd_tokens:
+            if in_link(m.start()):
+                continue
+            state, rt = assets.lookup("commands", name)
+            if state == "live":
+                # the command carries the prefix in the runtime tree, so the
+                # slash form the user types changes with it
+                add(idx, name, "command", True, "", m,
+                    canonical="/" + rt, start=m.start(1), end=m.end(1),
+                    replace="/" + rt, runtime=rt, stale=name != rt)
+                continue
+            if in_fence:
+                # Inside a fence a command the profile does not ship is not
+                # a defect: the example names it on purpose. The one
+                # exception is a command that names the owning skill -- it
+                # is rewritten to the URI of that skill, as it is outside a
+                # fence.
+                if state == "unknown" and is_self_command(name):
+                    add(idx, name, "command", False,
+                        "slash command, no such command in the active profile",
+                        m, start=m.start(1) if has_args else None,
+                        end=m.end(1) if has_args else None)
+                continue
+            if name in external["commands"]:
+                add(idx, name, "command", True, "", m)
+                continue
+            if state == "cropped":
+                add(idx, name, "command", False,
+                    "command not enabled in the active profile", m)
+                continue
+            if has_args:
+                # A backticked command that carries arguments is only a
+                # command reference when this fork knows that command. A
+                # name it does not know is prose or a path of another tool
+                # ("`/benchmark compare`"), and cutting it would destroy
+                # the example.
+                if is_self_command(name):
+                    add(idx, name, "command", False,
+                        "slash command, no such command in the active profile",
+                        m, start=m.start(1), end=m.end(1))
+                continue
+            if name in PATH_NOISE:
+                continue
+            if backticked or CMD_CUE.search(raw):
+                add(idx, name, "command", False,
+                    "slash command, no such command in the active profile", m)
+
     fenced = fenced_lines(lines)
 
     for idx, raw in enumerate(lines):
         # A fenced code block shows literal text, not a pointer. Nothing
-        # inside it is a reference the model is expected to resolve, so the
-        # whole line is skipped -- the heading context is not advanced either
-        # (a "#" inside a fence is a comment, not a heading).
+        # inside it is a reference the model is expected to resolve -- the
+        # heading context is not advanced either (a "#" inside a fence is a
+        # comment, not a heading). A slash command is the exception: it is
+        # what the user types, and this fork renames the commands it
+        # ships, so the command name still has to follow the rename.
         if idx in fenced:
+            scan_commands(raw, idx,
+                          [(m.start(), m.end())
+                           for m in RE_MD_LINK.finditer(raw)],
+                          True)
             continue
 
         line_cues, section_cues = ctx.update(lines, idx)
@@ -1114,32 +1219,7 @@ def scan_text(text, mat, pool, external=None,
                     stale=bool(info["ok"] and info["name"] != rt))
 
         # --- command references --------------------------------------------
-        cmd_tokens = []
-        for m in RE_CMD_BACK.finditer(raw):
-            cmd_tokens.append((m, m.group(1)[1:], True))
-        for m in RE_CMD_INLINE.finditer(raw):
-            cmd_tokens.append((m, m.group(1)[1:], False))
-
-        for m, name, backticked in cmd_tokens:
-            if in_link(m.start()):
-                continue
-            state, rt = assets.lookup("commands", name)
-            if state == "live":
-                # the command carries the prefix in the runtime tree, so the
-                # slash form the user types changes with it
-                add(idx, name, "command", True, "", m,
-                    canonical="/" + rt, start=m.start(1), end=m.end(1),
-                    replace="/" + rt, runtime=rt, stale=name != rt)
-            elif name in external["commands"]:
-                add(idx, name, "command", True, "", m)
-            elif state == "cropped":
-                add(idx, name, "command", False,
-                    "command not enabled in the active profile", m)
-            elif name in PATH_NOISE:
-                continue
-            elif backticked or CMD_CUE.search(raw):
-                add(idx, name, "command", False,
-                    "slash command, no such command in the active profile", m)
+        scan_commands(raw, idx, link_spans, False)
 
         # --- bare backticked names -----------------------------------------
         for m in RE_BARE.finditer(raw):
@@ -1512,7 +1592,8 @@ def repair_text(text, mat, pool, owner=None, external=None,
     Returns (new_text, notes) where notes describe what was changed.
     """
     records = scan_text(text, mat, pool, external,
-                        link_base=link_base, link_exists=link_exists)
+                        link_base=link_base, link_exists=link_exists,
+                        owner=owner, owner_kind=owner_kind)
     if not records:
         return text, []
 
@@ -1526,16 +1607,13 @@ def repair_text(text, mat, pool, owner=None, external=None,
     drop = set()
 
     assets = Assets(mat, pool)
-    owner_upstream = (assets.upstream_spelling("skills", owner)
-                      if owner and owner_kind == "skill" else None)
 
     def is_self_command(entry):
         """Is this slash command the owning skill's own name?"""
-        if entry["kind"] != "command" or owner_kind != "skill" or not owner:
+        if entry["kind"] != "command":
             return False
-        if owner not in mat["skills"]:
-            return False
-        return entry["name"] in (owner, owner_upstream)
+        return self_command_name(entry["name"], mat, assets, owner,
+                                 owner_kind)
 
     for line_no in sorted(by_line):
         entries = by_line[line_no]

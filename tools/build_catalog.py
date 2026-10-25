@@ -186,9 +186,9 @@ def main():
 
     lines += [
         "",
-        "> 表里的**运行名**是本 fork 物化后实际使用的名字：上游原名统一加 "
+        "> 表里的**运行名**是本 fork 物化后实际使用的名字：上游名统一加 "
         "`ecc-omp-` 前缀（skill / command / agent）。",
-        "> 「上游名」是 affaan-m/ECC 里的原名，用于回溯上游来源。",
+        "> 「上游名」是 affaan-m/ECC 里的名称，用于回溯上游来源。",
     ]
 
     for kind in KINDS:

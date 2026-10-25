@@ -389,7 +389,7 @@ After generating, report:
 
 ### To Start Implementation
 
-Run: `/prp-plan docs/prp/prds/{name}.prd.md`
+Run: `/ecc-omp-prp-plan docs/prp/prds/{name}.prd.md`
 
 This will automatically select the next pending phase and create an implementation plan.
 ```

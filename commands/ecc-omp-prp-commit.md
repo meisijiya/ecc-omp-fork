@@ -94,8 +94,8 @@ Files:     {count} file(s) changed
 
 Next steps:
   - git push           → push to remote
-  - /prp-pr            → create a pull request
-  - /code-review       → review before pushing
+ - /ecc-omp-prp-pr → create a pull request
+ - /ecc-omp-code-review → review before pushing
 ```
 
 ---
@@ -105,8 +105,8 @@ Next steps:
 | You say | What happens |
 |---|---|
 | `/ecc-omp-prp-commit` | Stages all, auto-generates message |
-| `/prp-commit staged` | Commits only what's already staged |
-| `/prp-commit *.ts` | Stages all TypeScript files, commits |
-| `/prp-commit except tests` | Stages everything except test files |
-| `/prp-commit the database migration` | Finds DB migration files from status, stages them |
-| `/prp-commit only new files` | Stages untracked files only |
+| `/ecc-omp-prp-commit staged` | Commits only what's already staged |
+| `/ecc-omp-prp-commit *.ts` | Stages all TypeScript files, commits |
+| `/ecc-omp-prp-commit except tests` | Stages everything except test files |
+| `/ecc-omp-prp-commit the database migration` | Finds DB migration files from status, stages them |
+| `/ecc-omp-prp-commit only new files` | Stages untracked files only |

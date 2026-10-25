@@ -17,12 +17,12 @@ Ask a question mid-task and get an immediate, focused answer — then continue r
 ## Usage
 
 ```
-/aside <your question>
-/aside what does this function actually return?
-/aside is this pattern thread-safe?
-/aside why are we using X instead of Y here?
-/aside what's the difference between foo() and bar()?
-/aside should we be worried about the N+1 query we just added?
+/ecc-omp-aside <your question>
+/ecc-omp-aside what does this function actually return?
+/ecc-omp-aside is this pattern thread-safe?
+/ecc-omp-aside why are we using X instead of Y here?
+/ecc-omp-aside what's the difference between foo and bar?
+/ecc-omp-aside should we be worried about the N+1 query we just added?
 ```
 
 ## Process
@@ -83,7 +83,7 @@ WARNING: Note: This answer suggests [issue] with the current approach. Want to a
 Wait for the user's decision before resuming.
 
 **Question is actually a task redirect (not a side question):**
-If the question implies changing what is being built (e.g., `/aside actually, let's use Redis instead`), clarify:
+If the question implies changing what is being built (e.g., `/ecc-omp-aside actually, let's use Redis instead`), clarify
 ```
 ASIDE: That sounds like a direction change, not just a side question.
 Do you want to:
@@ -130,7 +130,7 @@ Ask one clarifying question — the shortest question that gets the information 
 ## Example Output
 
 ```
-User: /aside what does fetchWithRetry() actually do?
+User: /ecc-omp-aside what does fetchWithRetry actually do?
 
 ASIDE: what does fetchWithRetry() do?
 
@@ -142,7 +142,7 @@ network errors — 4xx errors are treated as final and not retried.
 ```
 
 ```
-User: /aside is the approach we're taking thread-safe?
+User: /ecc-omp-aside is the approach we're taking thread-safe?
 
 ASIDE: is the current approach thread-safe?
 
