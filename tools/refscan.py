@@ -240,6 +240,10 @@ CUES = {
 # rule assets.
 ENABLE_CUES = ("skill", "agent")
 
+# A URI that names an asset. It points at an asset, it does not mention a
+# kind of asset, so it does not count as a context cue.
+RE_URI_TOKEN = re.compile(r"\b(?:skill|agent|rule)://\S*", re.I)
+
 # A heading that introduces an explicit list of assets, e.g. "## Related
 # Skills". Single-word names are only accepted under such a heading.
 STRONG_LIST_HEADING = re.compile(r"related\s+skills|^#+\s*skills?\b|^#+\s*技能", re.I)
@@ -801,8 +805,16 @@ def table_header_cells(lines, idx):
 
 
 def context_cues(text):
-    """Return the set of asset kinds mentioned by a piece of context."""
+    """Return the set of asset kinds mentioned by a piece of context.
+
+    A URI that names an asset ("`skill://ecc-omp-api-design`") is a
+    pointer, not a mention of a kind. The materializer writes those URIs
+    into the text, and counting them as a cue would turn every unknown
+    backticked word next to them into an asset reference -- a name upstream
+    only mentions in passing would become a dangling reference.
+    """
     found = set()
+    text = RE_URI_TOKEN.sub(" ", text)
     for kind, pat in CUES.items():
         if pat.search(text):
             found.add(kind)
@@ -1021,6 +1033,12 @@ def scan_text(text, mat, pool, external=None,
                 add(idx, name, "skill", True, "", m,
                     canonical="skill://" + rt, start=m.start(1), end=m.end(1),
                     replace=rt, runtime=rt, stale=name != rt)
+            elif state == "cropped":
+                # the skill exists upstream but this profile does not ship
+                # it: a notice inside the fork's own catalog, a defect
+                # anywhere else
+                add(idx, name, "skill", False,
+                    "upstream skill not enabled in the active profile", m)
             else:
                 add(idx, name, "skill", False,
                     "skill:// reference, no such skill", m)
