@@ -10,6 +10,7 @@
       "living-docs-governance",
       "module-regression",
       "production-audit",
+      "dashboard-builder",
       "parallel-execution-optimizer",
       "benchmark",
       "benchmark-optimization-loop",

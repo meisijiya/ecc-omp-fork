@@ -26,7 +26,7 @@
         "security-review", "tdd-workflow", "test-collaboration", "verification-loop",
         "module-regression", "e2e-testing", "production-audit", "parallel-execution-optimizer",
         "benchmark", "benchmark-optimization-loop", "latency-critical-systems",
-        "deployment-patterns", "docker-patterns", "kubernetes-patterns"
+        "deployment-patterns", "docker-patterns", "kubernetes-patterns", "dashboard-builder"
       ]
     },
     "G3": {
@@ -95,7 +95,7 @@
       "members": [
         "design-system", "motion-advanced", "motion-foundations", "motion-patterns",
         "make-interfaces-feel-better", "liquid-glass-design", "click-path-audit",
-        "dashboard-builder", "blueprint", "dev-team", "ecc-council", "product-capability",
+        "blueprint", "dev-team", "ecc-council", "product-capability",
         "product-lens"
       ]
     }

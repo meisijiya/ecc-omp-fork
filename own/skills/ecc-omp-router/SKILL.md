@@ -5,7 +5,7 @@ description: 本 fork（ECC 编程子集）的选路索引——把任务类型�
 
 # 本 fork 的选路表
 
-本 fork 只保留 ECC 的编程子集（上游全量 300+ 技能，本 fork 约 60 个）。
+本 fork 只保留 ECC 的编程子集（上游全量 300+ 技能，本 fork 约 69 个）。
 **本表是本 fork 的选路索引**：模型要读哪个 skill、派哪个 agent，以本表为准，
 不要凭上游 ECC 的记忆猜名字——上游有大量技能没有进本 fork。
 
@@ -89,8 +89,13 @@ description: 本 fork（ECC 编程子集）的选路索引——把任务类型�
 
 ## 部署与运维
 
-1. 读 `skill://ecc-omp-docker-patterns`、`skill://ecc-omp-kubernetes-patterns`、`skill://ecc-omp-deployment-patterns`。
-2. agent `ecc-omp-network-troubleshooter`（连通性/DNS/路由）、`ecc-omp-network-config-reviewer`（设备配置审查）。
+1. 读 `skill://ecc-omp-docker-patterns`、`skill://ecc-omp-kubernetes-patterns`、`skill://ecc-omp-deployment-patterns`（容器、编排、发布策略）。
+2. 发版：读 `skill://ecc-omp-release-management`（打 tag、写 changelog、分级发布与回滚、制品可追溯）。
+3. 上线后要「看得见」：读 `skill://ecc-omp-observability`（日志 / 指标 / 追踪、SLO 与错误预算、告警设计）；
+   监控面板本身读 `skill://ecc-omp-dashboard-builder`。
+4. 出线上事故：读 `skill://ecc-omp-incident-response`（定级、止血与回滚决策、沟通记录、复盘）。
+5. 上线前自检：读 `skill://ecc-omp-production-audit`（按证据清单给 0–100 分，低于 70 不许上线）。
+6. agent `ecc-omp-network-troubleshooter`（连通性/DNS/路由）、`ecc-omp-network-config-reviewer`（设备配置审查）。
 
 ## 文档
 

@@ -220,6 +220,9 @@ def main():
         "## fork 自有资产",
         "",
         "- skill：`ecc-omp-router`（选路表：任务 → skill / agent 组合）",
+        "- skill：`ecc-omp-release-management`（发布：tag、changelog、分级发布与回滚）",
+        "- skill：`ecc-omp-observability`（可观测性：日志 / 指标 / 追踪、SLO、告警）",
+        "- skill：`ecc-omp-incident-response`（事故响应：定级、止血、复盘）",
         "- rules：`omp-tooling` `omp-delegation` `fork-workflow` `fork-verification` `fork-coding-style`",
         "",
     ]

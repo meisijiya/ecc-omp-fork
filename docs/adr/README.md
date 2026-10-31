@@ -12,5 +12,6 @@
 | [0006](0006-plugin-state-and-attribution.md) | 插件状态与归属判定 | accepted | 2026-10-24 |
 | [0007](0007-runtime-name-prefix.md) | 运行名带 `ecc-omp-` 前缀，只用于区分 | accepted | 2026-10-25 |
 | [0008](0008-no-commands-and-deduplicate-against-installed-plugins.md) | 不发布命令，与其它插件重复的 skill 与 agent 一律不物化 | accepted | 2026-10-28 |
+| [0009](0009-ship-ops-skills-and-mattpocock-boundary.md) | 以 mattpocock 为重叠基准，ECC fork 补齐发布 / 部署 / 运维能力 | accepted | 2026-11-01 |
 
 这些 ADR 是 fork 自有的仓库文档，不参与物化，也不随 profile 裁剪。

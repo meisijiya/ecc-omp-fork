@@ -32,6 +32,9 @@
    - **资产名改写**：指向被改名资产的引用（`skill://api-design` → `skill://ecc-omp-api-design`、
      反引号裸名 → 带前缀的运行名）会一并改写；散文里不是资产引用的普通词不动。
 4. **工具化**：新增 `tools/`（上游更新、重放选择、部署、生成目录、引用门禁）。
+5. **自有资产**：`own/skills/` 下除选路表 `ecc-omp-router` 外，新增三条发布 / 运维 skill
+   （`ecc-omp-release-management`、`ecc-omp-observability`、`ecc-omp-incident-response`），
+   为本 fork 原创内容，随 fork 一起分发（MIT）。
 
 正文改动由脚本确定性生成，`pool/` 中的上游快照保持原样，便于逐条比对。
 

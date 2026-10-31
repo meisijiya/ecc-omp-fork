@@ -7,8 +7,8 @@
 
 | profile | 说明 | skills | commands | agents |
 | --- | --- | --- | --- | --- |
-| `full` | 上游 pi/core 全量技能（去掉与其它插件重复的 4 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。 | 128 | 0 | 49 |
-| `java-python` | Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。 | 63 | 0 | 22 |
+| `full` | 上游 pi/core 全量技能（去掉与其它插件重复的 5 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。 | 127 | 0 | 49 |
+| `java-python` | Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。 | 65 | 0 | 22 |
 | `lite` | 最小可用集：只保留后端核心规范 + Java/Python 主力 + 通用评审 agent。每轮提示开销最低。 | 39 | 0 | 11 |
 
 > 表里的**运行名**是本 fork 物化后实际使用的名字：上游名统一加 `ecc-omp-` 前缀（skill / command / agent）。
@@ -45,7 +45,7 @@
 | G2 | ✅ `ecc-omp-verification-loop` | `verification-loop` | full, java-python, lite |
 | G2 | ⬜ `ecc-omp-module-regression` | `module-regression` | full |
 | G2 | ✅ `ecc-omp-e2e-testing` | `e2e-testing` | full, java-python, lite |
-| G2 | ⬜ `ecc-omp-production-audit` | `production-audit` | full |
+| G2 | ✅ `ecc-omp-production-audit` | `production-audit` | full, java-python |
 | G2 | ⬜ `ecc-omp-parallel-execution-optimizer` | `parallel-execution-optimizer` | full |
 | G2 | ⬜ `ecc-omp-benchmark` | `benchmark` | full |
 | G2 | ⬜ `ecc-omp-benchmark-optimization-loop` | `benchmark-optimization-loop` | full |
@@ -53,6 +53,7 @@
 | G2 | ✅ `ecc-omp-deployment-patterns` | `deployment-patterns` | full, java-python, lite |
 | G2 | ✅ `ecc-omp-docker-patterns` | `docker-patterns` | full, java-python, lite |
 | G2 | ✅ `ecc-omp-kubernetes-patterns` | `kubernetes-patterns` | full, java-python, lite |
+| G2 | ✅ `ecc-omp-dashboard-builder` | `dashboard-builder` | full, java-python |
 | G3 | ✅ `ecc-omp-java-coding-standards` | `java-coding-standards` | full, java-python, lite |
 | G3 | ✅ `ecc-omp-springboot-patterns` | `springboot-patterns` | full, java-python, lite |
 | G3 | ✅ `ecc-omp-springboot-security` | `springboot-security` | full, java-python, lite |
@@ -144,8 +145,7 @@
 | G10 | ⬜ `ecc-omp-make-interfaces-feel-better` | `make-interfaces-feel-better` | full |
 | G10 | ⬜ `ecc-omp-liquid-glass-design` | `liquid-glass-design` | full |
 | G10 | ⬜ `ecc-omp-click-path-audit` | `click-path-audit` | full |
-| G10 | ⬜ `ecc-omp-dashboard-builder` | `dashboard-builder` | full |
-| G10 | ⬜ `ecc-omp-blueprint` | `blueprint` | full |
+| G10 | ⬜ `ecc-omp-blueprint` | `blueprint` | — |
 | G10 | ⬜ `ecc-omp-dev-team` | `dev-team` | full |
 | G10 | ⬜ `ecc-omp-ecc-council` | `ecc-council` | full |
 | G10 | ⬜ `ecc-omp-product-capability` | `product-capability` | full |
@@ -235,4 +235,7 @@
 ## fork 自有资产
 
 - skill：`ecc-omp-router`（选路表：任务 → skill / agent 组合）
+- skill：`ecc-omp-release-management`（发布：tag、changelog、分级发布与回滚）
+- skill：`ecc-omp-observability`（可观测性：日志 / 指标 / 追踪、SLO、告警）
+- skill：`ecc-omp-incident-response`（事故响应：定级、止血、复盘）
 - rules：`omp-tooling` `omp-delegation` `fork-workflow` `fork-verification` `fork-coding-style`

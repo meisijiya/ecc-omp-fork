@@ -16,7 +16,6 @@
         "mcp-server-patterns",
         "living-docs-governance",
         "module-regression",
-        "production-audit",
         "parallel-execution-optimizer",
         "benchmark",
         "benchmark-optimization-loop",
@@ -79,8 +78,8 @@
     }
   },
   "counts": {
-    "skills": 63,
-    "skills_own": 1,
+    "skills": 65,
+    "skills_own": 4,
     "commands": 0,
     "agents": 22,
     "rules": 5
