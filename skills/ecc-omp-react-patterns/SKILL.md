@@ -260,10 +260,6 @@ This skill is router-agnostic. The patterns above work with React Router, TanSta
 - **Next.js specifics**: App Router data loading, Route Handlers, Middleware, Parallel Routes — separate concern, use Next.js docs
 - **Remix**: Loader/action conventions overlap with RSC but follow Remix docs
 
-## Related
-
-- Commands: `/ecc-omp-react-test`
-
 ## Examples
 
 ### Custom hook for debounced search

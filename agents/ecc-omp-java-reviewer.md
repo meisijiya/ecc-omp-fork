@@ -64,7 +64,6 @@ You DO NOT refactor or rewrite code — you report findings only.
 - **CSRF disabled without justification**: Stateless JWT APIs may disable/omit it but must document why
   - **[QUARKUS]**: Form-based endpoints must use `quarkus-csrf-reactive`
 
-If any CRITICAL security issue is found, stop and escalate to `ecc-omp-security-reviewer`.
 
 ### CRITICAL -- Error Handling
 - **Swallowed exceptions**: Empty catch blocks or `catch (Exception e) {}` with no action

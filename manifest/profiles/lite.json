@@ -22,12 +22,16 @@
       "django-celery",
       "prisma-patterns",
       "clickhouse-io",
-      "data-throughput-accelerator"
+      "data-throughput-accelerator",
+      "architecture-decision-records",
+      "context-and-decisions",
+      "intent-driven-development",
+      "tdd-workflow"
     ],
     "include": []
   },
   "commands": {
-    "groups": ["C1", "C2", "C3", "C4", "C5", "C8"],
+    "groups": [],
     "exclude": [],
     "include": []
   },
@@ -36,7 +40,10 @@
     "exclude": [
       "pr-test-analyzer",
       "type-design-analyzer",
-      "comment-analyzer"
+      "comment-analyzer",
+      "code-reviewer",
+      "security-reviewer",
+      "commit-reviewer"
     ],
     "include": []
   }

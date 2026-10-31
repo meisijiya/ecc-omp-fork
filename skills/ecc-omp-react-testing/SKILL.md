@@ -354,9 +354,7 @@ CI=true vitest run --coverage
 
 ## Related
 
-- Skills: `skill://ecc-omp-react-patterns`, `skill://ecc-omp-e2e-testing`, `skill://ecc-omp-tdd-workflow`
-- Agents: `ecc-omp-tdd-guide` (enforces TDD process)
-- Commands: `/ecc-omp-react-test`
+- Skills: `skill://ecc-omp-react-patterns`, `skill://ecc-omp-e2e-testing`
 
 ## Examples
 

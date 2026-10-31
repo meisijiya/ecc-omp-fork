@@ -136,7 +136,7 @@ This skill auto-detects whether it's a first-time or incremental run via `.ai-st
 
 ## Related Skills
 
-- `/ecc-omp-code-review` — review diffs for correctness and style issues
+- `code-review` — review diffs for correctness and style issues
 
 ## Examples
 

@@ -25,7 +25,6 @@ on:
       - "pool/**"
       - "own/**"
       - "skills/**"
-      - "commands/**"
       - "agents/**"
       - "rules/**"
       - "tools/**"

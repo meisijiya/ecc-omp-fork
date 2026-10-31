@@ -22,8 +22,7 @@ globs: ["**/*"]
 
 改动跨多个文件、涉及架构决策、或需求本身含糊时，先产出计划再动手：
 
-- 命令：`/ecc-omp-plan`（重述需求 + 风险 + 步骤），`/ecc-omp-plan-prd`（问题优先的精简 PRD）。
-- agent：`ecc-omp-planner`（实施计划）、`ecc-omp-architect`（系统设计）、`ecc-omp-code-architect`（特性架构）。
+- 派 agent：`ecc-omp-architect`（系统设计与扩展性）。
 - 产出计划后等用户确认，不要边猜边改。
 
 改动是单点、机械性的（改个文案、加个分支、换常量），跳过计划直接做。
@@ -43,14 +42,13 @@ globs: ["**/*"]
 
 ## 4. 收尾
 
-- 提交信息用 `ecc-omp-commit-reviewer` agent 或 `/ecc-omp-prp-commit` 生成，遵循 Conventional Commits。
-- 更新文档：用 `/ecc-omp-update-docs` 命令。
+- 提交信息遵循 Conventional Commits：读 `skill://ecc-omp-conventional-commit-review`。
+- 更新文档：按 `skill://ecc-omp-docs-governance` 的口径，把文档同步到代码里的真相源。
 - 清理：确认没有遗留的临时文件、调试输出、被注释掉的死代码。
 
-## 与 skill / command / agent 的分工
+## 与 skill / agent 的分工
 
 - **skill** 是知识（怎么做对），按需 `read skill://<name>`。
-- **command** 是流程入口（`/ecc-omp-plan`、`/ecc-omp-code-review`、`/ecc-omp-test-coverage`），直接当命令用。
 - **agent** 是并行子任务（评审、探索、修复），用 `task` 派，agent 名用带 `ecc-omp-` 前缀的裸名。
 
-三者配合使用，不要只用一个。委派纪律见 `rule://omp-delegation` 规则。
+两者配合使用，不要只用一个。委派纪律见 `rule://omp-delegation` 规则。

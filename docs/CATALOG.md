@@ -7,9 +7,9 @@
 
 | profile | 说明 | skills | commands | agents |
 | --- | --- | --- | --- | --- |
-| `full` | 上游 pi/core 全量（132 skills + 24 commands）加编程相关 agent。token 开销最大，仅在需要冷门技术栈时用。 | 132 | 24 | 58 |
-| `java-python` | Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。 | 67 | 24 | 31 |
-| `lite` | 最小可用集：只保留后端核心规范 + Java/Python 主力 + 通用评审 agent。每轮提示开销最低。 | 43 | 15 | 14 |
+| `full` | 上游 pi/core 全量技能（去掉与其它插件重复的 4 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。 | 128 | 0 | 49 |
+| `java-python` | Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。 | 63 | 0 | 22 |
+| `lite` | 最小可用集：只保留后端核心规范 + Java/Python 主力 + 通用评审 agent。每轮提示开销最低。 | 39 | 0 | 11 |
 
 > 表里的**运行名**是本 fork 物化后实际使用的名字：上游名统一加 `ecc-omp-` 前缀（skill / command / agent）。
 > 「上游名」是 affaan-m/ECC 里的名称，用于回溯上游来源。
@@ -21,7 +21,7 @@
 | G1 | ✅ `ecc-omp-api-design` | `api-design` | full, java-python, lite |
 | G1 | ✅ `ecc-omp-backend-patterns` | `backend-patterns` | full, java-python, lite |
 | G1 | ✅ `ecc-omp-hexagonal-architecture` | `hexagonal-architecture` | full, java-python, lite |
-| G1 | ✅ `ecc-omp-architecture-decision-records` | `architecture-decision-records` | full, java-python, lite |
+| G1 | ⬜ `ecc-omp-architecture-decision-records` | `architecture-decision-records` | — |
 | G1 | ✅ `ecc-omp-contract-first` | `contract-first` | full, java-python, lite |
 | G1 | ⬜ `ecc-omp-api-connector-builder` | `api-connector-builder` | full |
 | G1 | ✅ `ecc-omp-content-hash-cache-pattern` | `content-hash-cache-pattern` | full, java-python |
@@ -29,9 +29,9 @@
 | G1 | ⬜ `ecc-omp-mcp-server-patterns` | `mcp-server-patterns` | full |
 | G2 | ✅ `ecc-omp-coding-standards` | `coding-standards` | full, java-python, lite |
 | G2 | ✅ `ecc-omp-error-handling` | `error-handling` | full, java-python, lite |
-| G2 | ✅ `ecc-omp-intent-driven-development` | `intent-driven-development` | full, java-python, lite |
+| G2 | ⬜ `ecc-omp-intent-driven-development` | `intent-driven-development` | — |
 | G2 | ✅ `ecc-omp-change-impact` | `change-impact` | full, java-python, lite |
-| G2 | ✅ `ecc-omp-context-and-decisions` | `context-and-decisions` | full, java-python, lite |
+| G2 | ⬜ `ecc-omp-context-and-decisions` | `context-and-decisions` | — |
 | G2 | ✅ `ecc-omp-inherit-legacy-style` | `inherit-legacy-style` | full, java-python, lite |
 | G2 | ✅ `ecc-omp-code-tour` | `code-tour` | full, java-python, lite |
 | G2 | ✅ `ecc-omp-codebase-onboarding` | `codebase-onboarding` | full, java-python, lite |
@@ -40,7 +40,7 @@
 | G2 | ✅ `ecc-omp-docs-governance` | `docs-governance` | full, java-python, lite |
 | G2 | ⬜ `ecc-omp-living-docs-governance` | `living-docs-governance` | full |
 | G2 | ✅ `ecc-omp-security-review` | `security-review` | full, java-python, lite |
-| G2 | ✅ `ecc-omp-tdd-workflow` | `tdd-workflow` | full, java-python, lite |
+| G2 | ⬜ `ecc-omp-tdd-workflow` | `tdd-workflow` | — |
 | G2 | ✅ `ecc-omp-test-collaboration` | `test-collaboration` | full, java-python, lite |
 | G2 | ✅ `ecc-omp-verification-loop` | `verification-loop` | full, java-python, lite |
 | G2 | ⬜ `ecc-omp-module-regression` | `module-regression` | full |
@@ -153,55 +153,31 @@
 
 ## Commands
 
-| 组 | 名称（运行名） | 上游名 | 生效 profile |
-| --- | --- | --- | --- |
-| C1 | ✅ `ecc-omp-plan` | `plan` | full, java-python, lite |
-| C1 | ✅ `ecc-omp-plan-prd` | `plan-prd` | full, java-python, lite |
-| C1 | ✅ `ecc-omp-prp-plan` | `prp-plan` | full, java-python, lite |
-| C1 | ✅ `ecc-omp-prp-prd` | `prp-prd` | full, java-python, lite |
-| C2 | ✅ `ecc-omp-prp-implement` | `prp-implement` | full, java-python, lite |
-| C2 | ✅ `ecc-omp-feature-dev` | `feature-dev` | full, java-python, lite |
-| C2 | ✅ `ecc-omp-build-fix` | `build-fix` | full, java-python, lite |
-| C3 | ✅ `ecc-omp-code-review` | `code-review` | full, java-python, lite |
-| C3 | ✅ `ecc-omp-refactor-clean` | `refactor-clean` | full, java-python, lite |
-| C4 | ✅ `ecc-omp-test-coverage` | `test-coverage` | full, java-python, lite |
-| C4 | ✅ `ecc-omp-fastapi-review` | `fastapi-review` | full, java-python, lite |
-| C5 | ✅ `ecc-omp-pr` | `pr` | full, java-python, lite |
-| C5 | ✅ `ecc-omp-prp-pr` | `prp-pr` | full, java-python, lite |
-| C5 | ✅ `ecc-omp-prp-commit` | `prp-commit` | full, java-python, lite |
-| C6 | ✅ `ecc-omp-update-docs` | `update-docs` | full, java-python |
-| C6 | ✅ `ecc-omp-update-codemaps` | `update-codemaps` | full, java-python |
-| C7 | ✅ `ecc-omp-cpp-test` | `cpp-test` | full, java-python |
-| C7 | ✅ `ecc-omp-flutter-test` | `flutter-test` | full, java-python |
-| C7 | ✅ `ecc-omp-go-test` | `go-test` | full, java-python |
-| C7 | ✅ `ecc-omp-gradle-build` | `gradle-build` | full, java-python |
-| C7 | ✅ `ecc-omp-kotlin-test` | `kotlin-test` | full, java-python |
-| C7 | ✅ `ecc-omp-react-test` | `react-test` | full, java-python |
-| C7 | ✅ `ecc-omp-rust-test` | `rust-test` | full, java-python |
-| C8 | ✅ `ecc-omp-aside` | `aside` | full, java-python, lite |
+本 fork 不发布这类资产。上游快照仍保留在 `pool/` 里（供回溯与日后恢复），但不物化、不发布。
+
 
 ## Agents
 
 | 组 | 名称（运行名） | 上游名 | 生效 profile |
 | --- | --- | --- | --- |
-| A1 | ✅ `ecc-omp-code-reviewer` | `code-reviewer` | full, java-python, lite |
-| A1 | ✅ `ecc-omp-commit-reviewer` | `commit-reviewer` | full, java-python, lite |
-| A1 | ✅ `ecc-omp-pr-test-analyzer` | `pr-test-analyzer` | full, java-python |
+| A1 | ⬜ `ecc-omp-code-reviewer` | `code-reviewer` | — |
+| A1 | ⬜ `ecc-omp-commit-reviewer` | `commit-reviewer` | — |
+| A1 | ⬜ `ecc-omp-pr-test-analyzer` | `pr-test-analyzer` | — |
 | A1 | ✅ `ecc-omp-comment-analyzer` | `comment-analyzer` | full, java-python |
 | A1 | ✅ `ecc-omp-silent-failure-hunter` | `silent-failure-hunter` | full, java-python, lite |
 | A1 | ✅ `ecc-omp-type-design-analyzer` | `type-design-analyzer` | full, java-python |
-| A1 | ✅ `ecc-omp-security-reviewer` | `security-reviewer` | full, java-python, lite |
+| A1 | ⬜ `ecc-omp-security-reviewer` | `security-reviewer` | — |
 | A1 | ✅ `ecc-omp-code-simplifier` | `code-simplifier` | full, java-python, lite |
 | A1 | ✅ `ecc-omp-refactor-cleaner` | `refactor-cleaner` | full, java-python, lite |
 | A2 | ✅ `ecc-omp-architect` | `architect` | full, java-python |
-| A2 | ✅ `ecc-omp-code-architect` | `code-architect` | full, java-python |
-| A2 | ✅ `ecc-omp-code-explorer` | `code-explorer` | full, java-python |
-| A2 | ✅ `ecc-omp-planner` | `planner` | full, java-python |
+| A2 | ⬜ `ecc-omp-code-architect` | `code-architect` | — |
+| A2 | ⬜ `ecc-omp-code-explorer` | `code-explorer` | — |
+| A2 | ⬜ `ecc-omp-planner` | `planner` | — |
 | A2 | ✅ `ecc-omp-build-error-resolver` | `build-error-resolver` | full, java-python |
 | A2 | ✅ `ecc-omp-performance-optimizer` | `performance-optimizer` | full, java-python |
-| A2 | ✅ `ecc-omp-tdd-guide` | `tdd-guide` | full, java-python |
+| A2 | ⬜ `ecc-omp-tdd-guide` | `tdd-guide` | — |
 | A2 | ✅ `ecc-omp-e2e-runner` | `e2e-runner` | full, java-python |
-| A2 | ✅ `ecc-omp-spec-miner` | `spec-miner` | full, java-python |
+| A2 | ⬜ `ecc-omp-spec-miner` | `spec-miner` | — |
 | A3 | ✅ `ecc-omp-java-reviewer` | `java-reviewer` | full, java-python, lite |
 | A3 | ✅ `ecc-omp-java-build-resolver` | `java-build-resolver` | full, java-python, lite |
 | A3 | ✅ `ecc-omp-kotlin-reviewer` | `kotlin-reviewer` | full, java-python, lite |
@@ -258,5 +234,5 @@
 
 ## fork 自有资产
 
-- skill：`ecc-omp-router`（选路表：任务 → skill / agent / command 组合）
+- skill：`ecc-omp-router`（选路表：任务 → skill / agent 组合）
 - rules：`omp-tooling` `omp-delegation` `fork-workflow` `fork-verification` `fork-coding-style`

@@ -46,7 +46,6 @@ Apply the Kotlin/Android security guidance before continuing:
 - keystore, token, and credential handling
 - platform-specific storage and permission risks
 
-If you find a CRITICAL security issue, stop the review and hand off to `ecc-omp-security-reviewer` before doing any further analysis.
 
 ### Step 3: Read and Review
 
@@ -124,7 +123,6 @@ Button(onClick = onClick)
 - **Unsafe WebView/network config** — JavaScript bridges, cleartext traffic, permissive trust settings
 - **Sensitive logging** — Tokens, credentials, PII, or secrets emitted to logs
 
-If any CRITICAL security issue is present, stop and escalate to `ecc-omp-security-reviewer`.
 
 ### Gradle & Build (LOW)
 

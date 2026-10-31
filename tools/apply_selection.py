@@ -633,6 +633,15 @@ FIXUPS = {
             "(the claude-code agent, Aider, Codex, etc.)",
         ),
     ],
+    "agents/doc-updater.md": [
+        # The upstream description names the two commands that back this
+        # agent. This fork ships no commands, so the sentence would be
+        # dropped from the description and the agent would lose it.
+        (
+            "Backs the /update-codemaps and /update-docs commands.",
+            "Backs the fork's docs-governance skill.",
+        ),
+    ],
     "skills/blueprint/SKILL.md": [
         # Here "Claude Code" is the harness itself, so it becomes omp; the
         # skill loader in this fork is omp's native Markdown skill loader.

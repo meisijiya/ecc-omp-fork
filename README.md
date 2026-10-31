@@ -7,12 +7,12 @@
 本仓库是**唯一事实源**。运行态安装根（`~/.omp/agent/local/ecc-omp-fork`）由
 `tools/deploy.py` 从这里同步过去，omp 通过 `omp plugin link` 指向该安装根。
 
-默认 profile（`java-python`）下的生效规模：**68 skills + 24 commands + 31 agents + 5 rules**
-（68 = 上游选中的 67 个 skill + 本 fork 自带的 `ecc-omp-router`）；换 profile 后的规模见
-「切换 profile」一节的表。
+默认 profile（`java-python`）下的生效规模：**64 skills + 22 agents + 5 rules**
+（64 = 上游选中的 63 个 skill + 本 fork 自带的 `ecc-omp-router`）；本 fork **不发布命令**，
+换 profile 后的规模见「切换 profile」一节的表。
 
-物化出来的 skill / command / agent 名统一带 `ecc-omp-` 前缀（上游名不带），例如
-`skill://ecc-omp-api-design`、`/ecc-omp-code-review`、agent `ecc-omp-code-reviewer`。
+物化出来的 skill / agent 名统一带 `ecc-omp-` 前缀（上游名不带），例如
+`skill://ecc-omp-api-design`、agent `ecc-omp-java-reviewer`。
 前缀只用于**区分**：别的插件提供的同名资产仍用它自己的名字，本 fork 在
 `manifest/external_refs.json` 里声明这些名字。
 
@@ -25,7 +25,7 @@
 ```bash
 git clone git@github.com:meisijiya/ecc-omp-fork.git   # 私有库，走 SSH
 cd ecc-omp-fork
-python tools/apply_selection.py     # 按当前 profile 物化 skills/commands/agents/rules
+python tools/apply_selection.py     # 按当前 profile 物化 skills/agents/rules
 python tools/build_catalog.py        # 刷新 docs/CATALOG.md（可选，但建议跟上游一起提交）
 python tools/deploy.py              # 同步到 omp 安装根并 link
 ```
@@ -36,7 +36,7 @@ python tools/deploy.py              # 同步到 omp 安装根并 link
 
 1. 校验 `manifest/applied.json` 里的 profile 与 `manifest/selection.json` 的
    `active_profile` 是否一致（不一致直接退出，提示先跑 `apply_selection.py`）；
-2. 把 `skills/ commands/ agents/ rules/` 同步到 `~/.omp/agent/local/ecc-omp-fork`，
+2. 把 `skills/ agents/ rules/` 同步到 `~/.omp/agent/local/ecc-omp-fork`，
    并额外拷贝 `package.json` / `LICENSE` / `NOTICE.md`；
 3. 执行 `omp plugin link ~/.omp/agent/local/ecc-omp-fork`（重复 link 是安全的，不会报错），
    再跑一次 `omp plugin list`；
@@ -60,10 +60,9 @@ omp plugin list                                     # 应能看到 ecc-omp-fork@
 
 - 技能：`read skill://<name>`，例如 `read skill://ecc-omp-router`
 - 规则：`read rule://<name>`，例如 `read rule://fork-workflow`
-- 命令：直接敲 `/ecc-omp-plan`、`/ecc-omp-code-review`、`/ecc-omp-test-coverage`、`/ecc-omp-pr`
-- 子代理：`task` 的 `agent` 字段填**裸名**，例如 `ecc-omp-code-reviewer`、`ecc-omp-java-reviewer`
+- 子代理：`task` 的 `agent` 字段填**裸名**，例如 `ecc-omp-java-reviewer`、`ecc-omp-python-reviewer`
 
-改完资产后在 omp 会话里跑 `/reload-plugins`（技能与命令即时刷新），
+改完资产后在 omp 会话里跑 `/reload-plugins`（技能即时刷新），
 **agent 需要重开会话**才被发现。
 
 ### 手工安装（不想用脚本）
@@ -72,9 +71,9 @@ omp plugin list                                     # 应能看到 ecc-omp-fork@
 git clone git@github.com:meisijiya/ecc-omp-fork.git   # 私有库，走 SSH
 cd ecc-omp-fork
 python tools/apply_selection.py
-# 把 skills/ commands/ agents/ rules/ package.json LICENSE NOTICE.md 复制到任意目录，例如：
+# 把 skills/ agents/ rules/ package.json LICENSE NOTICE.md 复制到任意目录，例如：
 mkdir -p ~/.omp/agent/local/ecc-omp-fork
-cp -r skills commands agents rules package.json LICENSE NOTICE.md ~/.omp/agent/local/ecc-omp-fork/
+cp -r skills agents rules package.json LICENSE NOTICE.md ~/.omp/agent/local/ecc-omp-fork/
 omp plugin link ~/.omp/agent/local/ecc-omp-fork
 ```
 
@@ -85,15 +84,15 @@ Windows 下是 junction。装完同样要 `/reload-plugins` 才在会话里生�
 
 ### 启用与禁用（语义与自证）
 
-本插件贡献的资产分四类：**skill / command / rule / agent**。它们同属一个插件根目录，
+本插件贡献的资产分三类：**skill / rule / agent**。它们同属一个插件根目录，
 所以启停是**整体生效**的——不是「只关 skill、其余照旧」：
 
 ```bash
-omp plugin disable ecc-omp-fork    # 四类资产一起从 omp 的发现结果里消失
+omp plugin disable ecc-omp-fork    # 三类资产一起从 omp 的发现结果里消失
 omp plugin enable  ecc-omp-fork    # 恢复
 ```
 
-- CLI 改完之后要 `/reload-plugins` 才会刷新当前会话的 skills / 斜杠命令 / task agents / MCP；
+- CLI 改完之后要 `/reload-plugins` 才会刷新当前会话的 skills / task agents / MCP；
   在 omp 的 TUI 里用 `/plugins enable|disable` 则会立刻刷新当前会话。
 - 禁用只影响**本插件**提供的资产。若某个名字同时由别的来源提供（别的插件，或 omp
   自带的同名内置资产，例如 `security-reviewer`），禁用本插件后该名字仍会解析到别人的
@@ -106,7 +105,7 @@ omp plugin enable  ecc-omp-fork    # 恢复
 python tools/check_plugin_isolation.py --toggle-test
 ```
 
-- `--toggle-test`：临时禁用/启用本插件，验证四类资产在两种状态下的可见性是否符合预期。
+- `--toggle-test`：临时禁用/启用本插件，验证三类资产在两种状态下的可见性是否符合预期。
 - `--probe`：只观察当前状态，不改变任何东西（默认模式就是它）。
 - `--omp <path>`：指定 omp 可执行文件（默认依次找 `OMP_BIN` 环境变量、`PATH` 上的 `omp`、
   Windows 启动器目录）；
@@ -127,7 +126,7 @@ python tools/check_plugin_isolation.py --toggle-test
 
 归属看的是**运行时解析出来的描述**，不是系统提示里那一行：omp 会把过长的 skill 描述压短
 再写进提示行，压缩结果缓存在 `~/.omp/agent/skill-descriptions.db`（表 `skill_descriptions`）。
-所以本仓 68 个 skill 里有 44 个在提示行里显示的是压缩后的短句（`omp skill list` 里仍是
+所以本仓 64 个 skill 里有 59 个在提示行里显示的是压缩后的短句（`omp skill list` 里仍是
 完整描述）——它们照样属于本插件。注意缓存里有行**不等于**该 skill 现在被启用（表里留着历史
 残留）；启用性只由上面的差值与 `omp skill list` 证明。判定规则：
 
@@ -138,13 +137,13 @@ python tools/check_plugin_isolation.py --toggle-test
 | 名字不被提示 | 本插件没有提供它 |
 
 加 `ecc-omp-` 前缀之后，本 fork 的资产与 omp 内建资产不再重名：本仓的 agent 叫
-`ecc-omp-security-reviewer`，内建的仍叫 `security-reviewer`，两者互不遮蔽。skill 侧本来
-就没有重名，加前缀后同样不重。
+`ecc-omp-java-reviewer`，omp 内建的是 `reviewer` / `scout` / `security-reviewer` 这类名字，
+互不遮蔽。skill 侧本来就没有重名，加前缀后同样不重。
 
 判定「本插件有没有泄漏」靠的是差值而不是名字表：同一轮探测里，提示行里的 skill 条目数在
-启用态与禁用态之间的**差值恰好等于本仓的 skill 总数（68）**，少掉的正是这 68 个名字；
-`omp skill list` 同时从 ours=68 变成 ours=0。提示行的总条目数会随别的插件增减而浮动，
-所以只认差值，不认某个绝对值。commands 24、rules 5、agents 31 是逐条按描述比对过的。
+启用态与禁用态之间的**差值恰好等于本仓的 skill 总数（64）**，少掉的正是这 64 个名字；
+`omp skill list` 同时从 ours=64 变成 ours=0。提示行的总条目数会随别的插件增减而浮动，
+所以只认差值，不认某个绝对值。rules 5、agents 22 是逐条按描述比对过的。
 
 禁用只决定「本插件提供哪些资产」，不决定「文件还在不在磁盘上」：`omp plugin disable` 只是把
 lockfile 里的 `enabled` 置成 false，插件目录（junction）仍然留在
@@ -183,7 +182,7 @@ python tools/build_catalog.py        # 刷新 docs/CATALOG.md
 python tools/deploy.py               # 同步到安装根并重新 link
 ```
 
-然后在 omp 会话里 `/reload-plugins`：**skills / 斜杠命令即时生效，新增的 agent 需要开一个
+然后在 omp 会话里 `/reload-plugins`：**skills 即时生效，新增的 agent 需要开一个
 新会话**才会被 task discovery 发现。
 
 ### 切换 profile（改变每轮 token 开销）
@@ -200,34 +199,35 @@ python tools/build_catalog.py
 python tools/deploy.py
 ```
 
-| profile | skills | commands | agents | 适用 |
-| --- | --- | --- | --- | --- |
-| `java-python` | 67 | 24 | 31 | 默认。Java/Kotlin + Python/Django/FastAPI + 通用工程规范 |
-| `lite` | 43 | 15 | 14 | 每轮提示开销最低，只做后端核心 |
-| `full` | 132 | 24 | 58 | 上游 `pi/core` 全量 + 全部编程 agent，冷门技术栈时用 |
+| profile | skills | agents | 适用 |
+| --- | --- | --- | --- |
+| `java-python` | 63 | 22 | 默认。Java/Kotlin + Python/Django/FastAPI + 通用工程规范 |
+| `lite` | 39 | 11 | 每轮提示开销最低，只做后端核心 |
+| `full` | 128 | 49 | 上游 `pi/core` 全量 + 全部编程 agent，冷门技术栈时用 |
 
 表中数字是各 profile 从上游 `pool/` **选中的资产数**，不含本 fork 自带资产：物化后实际生效的
-skills 数 = 上表数字 + 1（自有 `ecc-omp-router`），commands / agents 与上表一致，rules 恒为自有 5 条。
+skills 数 = 上表数字 + 1（自有 `ecc-omp-router`），agents 与上表一致，rules 恒为自有 5 条。
+本 fork 不发布命令。
 
 各 profile 的收益对比（技能描述进系统提示的部分）：
 
 | profile | 技能描述字符数 | 技能名称字符数（运行名） | 合计字符数 | 约合 token |
 | --- | --- | --- | --- | --- |
 | ECC 全量上游 | 95,615 | —（沿用上游自己的口径） | — | ~24K |
-| `full` | 38,178 | 3,333 | 41,511 | ~10.4K |
-| `java-python` | 18,904 | 1,621 | 20,525 | ~5.1K |
-| `lite` | 13,037 | 1,072 | 14,109 | ~3.5K |
+| `full` | 35,726 | 3,214 | 39,120 | ~9.8K |
+| `java-python` | 16,895 | 1,502 | 18,577 | ~4.6K |
+| `lite` | 11,028 | 953 | 12,161 | ~3.0K |
 
 数字口径：各 profile **选中的上游 skill** 的 frontmatter `description` 字符数（按当前
-`pool/` 快照实测），加上这些 skill 的**运行名**字符数（含 `ecc-omp-` 前缀），约 4 字符 =
-1 token；「ECC 全量上游」一行沿用上游自己的口径，不含名字。
+`pool/` 快照实测），加上这些 skill 的**运行名**字符数（含 `ecc-omp-` 前缀）与自有 router
+的描述与名字，约 4 字符 = 1 token；「ECC 全量上游」一行沿用上游自己的口径，不含名字。
 
-前缀本身的开销 = 8 字符 × 资产数：`full` 技能名 +1,056、`java-python` +536、`lite` +344；
-命令与 agent 的名单同样带前缀，`java-python` 下命令名 +192、agent 名 +248。
+前缀本身的开销 = 8 字符 × 资产数：`full` 技能名 +1,024、`java-python` +504、`lite` +312；
+agent 名同样带前缀，`java-python` 下 agent 名 +176。
 
-`full` 物化后实际进系统提示的是 133 个 skill（132 个上游 + 自有 `ecc-omp-router`），
-合计 38,178（132 个上游 skill 的描述）+ 3,333（这 132 个 skill 的运行名）+ 181（router 描述）
-+ 14（router 名）= 41,706 字符，约 ~10.4K token。
+`full` 物化后实际进系统提示的是 129 个 skill（128 个上游 + 自有 `ecc-omp-router`），
+合计 35,726（128 个上游 skill 的描述）+ 3,214（这 128 个 skill 的运行名）+ 166（router 描述）
++ 14（router 名）= 39,120 字符，约 ~9.8K token。
 
 切完 profile 若不想把指针改动留在工作区，用下面这条还原（物化/部署脚本都只读它，
 但手工或脚本重写这个 JSON 文件容易改掉缩进或末尾换行，还原后 diff 才干净）：
@@ -344,7 +344,7 @@ hide: true
 | 路径 | 作用 |
 | --- | --- |
 | `pool/skills/` | 上游 ECC `pi/core` 的 132 个 skill 快照（未裁剪） |
-| `pool/commands/` | 上游 ECC `pi/core` 的 24 个 command 快照 |
+| `pool/commands/` | 上游 ECC `pi/core` 的 24 个 command 快照（本 fork 不发布，仅留档回溯） |
 | `pool/agents/` | 上游 ECC `agents/` 的 71 个 agent 快照（原始，含 Claude 专有 `model:` 行） |
 | `own/skills/` | fork 自有 skill（`ecc-omp-router` 选路表），始终物化 |
 | `own/rules/` | fork 自有 rules（5 条 omp 适配规则），始终物化 |
@@ -353,8 +353,8 @@ hide: true
 | `manifest/selection.json` | 当前 profile 指针 + 额外追加项 |
 | `manifest/applied.json` | 上次物化实际生效的 profile 与数量（部署前用来校验是否过期） |
 | `manifest/upstream.json` | 上游 pin 唯一事实源：`repo` / `commit` / `version` / `pool_digest` |
-| `manifest/external_refs.json` | 本 fork 不提供、但由别的 omp 插件提供的资产（如 `code-review` skill）；这些名字不带本 fork 前缀，本 fork 自己的同名 command 叫 `ecc-omp-code-review` |
-| `skills/` `commands/` `agents/` `rules/` | **物化后的实际生效内容**（入库，便于 diff 上游变更）；skill 目录名、command/agent 文件名带 `ecc-omp-` 前缀 |
+| `manifest/external_refs.json` | 本 fork 不提供、但由别的 omp 插件提供的资产（如 `code-review` skill）；这些名字不带本 fork 前缀 |
+| `skills/` `agents/` `rules/` | **物化后的实际生效内容**（入库，便于 diff 上游变更）；skill 目录名、agent 文件名带 `ecc-omp-` 前缀 |
 | `tools/` | 更新、裁剪、部署、生成目录、各项门禁的脚本 |
 | `.github/workflows/sync-upstream.yml` | 定时 / 手动上游同步，自动开 PR 并跑全套门禁 |
 | `docs/CATALOG.md` | 人类可读的资产目录（生成物） |
@@ -372,7 +372,7 @@ python tools/sync_upstream.py
 # 只刷新 pool（不重放选择）
 python tools/sync_upstream.py --pool-only
 
-# 按当前 profile 重新物化 skills/ commands/ agents/ rules/
+# 按当前 profile 重新物化 skills/ agents/ rules/
 python tools/apply_selection.py
 
 # 引用门禁：检查是否还有指向「本 fork 不提供的资产」的引用
@@ -405,17 +405,17 @@ python tools/build_catalog.py
 
 ### 上游正文会被改写
 
-`pool/` 里的上游快照是原样，但物化到 `skills/` `commands/` `agents/` 时会做**确定性改写**：
+`pool/` 里的上游快照是原样，但物化到 `skills/` `agents/` 时会做**确定性改写**：
 
 - Claude 专有工具名与机制 → omp 的对应写法（`AskUserQuestion` → `ask`、
   `TodoWrite` → `todo`、删掉 `PreToolUse` hook 段等）。
 - 路径约定（`CLAUDE.md` → `AGENTS.md`、`.claude/prds/` → `docs/prds/`）。
 - **资产名统一加前缀**：上游名在物化时改名为运行名（`api-design` →
-  `ecc-omp-api-design`、`plan` → `ecc-omp-plan`），正文里对它们的引用一并改写
-  （`skill://api-design` → `skill://ecc-omp-api-design`、`/plan` → `/ecc-omp-plan`、
+  `ecc-omp-api-design`、`code-reviewer` → `ecc-omp-code-reviewer`），正文里对它们的引用一并改写
+  （`skill://api-design` → `skill://ecc-omp-api-design`、
   反引号裸名 → 带前缀的运行名）。散文里不是资产引用的普通词（"plan a meeting" 之类）
   不动。
-- **agents 走同一条改写通道**：agents 与 skills/commands 一样做工具名与路径改写，
+- **agents 走同一条改写通道**：agents 与 skills 一样做工具名与路径改写，
   只是 agents 侧的 `Task` 改名规则被剔除 —— C#/Swift 的 `Task` 是类型名，改了会坏掉。
 - **悬空引用清除**：指向本 fork 不提供的资产（上游全量 ECC 才有的命令、被当前 profile
   排除的兄弟 skill、嵌套 `rules/react/*.md`、上游 `docs/`）的引用会被删掉；
@@ -441,12 +441,12 @@ python tools/build_catalog.py
 | omp 机制 | 本 fork 的做法 |
 | --- | --- |
 | skill 发现 | `<root>/skills/<name>/SKILL.md`，非递归一层。物化时保证 frontmatter 有 `name` + `description` |
-| command 发现 | `<root>/commands/*.md`，裸名注册（`ecc-omp-plan` / `ecc-omp-pr` / `ecc-omp-code-review` …） |
-| agent 发现 | `<root>/agents/*.md`，裸名注册（`ecc-omp-code-reviewer` …）。**物化时剥掉 `model: sonnet\|opus\|haiku`** —— omp 无这些别名，留着会让 agent 解析不到模型而不可用 |
+| command 发现 | 本 fork 不发布命令；上游的 24 个 command 快照只留在 `pool/` 里，不物化 |
+| agent 发现 | `<root>/agents/*.md`，裸名注册（`ecc-omp-java-reviewer` …）。**物化时剥掉 `model: sonnet\|opus\|haiku`** —— omp 无这些别名，留着会让 agent 解析不到模型而不可用 |
 | rule 发现 | `<root>/rules/*.md`，带 `description` 的进 rulebook（system prompt 列名 + 描述，正文按需 `rule://` 读）；**不使用 `alwaysApply`**，避免每轮全文注入 |
 | 工具名 | 上游 ECC 规则与 skill 里残留的 Claude Code 工具名（`TodoWrite` / `Task(subagent_type=)` / `Agent(`）由 fork 规则 `omp-tooling` 给出 omp 对照表 |
 | 提示行里的描述 | omp 会把过长的 skill 描述压短后写进系统提示，压缩结果缓存在 `~/.omp/agent/skill-descriptions.db`；所以提示行不等于 frontmatter，判定归属用 `omp skill list` 的完整描述 |
-| 真正重名的资产 | 加 `ecc-omp-` 前缀后本 fork 的资产不再与 omp 内建同名（本仓 `ecc-omp-security-reviewer` vs 内建 `security-reviewer`），也不与别的插件重名；外部插件提供的资产（如 `code-review` skill）仍按它自己的名字解析 |
+| 真正重名的资产 | 加 `ecc-omp-` 前缀后本 fork 的资产不再与 omp 内建同名（本仓 `ecc-omp-java-reviewer` vs 内建 `reviewer`、`scout` 一类），也不与别的插件重名；外部插件提供的资产（如 `code-review` skill）仍按它自己的名字解析 |
 
 fork 自有的 5 条 rules：
 

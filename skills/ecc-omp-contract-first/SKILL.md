@@ -282,4 +282,3 @@ does not coordinate parallel work or prevent drift.
 
 - `skill://ecc-omp-api-design` - resource, response, error, pagination, and versioning design
 - `skill://ecc-omp-backend-patterns` - provider-side API and service architecture
-- `skill://ecc-omp-tdd-workflow` - test-first implementation discipline

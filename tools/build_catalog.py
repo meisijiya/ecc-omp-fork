@@ -193,6 +193,13 @@ def main():
 
     for kind in KINDS:
         lines += ["", f"## {kind.capitalize()}", ""]
+        if not any(members_by_profile[p][kind] for p in profiles):
+            lines.append(
+                "本 fork 不发布这类资产。上游快照仍保留在 `pool/` 里（供回溯与日后恢复），"
+                "但不物化、不发布。"
+            )
+            lines.append("")
+            continue
         lines.append("| 组 | 名称（运行名） | 上游名 | 生效 profile |")
         lines.append("| --- | --- | --- | --- |")
         for name, cell in rows[kind]:
@@ -212,7 +219,7 @@ def main():
         "",
         "## fork 自有资产",
         "",
-        "- skill：`ecc-omp-router`（选路表：任务 → skill / agent / command 组合）",
+        "- skill：`ecc-omp-router`（选路表：任务 → skill / agent 组合）",
         "- rules：`omp-tooling` `omp-delegation` `fork-workflow` `fork-verification` `fork-coding-style`",
         "",
     ]

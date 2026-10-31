@@ -10,16 +10,17 @@
 
 ## 本 fork 的改动
 
-1. **裁剪**：`pool/` 保留上游全量快照，`skills/` `commands/` `agents/` 只物化被选中的部分。
-   物化出来的 skill / command / agent 统一带 `ecc-omp-` 前缀（上游名不带），前缀只用于
+1. **裁剪**：`pool/` 保留上游全量快照，`skills/` `agents/` 只物化被选中的部分。
+   物化出来的 skill / agent 统一带 `ecc-omp-` 前缀（上游名不带），前缀只用于
    与别的插件的同名资产区分；`pool/` 与 `manifest/` 里保留上游名。
+   本 fork **不发布命令**：上游的 24 个 command 只留在 `pool/` 里，不物化。
 2. **omp 适配**：
    - 移除 agent frontmatter 的 `model: sonnet|opus|haiku`（Claude 专有别名，omp 无对应模型，
      保留会导致 agent 无法解析模型而不可用）。
    - agent frontmatter 的 `tools:` 归一化为 omp 的工具名，丢弃 Claude 专有工具
      （`WebFetch` / `NotebookEdit` / `SlashCommand` 等）。
-   - `package.json` 保留上游 `pi.skills` / `pi.prompts` 声明，omp 的 `omp-plugins` provider
-     据此发现 `skills/` 与 `commands/`。
+   - `package.json` 保留上游 `pi.skills` 声明，omp 的 `omp-plugins` provider
+     据此发现 `skills/`。
 3. **正文改写**（由 `tools/apply_selection.py` 在物化时确定性执行，`tools/check_refs.py`
    用同一套判定做门禁）：
    - Claude 专有工具名与交互机制（`AskUserQuestion`、`TodoWrite`、`PreToolUse` hook 等）
@@ -29,8 +30,7 @@
      排除的兄弟 skill、嵌套 `rules/react/*.md`、上游 `docs/`）的引用会被删除；指向可读资产的
      相对 markdown 链接会改写成 omp 能跟随的规范 URI（`skill://<name>` 等）。
    - **资产名改写**：指向被改名资产的引用（`skill://api-design` → `skill://ecc-omp-api-design`、
-     `/plan` → `/ecc-omp-plan`、反引号裸名 → 带前缀的运行名）会一并改写；散文里不是资产
-     引用的普通词不动。
+     反引号裸名 → 带前缀的运行名）会一并改写；散文里不是资产引用的普通词不动。
 4. **工具化**：新增 `tools/`（上游更新、重放选择、部署、生成目录、引用门禁）。
 
 正文改动由脚本确定性生成，`pool/` 中的上游快照保持原样，便于逐条比对。

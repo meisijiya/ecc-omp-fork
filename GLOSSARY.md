@@ -9,7 +9,7 @@
 | 物化 | 把「上游资产池 + fork 自有资产 + 当前 profile」确定性地改写成一棵运行树的过程。 | 构建、编译、导出、生成 |
 | 上游名 | 资产在 affaan-m/ECC 里的名称（如 `api-design`）；只出现在上游资产池与 manifest 里。 | 原名、pool 名、旧名 |
 | 运行名 | 资产在运行树里的名字：上游名加 `ecc-omp-` 前缀（如 `ecc-omp-api-design`）；模型能读能调的就是它。 | 物化名、新名、fork 名 |
-| 运行树 | 物化产物，即仓库根的 skill、command、agent、rule 四类目录，也是部署给 omp 的内容。 | dist、输出目录、产物目录 |
+| 运行树 | 物化产物，即仓库根的 skill、agent、rule 三类目录，也是部署给 omp 的内容。 | dist、输出目录、产物目录 |
 | 仓库树 | 本仓工作区里的运行树，是唯一事实源。 | 工作副本、检出目录 |
 | 安装根 | omp 实际以插件身份加载的那份目录，与仓库树逐文件比对。 | 安装目录、node_modules、site-packages |
 | profile | 一组命名好的资产子集，决定每轮注入的规模。 | preset、tier、套餐、模式 |

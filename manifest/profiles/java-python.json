@@ -33,12 +33,16 @@
       "frontend-patterns",
       "frontend-a11y",
       "accessibility",
-      "angular-developer"
+      "angular-developer",
+      "architecture-decision-records",
+      "context-and-decisions",
+      "intent-driven-development",
+      "tdd-workflow"
     ],
     "include": []
   },
   "commands": {
-    "groups": ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8"],
+    "groups": [],
     "exclude": [],
     "include": []
   },
@@ -46,7 +50,16 @@
     "groups": ["A1", "A2", "A3", "A4", "A7"],
     "exclude": [
       "rag-pipeline-reviewer",
-      "mle-reviewer"
+      "mle-reviewer",
+      "code-reviewer",
+      "security-reviewer",
+      "commit-reviewer",
+      "pr-test-analyzer",
+      "code-explorer",
+      "planner",
+      "code-architect",
+      "tdd-guide",
+      "spec-miner"
     ],
     "include": []
   }

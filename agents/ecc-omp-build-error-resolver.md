@@ -115,9 +115,6 @@ npx eslint . --fix
 
 - Code needs refactoring → use `ecc-omp-refactor-cleaner`
 - Architecture changes needed → use `ecc-omp-architect`
-- New features required → use `ecc-omp-planner`
-- Tests failing → use `ecc-omp-tdd-guide`
-- Security issues → use `ecc-omp-security-reviewer`
 
 ---
 

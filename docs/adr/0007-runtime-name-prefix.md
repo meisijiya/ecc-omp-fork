@@ -11,9 +11,9 @@
 自己的资产只有一个带前缀（`ecc-omp-router`），其余全裸名，于是：
 
 - 模型看到 `security-reviewer` 时分不清是本仓的 agent 还是 omp 内建的那个；
-- 本仓的 command `code-review` 与别的插件提供的 skill `code-review` 同名，
+- 别的插件提供 skill `code-review`，本仓若也提供同名资产，
   `skill://code-review` 到底解析到谁取决于运行时状态；
-- 用户要求本插件的 skill / command / agent 都能被直接寻址，且名字能一眼看出属于谁。
+- 用户要求本插件的 skill / agent 都能被直接寻址，且名字能一眼看出属于谁。
 
 前缀必须只落在**运行树**这一层：`pool/` 是上游快照（只有 `tools/sync_upstream.py` 能写，
 `check_upstream_pin.py` 校验摘要），`manifest/groups.json` 的成员必须与 pool 完全一致，
@@ -25,14 +25,15 @@
 rules 与 fork 自有资产（`ecc-omp-router`、5 条 rules）不改名——它们不是上游派生，且
 `rule://` 是独立命名空间。
 
+（后续：ADR-0008 决定本 fork 不再发布命令，因此命令一类实际不再物化。）
+
 映射只实现一处，在 `tools/refscan.py`：
 
 - 判定同时接受上游拼写与运行拼写，判存在用上游名，输出规范形式用运行名；
 - 同一个 kind 里两个上游名映射到同一运行名，或与 fork 自有资产名冲突时，**硬失败**
   （`SystemExit`），不静默择一；
 - 外部资产（`manifest/external_refs.json` 声明的、由别的插件提供的同名资产）**不加前缀**，
-  仍用它们自己的名字；本 fork 自己的同名 command 叫 `ecc-omp-code-review`，
-  两者因此不再同名。
+  仍用它们自己的名字；本 fork 自己的同名资产带 `ecc-omp-` 前缀，两者因此不再同名。
 
 物化器把上游名落成运行名（目录名 / 文件名 / frontmatter `name`），并把正文里指向这些
 资产的引用一并改写成运行名。散文里不是资产引用的普通词不动。

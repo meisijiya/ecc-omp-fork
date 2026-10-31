@@ -35,7 +35,10 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INSTALL = os.path.join(os.path.expanduser("~"), ".omp", "agent", "local", "ecc-omp-fork")
-RUNTIME = ("skills", "commands", "agents", "rules")
+RUNTIME = ("skills", "agents", "rules")
+# This fork ships no commands; an older deploy may have left them in the
+# install root, where omp would keep advertising them.
+STALE_DIRS = ("commands",)
 EXTRA_FILES = ("package.json", "LICENSE", "NOTICE.md")
 LEGACY_PLUGINS = ("ecc-pi-core", "ecc-programming")
 
@@ -155,6 +158,11 @@ def main():
     os.makedirs(INSTALL, exist_ok=True)
     for name in RUNTIME:
         print(sync_dir(name))
+    for name in STALE_DIRS:
+        dst = os.path.join(INSTALL, name)
+        if os.path.isdir(dst):
+            shutil.rmtree(dst)
+            print(f"{name}: removed stale {dst}")
     for name in EXTRA_FILES:
         src = os.path.join(ROOT, name)
         if os.path.isfile(src):
@@ -179,7 +187,7 @@ def main():
 
     if not args.skip_verify and not verify_skills():
         sys.exit(1)
-    print("\nnote: skills and commands are picked up on reload; new agents need a new session")
+    print("\nnote: skills are picked up on reload; new agents need a new session")
 
 
 if __name__ == "__main__":

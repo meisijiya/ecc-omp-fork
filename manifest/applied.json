@@ -41,21 +41,16 @@
         "frontend-patterns",
         "frontend-a11y",
         "accessibility",
-        "angular-developer"
+        "angular-developer",
+        "architecture-decision-records",
+        "context-and-decisions",
+        "intent-driven-development",
+        "tdd-workflow"
       ],
       "include": []
     },
     "commands": {
-      "groups": [
-        "C1",
-        "C2",
-        "C3",
-        "C4",
-        "C5",
-        "C6",
-        "C7",
-        "C8"
-      ],
+      "groups": [],
       "exclude": [],
       "include": []
     },
@@ -69,16 +64,25 @@
       ],
       "exclude": [
         "rag-pipeline-reviewer",
-        "mle-reviewer"
+        "mle-reviewer",
+        "code-reviewer",
+        "security-reviewer",
+        "commit-reviewer",
+        "pr-test-analyzer",
+        "code-explorer",
+        "planner",
+        "code-architect",
+        "tdd-guide",
+        "spec-miner"
       ],
       "include": []
     }
   },
   "counts": {
-    "skills": 67,
+    "skills": 63,
     "skills_own": 1,
-    "commands": 24,
-    "agents": 31,
+    "commands": 0,
+    "agents": 22,
     "rules": 5
   }
 }

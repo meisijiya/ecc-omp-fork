@@ -63,7 +63,6 @@ Decide the persona and depth from the request.
 | "architecture" | `ecc-omp-architect` | 14-18 steps |
 | "tour this PR" | `pr-reviewer` | 7-11 steps |
 | "why did this break" | `rca-investigator` | 7-11 steps |
-| "security review" | `ecc-omp-security-reviewer` | 7-11 steps |
 | "explain how this feature works" | `feature-explainer` | 7-11 steps |
 | "debug this path" | `bug-fixer` | 7-11 steps |
 

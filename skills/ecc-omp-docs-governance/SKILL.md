@@ -33,7 +33,6 @@ truth and never create a second document merely to satisfy a default role.
 
 | User intent | Route to |
 |---|---|
-| Record a hard-to-reverse architecture decision | `skill://ecc-omp-architecture-decision-records` |
 | Preserve an executable regression for an important defect | `ai-regression-testing` (install separately in standalone Pi core) |
 | Define a verifiable goal and feedback loop | `loop-design-check` (install separately in standalone Pi core) |
 | Check mapped roles, local links, ADR indexes, TEST-IDs, or possible orphan docs | Run the bundled read-only audit |
@@ -79,7 +78,6 @@ request, invoke that specialized skill without routing through this one.
 
 ## Examples
 
-- “Record why we selected PostgreSQL” routes to `skill://ecc-omp-architecture-decision-records`.
 - “Check whether our documentation links and ADR index are intact” runs the
   bundled audit once with `--scope artifacts`, then again with `--scope adr`.
 - “Are we finished with the migration?” is not answered from documentation

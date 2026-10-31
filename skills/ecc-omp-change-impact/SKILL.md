@@ -43,7 +43,6 @@ Use this skill before implementation when a change may affect multiple modules, 
 
 ## Related Skills
 
-- `skill://ecc-omp-architecture-decision-records`: hard-to-reverse decisions whose rationale must remain durable.
 - `skill://ecc-omp-contract-first`: cross-service or cross-client boundary changes.
 - `skill://ecc-omp-test-collaboration`: verification evidence for success criteria, risks, and defects.
 
@@ -62,7 +61,6 @@ Prefer evidence from real imports and calls, routes, schemas, configuration, gen
 
 ## Routing Rules
 
-- Architecture, databases, authentication, deployment topology, or long-lived technical strategy: check `skill://ecc-omp-architecture-decision-records` and the ADR set.
 - Cross-client interfaces: update the single contract source managed by `skill://ecc-omp-contract-first`, then plan consumer, provider, and integration evidence.
 - Requirements, business rules, risks, or bugs: keep success criteria in the Spec/Issue and use `skill://ecc-omp-test-collaboration` to link TEST-IDs.
 - Database migrations, breaking interfaces, authentication, and production releases: record rollback conditions, recovery steps, compatibility period, and irreversible effects. Treat any missing item as a blocker; do not execute rollback on a human's behalf.

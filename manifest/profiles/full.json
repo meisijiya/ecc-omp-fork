@@ -1,19 +1,34 @@
 {
   "profile": "full",
-  "description": "上游 pi/core 全量（132 skills + 24 commands）加编程相关 agent。token 开销最大，仅在需要冷门技术栈时用。",
+  "description": "上游 pi/core 全量技能（去掉与其它插件重复的 4 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。",
   "skills": {
     "groups": ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10"],
-    "exclude": [],
+    "exclude": [
+      "architecture-decision-records",
+      "context-and-decisions",
+      "intent-driven-development",
+      "tdd-workflow"
+    ],
     "include": []
   },
   "commands": {
-    "groups": ["C1", "C2", "C3", "C4", "C5", "C6", "C7", "C8"],
+    "groups": [],
     "exclude": [],
     "include": []
   },
   "agents": {
     "groups": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
-    "exclude": [],
+    "exclude": [
+      "code-reviewer",
+      "security-reviewer",
+      "commit-reviewer",
+      "pr-test-analyzer",
+      "code-explorer",
+      "planner",
+      "code-architect",
+      "tdd-guide",
+      "spec-miner"
+    ],
     "include": []
   }
 }
