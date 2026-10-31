@@ -17,7 +17,7 @@
   `code-explorer`、`planner`、`code-architect`、`tdd-guide`、`spec-miner`。
 
 同时，本机 omp 已经装了多个提供同类能力的插件：mattpocock-skills（38 个 skill）、
-superpowers-zh（21 个）、magpie 用户级 skill 集（40 个）、playwright、karpathy-guidelines。
+magpie 用户级 skill 集（40 个）、playwright、karpathy-guidelines。
 它们已覆盖通用评审、TDD、规格拆解、探索、提交信息这几类职能。
 
 结果是同一件事有两个入口：模型面对「做代码评审」这类请求时，既可能派 `ecc-omp-code-reviewer`，
@@ -41,7 +41,7 @@ superpowers-zh（21 个）、magpie 用户级 skill 集（40 个）、playwright
 | 裁掉的资产 | 接管方 |
 | --- | --- |
 | 24 个 command | 无（流程改由 skill + agent 组合承担） |
-| `tdd-workflow` | mattpocock `tdd`、superpowers `test-driven-development`；各语言 TDD skill 仍在本 fork |
+| `tdd-workflow` | mattpocock `tdd`；各语言 TDD skill 仍在本 fork |
 | `architecture-decision-records` / `context-and-decisions` | mattpocock `domain-modeling` |
 | `intent-driven-development` | mattpocock `to-spec` |
 | `code-reviewer` / `security-reviewer` | omp 内建 `reviewer` / `security-reviewer`，本 fork `security-review` skill |
@@ -86,7 +86,7 @@ superpowers-zh（21 个）、magpie 用户级 skill 集（40 个）、playwright
 ### Negative
 
 - 习惯了 `/ecc-omp-plan` 这类入口的用户要改成「派 agent」或「读 skill」。
-- 上述能力依赖本机其它插件在场。卸载 mattpocock 或 superpowers 会让对应能力消失，
+- 上述能力依赖本机其它插件在场。卸载 mattpocock 会让对应能力消失，
   而本 fork 不会补上。
 
 ### Risks
