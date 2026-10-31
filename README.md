@@ -54,7 +54,7 @@ python tools/deploy.py              # 同步到 omp 安装根并 link
 
 ```bash
 ls -l ~/.omp/plugins/node_modules/ecc-omp-fork     # 应显示指向 .omp/agent/local 的链接
-omp plugin list                                     # 应能看到 ecc-omp-fork@0.2.0
+omp plugin list                                     # 应能看到 ecc-omp-fork@0.3.0
 ```
 
 装完后在 omp 里：
@@ -172,7 +172,7 @@ rm -rf ~/.omp/agent/local/ecc-omp-fork
 注意：**link 型插件不会出现在 `~/.omp/plugins/installed_plugins.json`** —— 那个文件只记
 marketplace 安装的插件。link 型插件的启停状态记在
 `~/.omp/plugins/omp-plugins.lock.json` 的 `plugins` 段里（形如
-`"plugins": {"ecc-omp-fork": {"version":"0.2.0","enabledFeatures":null,"enabled":true}}`）。
+`"plugins": {"ecc-omp-fork": {"version":"0.3.0","enabledFeatures":null,"enabled":true}}`）。
 
 ### 升级
 
