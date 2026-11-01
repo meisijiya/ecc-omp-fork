@@ -37,7 +37,9 @@
 
 ## Consequences
 
-- 运行树新增 4 条（`java-python`）/ 6 条（`full`）skill，实测注入 +1,334 / +1,767 字符（约 +0.33K / +0.44K tok，name+description，4 字符 ≈ 1 token）。
+- 运行树新增 4 条（`java-python`）/ 6 条（`full`）skill，实测注入 +1,334 / +1,767 字符
+  （description 1,237 + 运行名 97 / description 1,619 + 运行名 148；约 +0.33K / +0.44K tok，
+  换算口径与 README 的 token 表一致：4 字符 ≈ 1 token）。
 - `absorbed/` 体积约 320KB，其中 `statechart/scripts/` 占 202KB（排除了上游 3.3MB 的测试语料）。
 - 上游改写会以「规则命中数 ≠ 1」的形式失败，必须人工确认后改规则——这是有意的：静默半适配会以损坏的 skill 形式进入提示。
 - `absorbed/` 里的 skill 正文与 description 保留上游英文；只有生成的 bundle 的 description 由脚本写成中文。斜杠触发词、`CLAUDE.md` 等按改写表处理。
