@@ -1,6 +1,10 @@
 *.md text eol=lf
 *.py text eol=lf
 *.json text eol=lf
+*.ts text eol=lf
+*.js text eol=lf
+*.mjs text eol=lf
+*.sh text eol=lf
 # the absorbed pool stores the upstream bytes; a CRLF checkout would change
 # the digests manifest/absorbed.json records
 absorbed/** text eol=lf
