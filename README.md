@@ -7,8 +7,8 @@
 本仓库是**唯一事实源**。运行态安装根（`~/.omp/agent/local/ecc-omp-fork`）由
 `tools/deploy.py` 从这里同步过去，omp 通过 `omp plugin link` 指向该安装根。
 
-默认 profile（`java-python`）下的生效规模：**69 skills + 22 agents + 5 rules**
-（69 = 上游选中的 65 个 skill + 本 fork 自带的 4 个 skill：`ecc-omp-router` 与发布 /
+默认 profile（`java-python`）下的生效规模：**73 skills + 22 agents + 5 rules**
+（73 = 上游选中的 65 个 + 收纳资产池的 4 个 + 本 fork 自带的 4 个：`ecc-omp-router` 与发布 /
 可观测性 / 事故响应三条运维 skill）；本 fork **不发布命令**，
 换 profile 后的规模见「切换 profile」一节的表。
 
@@ -127,7 +127,7 @@ python tools/check_plugin_isolation.py --toggle-test
 
 归属看的是**运行时解析出来的描述**，不是系统提示里那一行：omp 会把过长的 skill 描述压短
 再写进提示行，压缩结果缓存在 `~/.omp/agent/skill-descriptions.db`（表 `skill_descriptions`）。
-所以本仓 69 个 skill 里有 63 个在提示行里显示的是压缩后的短句（`omp skill list` 里仍是
+所以本仓 73 个 skill 里有 72 个在提示行里显示的是压缩后的短句（`omp skill list` 里仍是
 完整描述）——它们照样属于本插件。注意缓存里有行**不等于**该 skill 现在被启用（表里留着历史
 残留）；启用性只由上面的差值与 `omp skill list` 证明。判定规则：
 
@@ -142,8 +142,8 @@ python tools/check_plugin_isolation.py --toggle-test
 互不遮蔽。skill 侧本来就没有重名，加前缀后同样不重。
 
 判定「本插件有没有泄漏」靠的是差值而不是名字表：同一轮探测里，提示行里的 skill 条目数在
-启用态与禁用态之间的**差值恰好等于本仓的 skill 总数（69）**，少掉的正是这 69 个名字；
-`omp skill list` 同时从 ours=69 变成 ours=0。提示行的总条目数会随别的插件增减而浮动，
+启用态与禁用态之间的**差值恰好等于本仓的 skill 总数（73）**，少掉的正是这 73 个名字；
+`omp skill list` 同时从 ours=73 变成 ours=0。提示行的总条目数会随别的插件增减而浮动，
 所以只认差值，不认某个绝对值。rules 5、agents 22 是逐条按描述比对过的。
 
 禁用只决定「本插件提供哪些资产」，不决定「文件还在不在磁盘上」：`omp plugin disable` 只是把
@@ -203,33 +203,35 @@ python tools/deploy.py
 
 | profile | skills | agents | 适用 |
 | --- | --- | --- | --- |
-| `java-python` | 65 | 22 | 默认。Java/Kotlin + Python/Django/FastAPI + 通用工程规范 + 发布/运维 |
+| `java-python` | 69 | 22 | 默认。Java/Kotlin + Python/Django/FastAPI + 通用工程规范 + 发布/运维 |
 | `lite` | 39 | 11 | 每轮提示开销最低，只做后端核心 |
-| `full` | 127 | 49 | 上游 `pi/core` 全量 + 全部编程 agent，冷门技术栈时用 |
+| `full` | 133 | 49 | 上游 `pi/core` 全量 + 全部编程 agent，冷门技术栈时用 |
 
-表中数字是各 profile 从上游 `pool/` **选中的资产数**，不含本 fork 自带资产：物化后实际生效的
-skills 数 = 上表数字 + 4（自有 `ecc-omp-router` 与发布 / 可观测性 / 事故响应三条运维 skill），
-agents 与上表一致，rules 恒为自有 5 条。本 fork 不发布命令。
+表中数字 = 该 profile 从上游 `pool/` 选中的资产 + 收纳资产池的条目（与 `docs/CATALOG.md` 同口径），
+**不含**本 fork 自带资产。收纳条目按 profile 分别是 `full` 6 条、`java-python` 4 条、`lite` 0 条，
+所以物化后实际生效的 skills 数 = 上表数字 + 4（自有 `ecc-omp-router` 与发布 / 可观测性 /
+事故响应三条运维 skill）：`full` 137、`java-python` 73、`lite` 43。agents 与上表一致，
+rules 恒为自有 5 条。本 fork 不发布命令。
 
 各 profile 的收益对比（技能描述进系统提示的部分）：
 
 | profile | 技能描述字符数 | 技能名称字符数（运行名） | 合计字符数 | 约合 token |
 | --- | --- | --- | --- | --- |
 | ECC 全量上游 | 95,615 | —（沿用上游自己的口径） | — | ~24K |
-| `full` | 35,719 | 3,283 | 39,002 | ~9.8K |
-| `java-python` | 17,795 | 1,637 | 19,432 | ~4.9K |
-| `lite` | 11,449 | 1,039 | 12,488 | ~3.1K |
+| `full` | 37,338 | 3,431 | 40,769 | ~10.2K |
+| `java-python` | 19,022 | 1,734 | 20,756 | ~5.2K |
+| `lite` | 11,439 | 1,039 | 12,478 | ~3.1K |
 
-数字口径：各 profile **选中的上游 skill** 的 frontmatter `description` 字符数（按当前
-`pool/` 快照实测），加上这些 skill 的**运行名**字符数（含 `ecc-omp-` 前缀）与本 fork 自带的
-4 个 skill 的描述与名字，约 4 字符 = 1 token；「ECC 全量上游」一行沿用上游自己的口径，不含名字。
+数字口径：各 profile 物化后**全部 skill**（上游 + 收纳 + 自有 4 条）的 frontmatter `description`
+字符数，加上它们的**运行名**字符数（含 `ecc-omp-` 前缀），约 4 字符 = 1 token；「ECC 全量上游」一行沿用上游自己的口径，不含名字。
 
-前缀本身的开销 = 8 字符 × 资产数：`full` 技能名 +1,016、`java-python` +520、`lite` +312；
-agent 名同样带前缀，`java-python` 下 agent 名 +176。
+前缀本身的开销 = 8 字符 × 被改名的资产数（上游 + 收纳，自有资产的名字本就带前缀）：
+`full` 技能名 +1,064、`java-python` +552、`lite` +312；agent 名同样带前缀，`java-python` 下 agent 名 +176。
 
-`full` 物化后实际进系统提示的是 131 个 skill（127 个上游 + 自带的 4 个），
-合计 35,298（127 个上游 skill 的描述）+ 3,197（这 127 个 skill 的运行名）+ 421（自带 4 个 skill 的描述）
-+ 86（自带 4 个 skill 的运行名）= 39,002 字符，约 ~9.8K token。
+`full` 物化后实际进系统提示的是 137 个 skill（127 个上游 + 6 个收纳 + 自带的 4 个），
+实测合计 37,338 字符的描述 + 3,431 字符的运行名 = 40,769 字符，约 ~10.2K token。
+收纳资产在其中占 1,767 字符（6 条描述 + 运行名，约 0.44K token）；`java-python` 下收纳 4 条占
+1,334 字符（约 0.33K token）。
 
 切完 profile 若不想把指针改动留在工作区，用下面这条还原（物化/部署脚本都只读它，
 但手工或脚本重写这个 JSON 文件容易改掉缩进或末尾换行，还原后 diff 才干净）：
