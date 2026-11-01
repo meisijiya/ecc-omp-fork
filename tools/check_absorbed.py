@@ -188,6 +188,13 @@ def check_line_endings(findings):
 
 
 def check_forbidden(manifest, findings):
+    """Scan the stored skill copies only.
+
+    `absorbed/<source>/principles/` holds the *raw* bundle inputs on purpose
+    (they are the upstream bytes, so the bundle can be regenerated), which is
+    why they still carry host-specific frontmatter keys and are out of scope
+    here.
+    """
     for name, entry in (manifest.get("skills") or {}).items():
         if not entry.get("source") or not entry.get("path"):
             continue

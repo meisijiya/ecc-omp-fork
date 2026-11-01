@@ -54,7 +54,7 @@ python tools/deploy.py              # 同步到 omp 安装根并 link
 
 ```bash
 ls -l ~/.omp/plugins/node_modules/ecc-omp-fork     # 应显示指向 .omp/agent/local 的链接
-omp plugin list                                     # 应能看到 ecc-omp-fork@0.3.0
+omp plugin list                                     # 应能看到 ecc-omp-fork@0.4.0
 ```
 
 装完后在 omp 里：
@@ -172,7 +172,8 @@ rm -rf ~/.omp/agent/local/ecc-omp-fork
 注意：**link 型插件不会出现在 `~/.omp/plugins/installed_plugins.json`** —— 那个文件只记
 marketplace 安装的插件。link 型插件的启停状态记在
 `~/.omp/plugins/omp-plugins.lock.json` 的 `plugins` 段里（形如
-`"plugins": {"ecc-omp-fork": {"version":"0.3.0","enabledFeatures":null,"enabled":true}}`）。
+`"plugins": {"ecc-omp-fork": {"version":"0.4.0","enabledFeatures":null,"enabled":true}}`；
+该字段由 omp 在重新 link / 加载插件时刷新，`deploy.py` 不写它）。
 
 ### 升级
 
@@ -288,7 +289,7 @@ CI 用 `GITHUB_TOKEN` + `peter-evans/create-pull-request` 自动开 PR（分支
 | `python tools/check_refs.py [--json]` | **引用自洽**：运行树与 `own/` 里是否还有指向「本 fork 不提供的资产」的悬空引用（`skill://`、`skills/<name>/`、`commands\|agents\|rules/<name>.md`、斜杠命令、反引号裸名） | 0 = 无缺陷悬空（fork 自有目录里的 profile 裁剪引用只列出、不算缺陷）；1 = 有缺陷悬空（打印明细）；2 = profile 指针读不出来（`active_profile` 缺失或未知） | 每次改完运行树或上游文本后；提交前必跑 |
 | `python tools/check_adapt.py [--tree <dir>] [--json]` | **omp 适配不变式**：INV-01..INV-15（无 `model:`、无 `CLAUDE.md`、无 `.claude/`、无 Claude CLI 调用、无 Claude 工具名、skill/agent/rule/command 的 frontmatter 完整性、`/name` 引用必须落在物化 commands 名单内、无「Claude Code」措辞等） | 0 = 无违规；1 = 有违规（逐条给 `文件:行号` + token）；2 = 用法错误或树不可读 | 每次改完运行树后；提交前必跑 |
 | `python tools/check_upstream_pin.py` | **上游 pin 一致性**：`manifest/upstream.json` 形状（`commit` 必须是 40 位小写 hex、`repo` 非空）、`manifest/groups.json` 的 upstream.commit 镜像与 pin 一致、`pool/` 摘要等于 pin 的 `pool_digest`、`NOTICE.md` 引用的上游 commit 等于 pin 的 commit | 0 = 四项全过；1 = 有校验项不符（逐条打印）；2 = `manifest/upstream.json` / `manifest/groups.json` 读不出来 | 每次同步上游之后；提交前必跑 |
-| `python tools/check_absorbed.py [--json]` | **收纳池一致性**：`manifest/absorbed.json` 形状（来源 repo + 40 位 commit）、`absorbed/` 每个 skill 的文件摘要集合与 manifest 一致、生成物 `ecc-omp-engineering-principles` 等于其输入重新拼接的结果、改写后不残留 `CLAUDE.md` / `.claude/` / `disable-model-invocation` / `paths` | 0 = 一致；1 = 有缺陷（逐条打印）；2 = manifest 读不出来 | 改了 `absorbed/`、`manifest/absorbed.json` 或 `tools/absorbed_fixups.py` 之后；提交前必跑 |
+| `python tools/check_absorbed.py [--json]` | **收纳池一致性**：`manifest/absorbed.json` 形状（来源 repo + 40 位 commit）、`absorbed/` 每个 skill 的文件摘要集合与 manifest 一致、生成物 `ecc-omp-engineering-principles` 等于其输入重新拼接的结果、收纳 skill 副本里不残留 `CLAUDE.md` / `.claude/` / `disable-model-invocation` / `paths` / 斜杠触发词（`absorbed/<source>/principles/` 是 bundle 的原始快照，按设计不改写、不在扫描面内） | 0 = 一致；1 = 有缺陷（逐条打印）；2 = manifest 读不出来 | 改了 `absorbed/`、`manifest/absorbed.json` 或 `tools/absorbed_fixups.py` 之后；提交前必跑 |
 | `python tools/check_plugin_isolation.py [--probe\|--toggle-test] [--omp <path>] [--cwd <dir>] [--root <dir>] [--json]` | **插件启停可见性**：本插件四类资产在启用态是否被 omp 提供、禁用态是否全部消失 | 0 = 符合预期；1 = 不一致（打印 FAIL 明细）；2 = 工具错误 | 改了部署方式、插件启停状态或 omp 版本之后 |
 
 补充说明：

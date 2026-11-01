@@ -320,7 +320,6 @@ def materialized_sets():
                 elif n.endswith(".md"):
                     names.add(os.path.splitext(n)[0])
         out[kind] = names
-    out["skills"] |= absorbed_names()
     return out
 
 

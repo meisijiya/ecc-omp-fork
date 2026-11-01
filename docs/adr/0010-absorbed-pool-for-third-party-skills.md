@@ -49,11 +49,12 @@
 | 来源 | 条目 | 未收纳原因 |
 | --- | --- | --- |
 | pstack | `arena` `swarm` `why` `architect` `figure-it-out` `show-me-your-work` `how` `teach` `poteto-mode` `poteto-help` `setup-pstack` `automate-me` `reflect` `recall` `ketchup-video` `make-bot-ui` `no-comments` `create-verification-skill` `maintain-verification-skill` `create-formal-verification-skill` `maintain-formal-verification-skill` | 依赖 pstack 体系：模型设置文件、`agents/`、`playbooks/`、harness transcript 目录、Pele 渲染器 |
-| pstack | `tdd` `interrogate` `bro` `idea-refine` `blast-radius` `benchmark-checklist` `unslop` `technical-writing` | 与 mattpocock `tdd` / `grilling` / `wait-what` 或 ECC `change-impact`、`benchmark`、`docs-governance` 重叠；`unslop` 另与本机 `lieflat-less-ai-tone` 重叠 |
+| pstack | `tdd` `interrogate` `bro` `blast-radius` `benchmark-checklist` `unslop` `technical-writing` | 与 mattpocock `tdd` / `grilling` / `wait-what` 或 ECC `change-impact`、`benchmark`、`docs-governance` 重叠；`unslop` 另与本机 `lieflat-less-ai-tone` 重叠 |
 | pstack | `laziness-protocol` `subtract-before-you-add` `guard-the-context-window` `boundary-discipline` `model-the-domain` `prove-it-works` `test-behavior-not-implementation` `encode-lessons-in-structure` `migrate-callers-then-delete-legacy-apis` `never-block-on-the-human` `explain-the-number` `attack-the-premise` `build-the-lever` `minimize-reader-load` `principle-fix-root-causes` `principle-type-system-discipline` | 与 ponytail、mattpocock `domain-modeling`、本 fork 规则或 `correct` 本身重叠（后两条分别被 `correct` 的「先修根因」与 `typescript-best-practices` 的正文吸收） |
 | pstack | `in-your-own-words` `ketchup` | 价值低于占行成本：前者是 315B 的一句话提示，后者依赖 `bro` 的语感而 `bro` 与 mattpocock `wait-what` 重叠 |
 | addyosmani | `api-and-interface-design` `code-review-and-quality` `code-simplification` `security-and-hardening` `observability-and-instrumentation` `performance-optimization` `ci-cd-and-automation` `shipping-and-launch` `git-workflow-and-versioning` `test-driven-development` `browser-testing-with-devtools` `deprecation-and-migration` `frontend-ui-engineering` `source-driven-development` `incremental-implementation` `documentation-and-adrs` `planning-and-task-breakdown` `debugging-and-error-recovery` `spec-driven-development` `doubt-driven-development` `idea-refine` `using-agent-skills` `context-engineering` | 与本 fork 现有 skill / agent 或 mattpocock 同名功能重叠 |
 | addyosmani | `interview-me` | 触发词与 mattpocock `grilling` 正面冲突（其自身列了 "grill me" / "stress-test my thinking"），按 ADR-0009「一事一入口」不引入 |
 
-算术闭合：pstack 58 = 4 条收纳 skill + 8 条 principle 输入（合成 bundle）+ 46 条未收纳；
-addyosmani 25 = 1 条收纳 + 24 条未收纳。合计收纳 6 条运行条目（含 1 条生成物）。
+算术闭合：pstack 58 = 4 条收纳 skill + 8 条 principle 输入（合成 bundle）+ 46 条未收纳
+（34 条普通 skill − 4 条收纳 = 30，加 16 条未用 principle）；addyosmani 25 = 1 条收纳 + 24 条未收纳。
+合计收纳 6 条运行条目（含 1 条生成物）。
