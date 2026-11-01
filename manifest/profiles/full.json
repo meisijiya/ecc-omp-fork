@@ -1,6 +1,14 @@
 {
   "profile": "full",
   "description": "上游 pi/core 全量技能（去掉与其它插件重复的 5 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。",
+  "absorbed": [
+    "correct",
+    "sharpen",
+    "engineering-principles",
+    "constraint-driven-development",
+    "statechart",
+    "typescript-best-practices"
+  ],
   "skills": {
     "groups": ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10"],
     "exclude": [

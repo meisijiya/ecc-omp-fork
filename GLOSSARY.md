@@ -6,7 +6,11 @@
 | --- | --- | --- |
 | 上游资产池 | 本 fork 从上游 ECC 取到的资产快照；只由同步脚本改写。 | 上游仓库、vendor、依赖包 |
 | fork 自有资产 | 在本仓直接编写、不来自上游的资产。 | 本地资产、自定义资产、补丁集 |
-| 物化 | 把「上游资产池 + fork 自有资产 + 当前 profile」确定性地改写成一棵运行树的过程。 | 构建、编译、导出、生成 |
+| 物化 | 把「上游资产池 + 收纳资产池 + fork 自有资产 + 当前 profile」确定性地改写成一棵运行树的过程。 | 构建、编译、导出、生成 |
+| 收纳资产池 | 从 fork 之外的仓库取来、经改写后随本 fork 发布的资产快照；放在 `absorbed/<source>/`，与上游资产池互不干扰。 | vendor、第三方库、依赖包、external |
+| 收纳名 | 收纳资产在运行树里的名字，同样是 `ecc-omp-` 前缀（如 `ecc-omp-correct`）；来源记在 `manifest/absorbed.json`，不靠名字编码。 | 原名、外部名、vendor 名 |
+| 适配改写表 | `tools/absorbed_fixups.py` 里的规则集：每条规则对上游原文做一次确定的替换，命中数不为 1 即失败。 | 补丁、脚本、替换表 |
+| 来源 pin | 每个收纳来源当前对齐的提交（repo + commit），记录在 `manifest/absorbed.json`，手动升级。 | 版本号、tag、最新版 |
 | 上游名 | 资产在 affaan-m/ECC 里的名称（如 `api-design`）；只出现在上游资产池与 manifest 里。 | 原名、pool 名、旧名 |
 | 运行名 | 资产在运行树里的名字：上游名加 `ecc-omp-` 前缀（如 `ecc-omp-api-design`）；模型能读能调的就是它。 | 物化名、新名、fork 名 |
 | 运行树 | 物化产物，即仓库根的 skill、agent、rule 三类目录，也是部署给 omp 的内容。 | dist、输出目录、产物目录 |

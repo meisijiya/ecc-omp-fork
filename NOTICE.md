@@ -34,7 +34,79 @@
 4. **工具化**：新增 `tools/`（上游更新、重放选择、部署、生成目录、引用门禁）。
 5. **自有资产**：`own/skills/` 下除选路表 `ecc-omp-router` 外，新增三条发布 / 运维 skill
    （`ecc-omp-release-management`、`ecc-omp-observability`、`ecc-omp-incident-response`），
-   为本 fork 原创内容，随 fork 一起分发（MIT）。
+   为本 fork 原创内容，随 fork 一起分发（MIT）。第三方正文见下节「第三方收纳资产」。
 
 正文改动由脚本确定性生成，`pool/` 中的上游快照保持原样，便于逐条比对。
 
+## 第三方收纳资产
+
+`absorbed/` 下的 skill 来自两个 MIT 许可的仓库，经 `tools/absorbed_fixups.py` 的声明式
+规则改写后随本 fork 发布。来源 commit、逐文件摘要与许可声明记在 `manifest/absorbed.json`，
+刷新用 `python tools/sync_absorbed.py`；决策记录见
+`docs/adr/0010-absorbed-pool-for-third-party-skills.md`。
+
+| 来源 | 许可 | 随附文本 |
+| --- | --- | --- |
+| [backnotprop/pstack](https://github.com/backnotprop/pstack) | MIT，Copyright (c) 2026 Lauren Tan | `absorbed/pstack/LICENSE` |
+| [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) | MIT，Copyright (c) 2025 Addy Osmani | `absorbed/addyosmani/LICENSE` |
+
+收纳的 6 条运行条目：`ecc-omp-correct`、`ecc-omp-sharpen`、`ecc-omp-engineering-principles`
+（由 8 份 principle 快照拼接生成）、`ecc-omp-constraint-driven-development`、
+`ecc-omp-statechart`、`ecc-omp-typescript-best-practices`。其中后两条只进 `full` profile，
+`lite` 一条不收纳。
+
+### 许可正文
+
+本插件分发的 `NOTICE.md` 自身即携带下列许可全文（MIT 要求版权声明与许可正文随副本分发）。
+
+#### backnotprop/pstack
+
+```
+MIT License
+
+Copyright (c) 2026 Lauren Tan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+#### addyosmani/agent-skills
+
+```
+MIT License
+
+Copyright (c) 2025 Addy Osmani
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```

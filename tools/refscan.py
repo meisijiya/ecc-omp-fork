@@ -320,7 +320,28 @@ def materialized_sets():
                 elif n.endswith(".md"):
                     names.add(os.path.splitext(n)[0])
         out[kind] = names
+    out["skills"] |= absorbed_names()
     return out
+
+
+def absorbed_names():
+    """Upstream names of the absorbed skills declared in the absorbed manifest.
+
+    They are not part of the upstream pool -- a separate pool pins them
+    (ADR-0010) -- but a reference must be recognized the same way: "cropped"
+    when the active profile does not ship it, "unknown" only when the asset
+    does not exist anywhere.  Reading the manifest instead of the directory
+    keeps the answer stable while `absorbed/` is being refreshed.
+    """
+    path = os.path.join(ROOT, "manifest", "absorbed.json")
+    if not os.path.isfile(path):
+        return set()
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f"cannot read manifest/absorbed.json: {exc}")
+    return set(data.get("skills") or ())
 
 
 def pool_sets():
@@ -338,6 +359,7 @@ def pool_sets():
                 elif n.endswith(".md"):
                     names.add(os.path.splitext(n)[0])
         out[kind] = names
+    out["skills"] |= absorbed_names()
     return out
 
 

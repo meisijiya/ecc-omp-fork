@@ -31,6 +31,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KINDS = ("skills", "commands", "agents")
 INCLUDE_MARK = "+"
 EXTRA_MARK = "extra"
+ABSORBED_MARK = "收纳"
 
 
 def load(*parts):
@@ -78,6 +79,8 @@ def profile_members(groups, profile, extra=None):
     and "extra" for entries appended through selection.json's `extra` block.
     """
     out = {k: {} for k in KINDS}
+    for name in profile.get("absorbed", ()):
+        out["skills"][name] = ABSORBED_MARK
     for kind in KINDS:
         sel = profile.get(kind, {})
         exclude = set(sel.get("exclude", []))
@@ -113,8 +116,8 @@ def build_origin(groups, members_by_profile, extras):
                     order[kind].append(name)
         for members in members_by_profile:
             for name, src in members[kind].items():
-                if src == INCLUDE_MARK and name not in origin[kind]:
-                    origin[kind][name] = INCLUDE_MARK
+                if src in (INCLUDE_MARK, ABSORBED_MARK) and name not in origin[kind]:
+                    origin[kind][name] = src
                     order[kind].append(name)
         for name in extras[kind]:
             if name not in origin[kind]:
@@ -163,6 +166,14 @@ def main():
         extra = extras if name == active else None
         members_by_profile[name] = profile_members(groups, p, extra)
 
+    absorbed_skills = load("manifest", "absorbed.json").get("skills", {})
+    unknown_absorbed = sorted(
+        {n for p in profiles.values() for n in p.get("absorbed", ())}
+        - set(absorbed_skills))
+    if unknown_absorbed:
+        raise SystemExit(
+            f"profiles select absorbed skills manifest/absorbed.json does not"
+            f" declare: {unknown_absorbed}")
     enabled = materialized()
     rows = build_origin(groups, list(members_by_profile.values()), extras)
 
@@ -188,7 +199,9 @@ def main():
         "",
         "> 表里的**运行名**是本 fork 物化后实际使用的名字：上游名统一加 "
         "`ecc-omp-` 前缀（skill / command / agent）。",
-        "> 「上游名」是 affaan-m/ECC 里的名称，用于回溯上游来源。",
+        "> 「上游名」是 affaan-m/ECC 里的名称，用于回溯上游来源；组列写「收纳」的资产"
+        "来自 fork 之外的仓库，经改写后随本 fork 发布（ADR-0010，来源见 "
+        "`manifest/absorbed.json`），它们的「上游名」一列是来源仓库里的名字，不是 ECC 名。",
     ]
 
     for kind in KINDS:

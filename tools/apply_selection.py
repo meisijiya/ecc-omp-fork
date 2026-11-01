@@ -6,6 +6,8 @@ Inputs
   manifest/selection.json       active profile pointer + extra items
   manifest/profiles/<p>.json    the profile's group/exclude/include choices
   pool/                         upstream snapshot: skills/ commands/ agents/
+  absorbed/<source>/<path>/     third-party skills this fork rewrote and ships
+                                (ADR-0010; profile-selected, copied verbatim)
   own/skills/                   fork-authored skills (always included)
   own/rules/                    fork-authored rules (always included)
   own/patches/<kind>/<name>.md  fork-authored full replacements for upstream assets
@@ -54,6 +56,7 @@ import refscan  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 POOL = os.path.join(ROOT, "pool")
+ABSORBED = os.path.join(ROOT, "absorbed")
 OWN = os.path.join(ROOT, "own")
 KINDS = ("skills", "commands", "agents")
 RUNTIME = ("skills", "commands", "agents", "rules")
@@ -226,7 +229,7 @@ def active_selection():
             f"manifest/selection.json extra has unknown keys {sorted(unknown_keys)};"
             f" allowed: {sorted(KINDS)}"
         )
-    merged = {}
+    merged = {"absorbed": list(profile.get("absorbed", []))}
     for kind in KINDS:
         base = profile.get(kind, {})
         merged[kind] = {
@@ -756,7 +759,7 @@ def rename_patched_skill(directory, runtime):
     write_text(p, set_frontmatter_name(text, runtime))
 
 
-def materialize_skills(names, report, ctx):
+def materialize_skills(names, report, ctx, absorbed=()):
     out = os.path.join(ROOT, "skills")
     tmp = out + ".tmp"
     if os.path.isdir(tmp):
@@ -804,6 +807,36 @@ def materialize_skills(names, report, ctx):
                         text = open(p, encoding="utf-8", errors="ignore").read()
                         write_text(p, adapt_text(text, paths_only=True))
         count += 1
+    absorbed_count = 0
+    for name, entry in absorbed:
+        rt = refscan.runtime_name(name)
+        dst = os.path.join(tmp, rt)
+        shutil.copytree(os.path.join(ABSORBED, entry["source"], entry["path"]), dst)
+        for root, _dirs, files in os.walk(dst):
+            for f in sorted(files):
+                if not f.endswith(".md"):
+                    continue
+                p = os.path.join(root, f)
+                rel = os.path.relpath(p, dst).replace(os.sep, "/")
+                text = open(p, encoding="utf-8").read()
+                base = refscan.link_context("skills/%s/%s" % (rt, rel))
+                text, notes = refscan.repair_text(
+                    text, ctx["mat"], ctx["pool"],
+                    owner=rt, external=ctx["external"],
+                    link_base=base["base"] if base else None,
+                    link_exists=refscan.source_exists)
+                for note in notes:
+                    report.append(f"  skills/{rt}/{rel}:{note['line']}: "
+                                  f"{note['action']} `{note['name']}`")
+                write_text(p, text)
+            for f in sorted(files):
+                if not f.endswith((".py", ".sh", ".js", ".mjs", ".ts")):
+                    continue
+                p = os.path.join(root, f)
+                text = open(p, encoding="utf-8", errors="ignore").read()
+                write_text(p, adapt_text(text, paths_only=True))
+        absorbed_count += 1
+
     own = os.path.join(OWN, "skills")
     own_count = 0
     if os.path.isdir(own):
@@ -815,7 +848,7 @@ def materialize_skills(names, report, ctx):
     if os.path.isdir(out):
         shutil.rmtree(out)
     os.rename(tmp, out)
-    return count, own_count
+    return count, own_count, absorbed_count
 
 
 def materialize_commands(names, report, ctx):
@@ -933,13 +966,25 @@ def main():
             )
         resolved[kind] = resolve(groups[kind], sel[kind], kind, known)
 
+    absorbed_manifest = load_json("manifest", "absorbed.json")
+    absorbed_entries = absorbed_manifest.get("skills", {})
+    absorbed = []
+    for name in sel.get("absorbed", []):
+        entry = absorbed_entries.get(name)
+        if entry is None:
+            raise SystemExit(
+                f"absorbed: {name!r} is selected but manifest/absorbed.json "
+                f"does not declare it")
+        absorbed.append((name, entry))
+
     own_skills = os.path.join(OWN, "skills")
     own_rules = os.path.join(OWN, "rules")
     # the materialized set is spelled the way the runtime tree spells it:
     # every asset of the upstream pool carries the prefix of this fork
     mat = {
         "skills": {refscan.runtime_name(n) for n in resolved["skills"]} | (
-            {n for n in os.listdir(own_skills)
+            {refscan.runtime_name(n) for n, _e in absorbed}
+            | {n for n in os.listdir(own_skills)
              if os.path.isdir(os.path.join(own_skills, n))}
             if os.path.isdir(own_skills) else set()
         ),
@@ -949,6 +994,12 @@ def main():
                    if f.endswith(".md")}
                   if os.path.isdir(own_rules) else set()),
     }
+    absorbed_runtime = {refscan.runtime_name(n) for n, _e in absorbed}
+    clash = absorbed_runtime & (mat["skills"] - absorbed_runtime)
+    if clash:
+        raise SystemExit(
+            f"absorbed skills collide with another source: {sorted(clash)};"
+            f" rename one of them")
     pool = refscan.pool_sets()
     ctx = {
         "mat": mat,
@@ -960,10 +1011,13 @@ def main():
     for kind in KINDS:
         names = resolved[kind]
         if kind == "skills":
-            pool_count, own_count = materialize_skills(names, report, ctx)
+            pool_count, own_count, absorbed_count = materialize_skills(
+                names, report, ctx, absorbed)
             counts["skills"] = pool_count
             counts["skills_own"] = own_count
-            print(f"skills: {pool_count} from pool + {own_count} fork-owned")
+            counts["skills_absorbed"] = absorbed_count
+            print(f"skills: {pool_count} from pool + {absorbed_count} absorbed"
+                  f" + {own_count} fork-owned")
         elif kind == "commands":
             counts["commands"] = materialize_commands(names, report, ctx)
             print(f"commands: {counts['commands']} materialized")

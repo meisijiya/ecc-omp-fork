@@ -1,6 +1,12 @@
 {
   "profile": "java-python",
   "description": "Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。",
+  "absorbed": [
+    "correct",
+    "sharpen",
+    "engineering-principles",
+    "constraint-driven-development"
+  ],
   "skills": {
     "groups": ["G1", "G2", "G3", "G4", "G5", "G6", "G7"],
     "exclude": [

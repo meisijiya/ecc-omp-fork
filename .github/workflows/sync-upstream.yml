@@ -23,6 +23,7 @@ on:
       - main
     paths:
       - "pool/**"
+      - "absorbed/**"
       - "own/**"
       - "skills/**"
       - "agents/**"
@@ -114,6 +115,13 @@ jobs:
 
       - name: Upstream pin gate
         run: python tools/check_upstream_pin.py
+
+      # The absorbed pool is refreshed by tools/sync_absorbed.py from two
+      # third-party repositories pinned in manifest/absorbed.json.  This gate
+      # is offline: it proves the stored copies still match their manifest
+      # digests and that the generated bundle equals its inputs.
+      - name: Absorbed pool gate
+        run: python tools/check_absorbed.py
 
       # The three profiles share one working tree, so they run one after the
       # other instead of as a parallel matrix.  check_refs.py judges the tree

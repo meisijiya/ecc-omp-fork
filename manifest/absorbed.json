@@ -1,0 +1,125 @@
+{
+  "sources": {
+    "pstack": {
+      "repo": "https://github.com/backnotprop/pstack",
+      "commit": "25abb38559ddbabec563646224d09eff9a250eca",
+      "license": {
+        "file": "LICENSE",
+        "copyright": "Copyright (c) 2026 Lauren Tan"
+      }
+    },
+    "addyosmani": {
+      "repo": "https://github.com/addyosmani/agent-skills",
+      "commit": "8bfcc1f9916f2eea55494d8c1fa7f4bde867dd9e",
+      "license": {
+        "file": "LICENSE",
+        "copyright": "Copyright (c) 2025 Addy Osmani"
+      }
+    }
+  },
+  "skills": {
+    "correct": {
+      "source": "pstack",
+      "path": "skills/correct",
+      "files": {
+        "SKILL.md": "9556b40a775ec54c2926aedcea5fff0bc79e30342dddbeb87d1044f6c0da72dc"
+      }
+    },
+    "sharpen": {
+      "source": "pstack",
+      "path": "skills/sharpen",
+      "files": {
+        "SKILL.md": "4e651bd0f8670d8edadd625a597f556a65938eb37d79dee64914d7e6b2d34e24"
+      }
+    },
+    "statechart": {
+      "source": "pstack",
+      "path": "skills/statechart",
+      "exclude": [
+        "scripts/test/"
+      ],
+      "files": {
+        "SKILL.md": "53528db359f2de829f2c64c3ba52bf0013ef349904d774b76bf5f7a851637aae",
+        "references/render.md": "8cca446eb0c8f87f2ef7b97c4b149f59aacdc153134b4217c4bcde09b10ac3c4",
+        "scripts/backends/cfg.ts": "aea4d8766d214e7fa08f4881f1037319655e75eb56652e1b6d5d4f13a162e3e1",
+        "scripts/backends/mermaid.ts": "75704b2704a9399a39479ff704a580d5b9a1d0fede01fe771df28bf799b434b6",
+        "scripts/backends/plain-text.ts": "e2bedb855eb3806ec3fe7a7bfa49baa309fb4cf0da425b5fe1e0686268ce255a",
+        "scripts/backends/report.ts": "730b4048578ab0468e1581f16fec60b246e321161effb68e481efb373f0f2501",
+        "scripts/frontends/config.ts": "5eeab1e755f20a2c83b408c6503fdc9c6b10c971d8dedad3f912bd15f9763daf",
+        "scripts/frontends/dot.ts": "4eef9ec848557dcd01ca8dbbec75b71c0653c1b73583108bafbb6f559f6d677b",
+        "scripts/frontends/marks.ts": "eb0120e61a4004a435c7b7c46916da9dc8b2fa8696ed0d3eb64dc953fed3ab11",
+        "scripts/frontends/messages.ts": "36bfc6fb3ffa86897661efb2aa67bd95b55a4da9a3e952831f6e0668826b4b92",
+        "scripts/frontends/spec.ts": "450cdfc8d0577a96818ca3697efebbbf70b530a4ba7e3eee03cf1ba8d3f1a0fd",
+        "scripts/frontends/trace.ts": "7d083cf89b81c41556fc3fd5f07019886e0f6783c632475e7181ac4b81887367",
+        "scripts/frontends/value.ts": "7c54be394b7a10f60591858a0f08fb1e8dc0941df1f38ede07fbe7719ff56da0",
+        "scripts/frontends/verdict.ts": "0d0a9d6b6d6da5a7c48851b86d9d041f22982404dda6288795a1715138d7008b",
+        "scripts/frontends/view.ts": "2c0af8939321c5aaed4b6ecac8ce6a98d0e6774d8bd15d4b02fe4f406b8c9620",
+        "scripts/ir.ts": "5602beca4e4ac08421cfa07e4da989f0e75439f1d136cc923226909e771dc7ff",
+        "scripts/package.json": "2c36842f391275b0f343a38947560adee155fab4a744eacef1e595e9f07c4e3d",
+        "scripts/passes/annotate.ts": "dc8eeee09c3a9a0c060f32fb1d554e01bd80e5265751cdeb041ef3e19561b92a",
+        "scripts/passes/label.ts": "b5ef402369c5e7846be1fd39165e95cbfe715fc36eb9331a0401b26523c539c9",
+        "scripts/passes/lift.ts": "8977dddc6c93bb2e3914d5b50760eb66876107ba51e2b8cf9e18611b4c40c89c",
+        "scripts/passes/loop-check.ts": "07d459385849aa35834040bf34e279c39baba68244ec9da17c57703a6ee8e2d4",
+        "scripts/passes/paths.ts": "9af1066b007ef86cb05c5e278eef09f090f1e46eb91d356e5146edbd4fee4ec7",
+        "scripts/passes/reach.ts": "b52b38f926814937b733221b40bd31075a69a2fb91ecbce2164752a8684bc5d6",
+        "scripts/passes/region-check.ts": "8a6e0618740a14bb7048f6563b4324958177f4685d4d6d90364cc6245b1498b4",
+        "scripts/passes/regions.ts": "d740ebfdbb5ec7b4984412a635a596b43af7a77b8bcb49a1463c8afa75299f72",
+        "scripts/pipeline.ts": "8aa8d9295ab6762f7f2ffae91a0aee98b1a1314747c875edba4598fdab8ed543",
+        "scripts/run.ts": "f330e0a3b0a9f8181c2e52252c4a47db3f0a64f79a7cca5490263e33a5f13c72",
+        "scripts/statechart": "aeffb7077850fd4c225e3d18049ca6ed7b988cf48e88cd8463526a7feaa74d13",
+        "scripts/statechart.ts": "1c653f05d0cd0f3298455701f36e3d7d1f837f93e6e642f7c20afb5d613c2d12",
+        "scripts/tsconfig.json": "6bb2af53f7b251328e6117cd4fb761468dc4d4b96085d31a19304ccb73c32cc1",
+        "scripts/worker.ts": "1f18ed5ef806982e05e8a40fc217e88257700b28b63cb4acbd647872f85f782b"
+      }
+    },
+    "typescript-best-practices": {
+      "source": "pstack",
+      "path": "skills/typescript-best-practices",
+      "files": {
+        "SKILL.md": "a649a62fe52ee5907e5db347118beee6ec2f7bfee5c9079a6b7eac2ec25116a0",
+        "references/patterns.md": "12e70c9419a8b3f5d6a1ab80e272c1f00a43ac0b3bbf72d68199033570e5de77"
+      }
+    },
+    "constraint-driven-development": {
+      "source": "addyosmani",
+      "path": "skills/constraint-driven-development",
+      "files": {
+        "SKILL.md": "cbdf914b1884fead8f8fedcb9e62f9c857d77e92f508883be1037fa7b9771f33",
+        "references/floor-guard.md": "b24459dd17569a1cc12686afb2253d8a47991325310e6e003cba4b384d7535d9",
+        "scripts/quality-gate.mjs": "460decdd1365c8bedb2538e9e4b7b248693bd78ea662268b314df4f5907d5fc2"
+      }
+    },
+    "engineering-principles": {
+      "source": "pstack",
+      "path": "skills/engineering-principles",
+      "files": {
+        "SKILL.md": "e9a08ab2d9ccf8bc50616c0bc4cf3a278ee81e8097523c28dd4b8f30bf369bc1"
+      }
+    }
+  },
+  "bundle": {
+    "skill": "engineering-principles",
+    "source": "pstack",
+    "path": "skills/engineering-principles",
+    "from": [
+      "principle-separate-before-serializing-shared-state",
+      "principle-make-operations-idempotent",
+      "principle-sequence-verifiable-units",
+      "principle-foundational-thinking",
+      "principle-exhaust-the-design-space",
+      "principle-outcome-oriented-execution",
+      "principle-redesign-from-first-principles",
+      "principle-experience-first"
+    ],
+    "files": {
+      "principle-exhaust-the-design-space.md": "2de83d99f93f60ec6313455b0bc9aa9f0bfb93dd59f414f403691322db00d4db",
+      "principle-experience-first.md": "58903529d733b1c1a7c9ccf127d45ef3c7d0d9f0b81164a4dc6b80efe6f2912b",
+      "principle-foundational-thinking.md": "864b827e8199d946ce58beca0f89c4ed4099ed6e426fb698a3aaa45de2a9eea2",
+      "principle-make-operations-idempotent.md": "7aa9327cf1f1aa057e95d47a0a78bd88a8f9d556b608866fee939d455a53a019",
+      "principle-outcome-oriented-execution.md": "10eb91633aa570355ba4bb37088fcade2b22e498df7a58edc749e65bc5a78e2d",
+      "principle-redesign-from-first-principles.md": "170e0a658783e43fee8ec5a8c2422a4abb8f69cef621dd1819a95910b8207034",
+      "principle-separate-before-serializing-shared-state.md": "05294b40448e927c5da1c7b6f5c6b9fed3744637e3833d2d948b9154a9dd00bb",
+      "principle-sequence-verifiable-units.md": "2ccbbacc56ace5afdfb8670cef19d7bd009fb2a0033b9a741cbdf2b6baf72187"
+    }
+  }
+}

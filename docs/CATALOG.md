@@ -7,12 +7,12 @@
 
 | profile | 说明 | skills | commands | agents |
 | --- | --- | --- | --- | --- |
-| `full` | 上游 pi/core 全量技能（去掉与其它插件重复的 5 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。 | 127 | 0 | 49 |
-| `java-python` | Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。 | 65 | 0 | 22 |
+| `full` | 上游 pi/core 全量技能（去掉与其它插件重复的 5 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。 | 133 | 0 | 49 |
+| `java-python` | Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。 | 69 | 0 | 22 |
 | `lite` | 最小可用集：只保留后端核心规范 + Java/Python 主力 + 通用评审 agent。每轮提示开销最低。 | 39 | 0 | 11 |
 
 > 表里的**运行名**是本 fork 物化后实际使用的名字：上游名统一加 `ecc-omp-` 前缀（skill / command / agent）。
-> 「上游名」是 affaan-m/ECC 里的名称，用于回溯上游来源。
+> 「上游名」是 affaan-m/ECC 里的名称，用于回溯上游来源；组列写「收纳」的资产来自 fork 之外的仓库，经改写后随本 fork 发布（ADR-0010，来源见 `manifest/absorbed.json`），它们的「上游名」一列是来源仓库里的名字，不是 ECC 名。
 
 ## Skills
 
@@ -150,6 +150,12 @@
 | G10 | ⬜ `ecc-omp-ecc-council` | `ecc-council` | full |
 | G10 | ⬜ `ecc-omp-product-capability` | `product-capability` | full |
 | G10 | ⬜ `ecc-omp-product-lens` | `product-lens` | full |
+| 收纳 | ✅ `ecc-omp-correct` | `correct` | full, java-python |
+| 收纳 | ✅ `ecc-omp-sharpen` | `sharpen` | full, java-python |
+| 收纳 | ✅ `ecc-omp-engineering-principles` | `engineering-principles` | full, java-python |
+| 收纳 | ✅ `ecc-omp-constraint-driven-development` | `constraint-driven-development` | full, java-python |
+| 收纳 | ⬜ `ecc-omp-statechart` | `statechart` | full |
+| 收纳 | ⬜ `ecc-omp-typescript-best-practices` | `typescript-best-practices` | full |
 
 ## Commands
 

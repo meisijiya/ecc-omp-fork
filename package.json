@@ -1,6 +1,6 @@
 {
   "name": "ecc-omp-fork",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "ECC 的 omp 编程子集 fork：编程向 skills / agents + omp 专属 rules（不含命令）",
   "license": "MIT",
   "keywords": [

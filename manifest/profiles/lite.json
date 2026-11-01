@@ -1,6 +1,7 @@
 {
   "profile": "lite",
   "description": "最小可用集：只保留后端核心规范 + Java/Python 主力 + 通用评审 agent。每轮提示开销最低。",
+  "absorbed": [],
   "skills": {
     "groups": ["G1", "G2", "G3", "G4", "G6"],
     "exclude": [

@@ -1,6 +1,12 @@
 {
   "profile": "java-python",
   "extra": {
+    "absorbed": [
+      "correct",
+      "sharpen",
+      "engineering-principles",
+      "constraint-driven-development"
+    ],
     "skills": {
       "groups": [
         "G1",
@@ -80,6 +86,7 @@
   "counts": {
     "skills": 65,
     "skills_own": 4,
+    "skills_absorbed": 4,
     "commands": 0,
     "agents": 22,
     "rules": 5

@@ -42,6 +42,8 @@ description: 本 fork（ECC 编程子集）的选路索引——把任务类型�
 2. 加能复现该 bug 的回归测试（见规则 `rule://fork-verification`）。
 3. 改完跑目标测试，贴真实输出；收工前跑一遍 `skill://ecc-omp-verification-loop` 的六阶段验证。
 4. 派 `ecc-omp-silent-failure-hunter` 排查同类的吞错/坏兜底。
+5. 同一个错误被纠正过两次：读 `skill://ecc-omp-correct`，把它变成架构、类型、lint 或测试上的约束，
+ 而不是再写一遍提醒。
 
 ## 写或改测试
 
@@ -74,7 +76,9 @@ description: 本 fork（ECC 编程子集）的选路索引——把任务类型�
 
 1. agent `ecc-omp-architect`（系统设计、扩展性）、`ecc-omp-homelab-architect`（家用网络与实验环境）。
 2. 读 `skill://ecc-omp-hexagonal-architecture`（端口与适配器）、`skill://ecc-omp-contract-first`。
-3. 需求本身含糊时：先把需求拆成可验证的验收标准，再动手。
+3. 状态机、协议、多阶段流程要证明规则不被违反：读 `skill://ecc-omp-statechart`（TLA+ 模型检查 +
+ Mermaid 状态图，报告给最短违例路径；仅 full profile）。
+4. 需求本身含糊时：先把需求拆成可验证的验收标准，再动手。
 
 ## 性能问题
 
@@ -95,7 +99,9 @@ description: 本 fork（ECC 编程子集）的选路索引——把任务类型�
    监控面板本身读 `skill://ecc-omp-dashboard-builder`。
 4. 出线上事故：读 `skill://ecc-omp-incident-response`（定级、止血与回滚决策、沟通记录、复盘）。
 5. 上线前自检：读 `skill://ecc-omp-production-audit`（按证据清单给 0–100 分，低于 70 不许上线）。
-6. agent `ecc-omp-network-troubleshooter`（连通性/DNS/路由）、`ecc-omp-network-config-reviewer`（设备配置审查）。
+6. 项目还没有写下来的质量底线（覆盖率、包体积、可访问性、安全扫描）：读
+   `skill://ecc-omp-constraint-driven-development`，把底线写成 CONSTRAINTS.md 并盯住 diff 里被悄悄降的门槛。
+7. agent `ecc-omp-network-troubleshooter`（连通性/DNS/路由）、`ecc-omp-network-config-reviewer`（设备配置审查）。
 
 ## 文档
 
@@ -114,11 +120,26 @@ description: 本 fork（ECC 编程子集）的选路索引——把任务类型�
 `skill://ecc-omp-bun-runtime` `skill://ecc-omp-compose-multiplatform-patterns` `skill://ecc-omp-nestjs-patterns` `skill://ecc-omp-nextjs-turbopack`
 `skill://ecc-omp-vite-patterns` `skill://ecc-omp-vue-patterns` `skill://ecc-omp-react-patterns`。
 
+## 补缺（收纳资产）
+
+这几条来自 fork 之外、经改写后随本 fork 发布（来源与 pin 记在 `manifest/absorbed.json`），
+上游 ECC 与 mattpocock 都没有对应条目：
+
+| 要解决的事 | 读什么 |
+| --- | --- |
+| 同一个错误被反复纠正，要让它不可能再犯 | `skill://ecc-omp-correct` |
+| 项目没有写下来的质量底线，或有人靠改阈值/跳过测试变绿 | `skill://ecc-omp-constraint-driven-development` |
+| 任务本身不够深（不是不够大），要重写任务再动手 | `skill://ecc-omp-sharpen` |
+| 非平凡工作的通用工程原则（幂等、可验证单元、共享状态、设计空间、第一性原理、体验优先） | `skill://ecc-omp-engineering-principles` |
+| 状态机 / 协议 / 多阶段流程要证明规则不被违反 | `skill://ecc-omp-statechart`（仅 full profile） |
+| 读写 `.ts` / `.tsx` | `skill://ecc-omp-typescript-best-practices`（仅 full profile） |
+
 ---
 
 ## 拿不准的时候
 
 - 先读本表对应的 skill 正文，再决定要不要派 agent。
+- 拿不准该读哪条时，先看 `skill://ecc-omp-engineering-principles` 有没有对应小节，比通读本表快。
 - 规则（`rule://`）里是硬约束（工具名、验证纪律、密钥处理），skill 里是做法建议。
   两者冲突时以规则为准。
 - 如果某个 skill 读不到，说明当前 profile 没启用它；查 `manifest/selection.json` 或换 profile。

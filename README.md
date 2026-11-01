@@ -288,6 +288,7 @@ CI 用 `GITHUB_TOKEN` + `peter-evans/create-pull-request` 自动开 PR（分支
 | `python tools/check_refs.py [--json]` | **引用自洽**：运行树与 `own/` 里是否还有指向「本 fork 不提供的资产」的悬空引用（`skill://`、`skills/<name>/`、`commands\|agents\|rules/<name>.md`、斜杠命令、反引号裸名） | 0 = 无缺陷悬空（fork 自有目录里的 profile 裁剪引用只列出、不算缺陷）；1 = 有缺陷悬空（打印明细）；2 = profile 指针读不出来（`active_profile` 缺失或未知） | 每次改完运行树或上游文本后；提交前必跑 |
 | `python tools/check_adapt.py [--tree <dir>] [--json]` | **omp 适配不变式**：INV-01..INV-15（无 `model:`、无 `CLAUDE.md`、无 `.claude/`、无 Claude CLI 调用、无 Claude 工具名、skill/agent/rule/command 的 frontmatter 完整性、`/name` 引用必须落在物化 commands 名单内、无「Claude Code」措辞等） | 0 = 无违规；1 = 有违规（逐条给 `文件:行号` + token）；2 = 用法错误或树不可读 | 每次改完运行树后；提交前必跑 |
 | `python tools/check_upstream_pin.py` | **上游 pin 一致性**：`manifest/upstream.json` 形状（`commit` 必须是 40 位小写 hex、`repo` 非空）、`manifest/groups.json` 的 upstream.commit 镜像与 pin 一致、`pool/` 摘要等于 pin 的 `pool_digest`、`NOTICE.md` 引用的上游 commit 等于 pin 的 commit | 0 = 四项全过；1 = 有校验项不符（逐条打印）；2 = `manifest/upstream.json` / `manifest/groups.json` 读不出来 | 每次同步上游之后；提交前必跑 |
+| `python tools/check_absorbed.py [--json]` | **收纳池一致性**：`manifest/absorbed.json` 形状（来源 repo + 40 位 commit）、`absorbed/` 每个 skill 的文件摘要集合与 manifest 一致、生成物 `ecc-omp-engineering-principles` 等于其输入重新拼接的结果、改写后不残留 `CLAUDE.md` / `.claude/` / `disable-model-invocation` / `paths` | 0 = 一致；1 = 有缺陷（逐条打印）；2 = manifest 读不出来 | 改了 `absorbed/`、`manifest/absorbed.json` 或 `tools/absorbed_fixups.py` 之后；提交前必跑 |
 | `python tools/check_plugin_isolation.py [--probe\|--toggle-test] [--omp <path>] [--cwd <dir>] [--root <dir>] [--json]` | **插件启停可见性**：本插件四类资产在启用态是否被 omp 提供、禁用态是否全部消失 | 0 = 符合预期；1 = 不一致（打印 FAIL 明细）；2 = 工具错误 | 改了部署方式、插件启停状态或 omp 版本之后 |
 
 补充说明：
@@ -297,7 +298,7 @@ CI 用 `GITHUB_TOKEN` + `peter-evans/create-pull-request` 自动开 PR（分支
   所以运行树里剩下的「裁剪引用」只可能出现在 fork 自有的目录文件（`own/skills/`、`own/rules/`
   及其物化副本）——那两份文件描述的是整个 fork 的目录，本来就会点名别的 profile 的资产。
   这类引用被单独列出（`check_refs.py` 的 `profile_cropped_in_fork_catalog`），
-  但不算缺陷；名字在 `pool/` 里根本不存在的引用在任何文件里都仍然是缺陷。
+  但不算缺陷；名字在 `pool/` 与 `manifest/absorbed.json` 里都不存在的引用在任何文件里都仍然是缺陷。
   `check_adapt.py` 的 INV-14 用同一条分界。
 - `check_adapt.py` 只扫运行树 `skills/ commands/ agents/ rules/`（含子目录里的脚本文件），
   不扫 `own/`、`pool/`、`.github/`；`rules/omp-tooling.md` 在 INV-05 / INV-15 上是硬编码豁免
@@ -347,6 +348,7 @@ hide: true
 | `pool/skills/` | 上游 ECC `pi/core` 的 132 个 skill 快照（未裁剪） |
 | `pool/commands/` | 上游 ECC `pi/core` 的 24 个 command 快照（本 fork 不发布，仅留档回溯） |
 | `pool/agents/` | 上游 ECC `agents/` 的 71 个 agent 快照（原始，含 Claude 专有 `model:` 行） |
+| `absorbed/<source>/` | 收纳资产池：fork 之外仓库的 skill，经 `tools/absorbed_fixups.py` 改写后入库；各来源 `LICENSE` 随目录走（ADR-0010） |
 | `own/skills/` | fork 自有 skill（`ecc-omp-router` 选路表 + 发布 / 可观测性 / 事故响应三条运维 skill），始终物化 |
 | `own/rules/` | fork 自有 rules（5 条 omp 适配规则），始终物化 |
 | `manifest/groups.json` | 三类资产的分类目录（分组 → 成员）；顶层 `upstream` 块是上游 pin 的同步镜像 |
@@ -354,6 +356,7 @@ hide: true
 | `manifest/selection.json` | 当前 profile 指针 + 额外追加项 |
 | `manifest/applied.json` | 上次物化实际生效的 profile 与数量（部署前用来校验是否过期） |
 | `manifest/upstream.json` | 上游 pin 唯一事实源：`repo` / `commit` / `version` / `pool_digest` |
+| `manifest/absorbed.json` | 收纳来源 pin（`repo` + `commit`）、逐文件 sha256、bundle 配方、各来源许可与版权行 |
 | `manifest/external_refs.json` | 本 fork 不提供、但由别的 omp 插件提供的资产（如 `code-review` skill）；这些名字不带本 fork 前缀 |
 | `skills/` `agents/` `rules/` | **物化后的实际生效内容**（入库，便于 diff 上游变更）；skill 目录名、agent 文件名带 `ecc-omp-` 前缀 |
 | `tools/` | 更新、裁剪、部署、生成目录、各项门禁的脚本 |
@@ -384,6 +387,12 @@ python tools/check_adapt.py
 
 # 上游 pin 门禁：检查 pin / 镜像 / pool 摘要三者一致
 python tools/check_upstream_pin.py
+
+# 收纳池门禁：来源 pin / 逐文件摘要 / 生成物 / 许可 / 换行符 / 残留文本
+python tools/check_absorbed.py
+
+# 刷新收纳池（拉取两个来源的 pin → 重放改写规则 → 刷摘要 → 重新生成 bundle）
+python tools/sync_absorbed.py
 
 # 插件隔离自证：临时禁用→探测→启用→探测（finally 恢复原状态）
 python tools/check_plugin_isolation.py --toggle-test
