@@ -23,7 +23,7 @@ omp 决定要不要读某个 skill，看的是系统提示里那一行：名字�
 
 1. **中文触发描述放一张表**：`manifest/skill_descriptions.zh.json`，138 条
    （132 条上游 + 6 条收纳）。`pool/` 不动，`tools/apply_selection.py` 在物化时把中文
-   描述写进运行树的 frontmatter，`name` 仍按 ADR-0007 加 `ecc-omp-` 前缀。
+   描述写进运行树的 frontmatter，`name` 仍按 ADR-0007 加 `forge-` 前缀。
 2. **描述规范**：两句。第一句说做什么，第二句说什么时候用并带 2 到 4 个中文触发词。
    提示行成本不超过 45 token（汉字按 1 token，其余字符按三分之一 token 估）。
    不用冒号，顿号最多一处，不用「不是…而是」这类翻案腔，不用赋能、闭环、抓手这类词，
@@ -31,7 +31,7 @@ omp 决定要不要读某个 skill，看的是系统提示里那一行：名字�
 3. **缺条目即失败**：`apply_selection.py` 遇到没有中文描述的 skill 直接退出；
    `tools/check_zh_descriptions.py` 另外校验覆盖面、写法与自有 skill 的中文描述，
    并接入 CI（`check_absorbed` 之后一步）。
-4. **router 同时改**：`own/skills/ecc-omp-router/SKILL.md` 的 description 加上触发标记与
+4. **router 同时改**：`own/skills/forge-router/SKILL.md` 的 description 加上触发标记与
    否定边界（什么时候该读、什么时候不用读），正文新增「按用户的话找 skill」四张分主题
    表，把中文说法直接映射到 skill 与 agent；结尾保留「读完就 read 对应 skill」的指令。
    `own/rules/fork-workflow.md` 的 description 与正文都写明开工前先读 router。

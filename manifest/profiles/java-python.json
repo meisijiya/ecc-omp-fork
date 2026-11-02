@@ -5,10 +5,31 @@
     "correct",
     "sharpen",
     "engineering-principles",
-    "constraint-driven-development"
+    "constraint-driven-development",
+    "qa",
+    "requirement-analysis",
+    "test-strategy",
+    "test-case-writing",
+    "test-case-review",
+    "exploratory-testing",
+    "automated-e2e-testing",
+    "api-testing",
+    "bug-analysis",
+    "regression-testing",
+    "test-reliability",
+    "core",
+    "qa-memory"
   ],
   "skills": {
-    "groups": ["G1", "G2", "G3", "G4", "G5", "G6", "G7"],
+    "groups": [
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "G5",
+      "G6",
+      "G7"
+    ],
     "exclude": [
       "api-connector-builder",
       "mcp-server-patterns",
@@ -52,7 +73,13 @@
     "include": []
   },
   "agents": {
-    "groups": ["A1", "A2", "A3", "A4", "A7"],
+    "groups": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A7"
+    ],
     "exclude": [
       "rag-pipeline-reviewer",
       "mle-reviewer",

@@ -9,25 +9,25 @@ globs: ["**/*"]
 
 | 用途 | Agent |
 | --- | --- |
-| 注释质量 | `ecc-omp-comment-analyzer` |
-| 静默失败排查 | `ecc-omp-silent-failure-hunter` |
-| 类型设计评估 | `ecc-omp-type-design-analyzer` |
-| 代码简化 | `ecc-omp-code-simplifier` |
-| 死代码清理 | `ecc-omp-refactor-cleaner` |
-| 系统设计 | `ecc-omp-architect` |
-| 构建报错修复 | `ecc-omp-build-error-resolver` |
-| 性能优化 | `ecc-omp-performance-optimizer` |
-| 端到端测试 | `ecc-omp-e2e-runner` |
-| Java / Kotlin | `ecc-omp-java-reviewer` `ecc-omp-java-build-resolver` `ecc-omp-kotlin-reviewer` `ecc-omp-kotlin-build-resolver` |
-| Python | `ecc-omp-python-reviewer` `ecc-omp-django-reviewer` `ecc-omp-django-build-resolver` `ecc-omp-fastapi-reviewer` |
-| 数据 / 网络 / 运维 | `ecc-omp-database-reviewer` `ecc-omp-network-architect` `ecc-omp-network-config-reviewer` `ecc-omp-network-troubleshooter` `ecc-omp-homelab-architect` |
+| 注释质量 | `forge-comment-analyzer` |
+| 静默失败排查 | `forge-silent-failure-hunter` |
+| 类型设计评估 | `forge-type-design-analyzer` |
+| 代码简化 | `forge-code-simplifier` |
+| 死代码清理 | `forge-refactor-cleaner` |
+| 系统设计 | `forge-architect` |
+| 构建报错修复 | `forge-build-error-resolver` |
+| 性能优化 | `forge-performance-optimizer` |
+| 端到端测试 | `forge-e2e-runner` |
+| Java / Kotlin | `forge-java-reviewer` `forge-java-build-resolver` `forge-kotlin-reviewer` `forge-kotlin-build-resolver` |
+| Python | `forge-python-reviewer` `forge-django-reviewer` `forge-django-build-resolver` `forge-fastapi-reviewer` |
+| 数据 / 网络 / 运维 | `forge-database-reviewer` `forge-network-architect` `forge-network-config-reviewer` `forge-network-troubleshooter` `forge-homelab-architect` |
 
 omp 自带的通用 agent（`scout`、`reviewer`、`task`、`sonic` 等）不在此表：
 通用代码评审、提交信息、需求拆解、探索、TDD 指导这些职能由那些 agent 与其它插件的 skill 承担，
 本 fork 不再重复提供。
 一点例外：
 
-- 本 fork 的 agent 名一律带 `ecc-omp-` 前缀（如 `ecc-omp-java-reviewer`），
+- 本 fork 的 agent 名一律带 `forge-` 前缀（如 `forge-java-reviewer`），
   因此与 omp 内置的 agent 不重名：派子代理时用带前缀的那个。
 - `seance` 是 omp 自带的会话回溯 agent，**不是始终可用**：它只在可生成时才会被列出，
   plan 模式下会被隐藏，而且必须额外提供 `sourceSession` 等专属参数。

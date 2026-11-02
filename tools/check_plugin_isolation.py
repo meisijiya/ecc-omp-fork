@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify that ecc-omp-fork's assets are served by omp only while the plugin is enabled.
+"""Verify that omp-skill-forge's assets are served by omp only while the plugin is enabled.
 
 The repo ships as an omp plugin. omp discovers a plugin's skills, commands,
 rules and task agents by scanning the *enabled* plugin root, so disabling the
@@ -15,8 +15,8 @@ printed with a shorter description than its frontmatter carries. For skills
 the resolved text comes from `omp skill list`; for the other kinds the prompt
 line is the only view there is. Comparing the resolved text is what separates
 our assets from a builtin of the same shape, so name collisions do not
-produce false leaks. This fork's assets carry the `ecc-omp-` prefix, so the
-builtin `security-reviewer` and our `ecc-omp-security-reviewer` no longer
+produce false leaks. This fork's assets carry the `forge-` prefix, so the
+builtin `security-reviewer` and our `forge-security-reviewer` no longer
 share a name at all.
 
 The expected asset set is read from the *installed* plugin root omp links this
@@ -56,7 +56,7 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-PLUGIN_NAME = "ecc-omp-fork"
+PLUGIN_NAME = "omp-skill-forge"
 KINDS = ("skills", "commands", "rules", "agents")
 AGENT_DIR = Path.home() / ".omp" / "agent"
 

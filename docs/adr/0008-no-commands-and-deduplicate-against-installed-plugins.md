@@ -20,7 +20,7 @@
 magpie 用户级 skill 集（40 个）、playwright、karpathy-guidelines。
 它们已覆盖通用评审、TDD、规格拆解、探索、提交信息这几类职能。
 
-结果是同一件事有两个入口：模型面对「做代码评审」这类请求时，既可能派 `ecc-omp-code-reviewer`，
+结果是同一件事有两个入口：模型面对「做代码评审」这类请求时，既可能派 `forge-code-reviewer`，
 也可能读 mattpocock 的 `code-review` skill。命名区分（ADR-0007）解决的是「找得到哪个名字」，
 解决不了「该用哪个」——重复的能力各自被注入提示行，token 双倍花，行为还不一致。
 
@@ -56,9 +56,9 @@ magpie 用户级 skill 集（40 个）、playwright、karpathy-guidelines。
 
 ### Alternative 1: 保留命令，只删重叠的 skill 与 agent
 
-- **Pros**: `/ecc-omp-plan` 这类入口比「读 skill 再派 agent」少一步。
-- **Cons**: 命令与 skill 大量指向同一件事（`/ecc-omp-code-review` 与 `code-review` skill、
-  `/ecc-omp-test-coverage` 与各语言测试 skill），保留命令等于保留第二套流程入口；
+- **Pros**: `/forge-plan` 这类入口比「读 skill 再派 agent」少一步。
+- **Cons**: 命令与 skill 大量指向同一件事（`/forge-code-review` 与 `code-review` skill、
+  `/forge-test-coverage` 与各语言测试 skill），保留命令等于保留第二套流程入口；
   用户明确表示命令用得少。
 - **Why not**: 保留一套用得少的入口，代价是每轮多 24 条命令广告与两套心智模型。
 
@@ -85,7 +85,7 @@ magpie 用户级 skill 集（40 个）、playwright、karpathy-guidelines。
 
 ### Negative
 
-- 习惯了 `/ecc-omp-plan` 这类入口的用户要改成「派 agent」或「读 skill」。
+- 习惯了 `/forge-plan` 这类入口的用户要改成「派 agent」或「读 skill」。
 - 上述能力依赖本机其它插件在场。卸载 mattpocock 会让对应能力消失，
   而本 fork 不会补上。
 

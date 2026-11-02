@@ -34,7 +34,7 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-INSTALL = os.path.join(os.path.expanduser("~"), ".omp", "agent", "local", "ecc-omp-fork")
+INSTALL = os.path.join(os.path.expanduser("~"), ".omp", "agent", "local", "omp-skill-forge")
 RUNTIME = ("skills", "agents", "rules")
 # This fork ships no commands; an older deploy may have left them in the
 # install root, where omp would keep advertising them.
@@ -147,7 +147,7 @@ def main():
     args = ap.parse_args()
 
     if args.uninstall:
-        subprocess.run(["omp", "plugin", "uninstall", "ecc-omp-fork"], check=False)
+        subprocess.run(["omp", "plugin", "uninstall", "omp-skill-forge"], check=False)
         if os.path.isdir(INSTALL):
             shutil.rmtree(INSTALL)
         print("removed", INSTALL)

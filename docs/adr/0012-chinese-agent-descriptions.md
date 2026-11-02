@@ -22,7 +22,7 @@ omp 的 `task` 工具按 agent 的 name + description 选人。agent 描述仍�
 1. **中文触发描述放一张表**：`manifest/agent_descriptions.zh.json`，71 条，键为 agent
    上游名（去掉 `.md` 的文件名），与 `manifest/groups.json["agents"]` 声明的 71 个
    成员一一对应。`pool/` 不动，`tools/apply_selection.py` 的 `materialize_agents`
-   在物化时把中文描述写进运行树的 frontmatter，`name` 仍按 ADR-0007 加 `ecc-omp-`
+   在物化时把中文描述写进运行树的 frontmatter，`name` 仍按 ADR-0007 加 `forge-`
    前缀，不改 `name` 行，不改 `tools:` 行。
 2. **复用同一套写法门禁**：`tools/check_zh_descriptions.py` 同时管 skill 与 agent，
    覆盖 `manifest/groups.json["agents"]` 里声明的每个 agent；写法规则复用现有的

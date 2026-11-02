@@ -65,7 +65,7 @@ How a relative link is judged
 
 Asset names
   Upstream assets are installed under a prefix: the runtime name of the
-  upstream asset `api-design` is `ecc-omp-api-design`. The prefix is part of
+  upstream asset `api-design` is `forge-api-design`. The prefix is part of
   this plugin's public surface -- it is what distinguishes the asset from the
   same-named asset of another plugin.
 
@@ -94,7 +94,7 @@ How dangling references are repaired
 
     * a relative link that resolves becomes the canonical URI
       (`[react-testing](../react-testing/SKILL.md)` ->
-      `skill://ecc-omp-react-testing`), because a relative path that leaves
+      `skill://forge-react-testing`), because a relative path that leaves
       the skill directory cannot be followed at runtime,
     * a slash command that names the owning skill ("User types
       `/my-skill`") is the upstream spelling of "the user invokes this skill"
@@ -140,7 +140,7 @@ KINDS = ("skills", "commands", "agents", "rules")
 # plugin can never be mistaken for the same-named asset of another plugin:
 # the prefix is part of the fork's public surface -- it is what the user
 # types and what the model reads. The fork's own assets keep their name.
-RUNTIME_PREFIX = "ecc-omp-"
+RUNTIME_PREFIX = "forge-"
 
 # The singular kind names the reports use.
 SINGULAR = {"skills": "skill", "commands": "command",
@@ -343,6 +343,29 @@ def absorbed_names():
     return set(data.get("skills") or ())
 
 
+def absorbed_dirs():
+    """Upstream name -> directory holding the absorbed copy of that skill.
+
+    The absorbed pool keeps its own layout (`absorbed/<source>/<path>`),
+    so a file inside an absorbed skill is not found under `pool/`.  The
+    manifest is the index: `skills` maps the upstream name to the source
+    and the path inside it.
+    """
+    path = os.path.join(ROOT, "manifest", "absorbed.json")
+    if not os.path.isfile(path):
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f"cannot read manifest/absorbed.json: {exc}")
+    out = {}
+    for name, entry in (data.get("skills") or {}).items():
+        out[name] = os.path.join(ROOT, "absorbed", entry["source"],
+                                 entry["path"])
+    return out
+
+
 def pool_sets():
     """{kind: set(names)} for the upstream snapshot (typing / recognition only)."""
     out = {}
@@ -434,7 +457,7 @@ class Assets:
     """The two spellings of every asset this fork ships.
 
     An upstream asset has a name in the pool ("api-design") and a name in
-    the runtime tree ("ecc-omp-api-design"). The fork's own assets are not
+    the runtime tree ("forge-api-design"). The fork's own assets are not
     renamed: their name is their name.
 
     Every lookup goes through this object. A reference is judged in either
@@ -738,13 +761,17 @@ def source_exists(rel_path):
                 if name.startswith(RUNTIME_PREFIX) else name)
     candidates = [upstream] if upstream != name else []
     candidates.append(name)
+    absorbed = absorbed_dirs()
     for candidate in candidates:
         # a fork replacement wins over the upstream snapshot, and the fork's
         # own skills win over both -- exactly the order the materializer
         # copies in
-        for base in (os.path.join(ROOT, "own", "patches", "skills", candidate),
-                     os.path.join(ROOT, "own", "skills", candidate),
-                     os.path.join(ROOT, "pool", "skills", candidate)):
+        bases = [os.path.join(ROOT, "own", "patches", "skills", candidate),
+                 os.path.join(ROOT, "own", "skills", candidate),
+                 os.path.join(ROOT, "pool", "skills", candidate)]
+        if candidate in absorbed:
+            bases.append(absorbed[candidate])
+        for base in bases:
             if not os.path.isdir(base):
                 continue
             if not rest:
@@ -833,7 +860,7 @@ def table_header_cells(lines, idx):
 def context_cues(text):
     """Return the set of asset kinds mentioned by a piece of context.
 
-    A URI that names an asset ("`skill://ecc-omp-api-design`") is a
+    A URI that names an asset ("`skill://forge-api-design`") is a
     pointer, not a mention of a kind. The materializer writes those URIs
     into the text, and counting them as a cue would turn every unknown
     backticked word next to them into an asset reference -- a name upstream
@@ -946,7 +973,7 @@ def self_command_name(name, mat, assets, owner, owner_kind):
     """Does this slash command name the owning skill itself?
 
     A skill that writes "/my-skill" points at itself. The name may be
-    spelled the way the runtime tree spells it ("ecc-omp-my-skill") or the
+    spelled the way the runtime tree spells it ("forge-my-skill") or the
     way the upstream pool spells it ("my-skill"). Only a skill that this
     profile ships may be addressed this way.
     """
@@ -1603,13 +1630,13 @@ def repair_text(text, mat, pool, owner=None, external=None,
 
     * a relative markdown link that resolves becomes the canonical URI
       (``[react-testing](../react-testing/SKILL.md)`` ->
-      ``skill://ecc-omp-react-testing``). The model reads the markdown
+      ``skill://forge-react-testing``). The model reads the markdown
       source, and a relative path that leaves the skill directory cannot be
       followed at runtime, so the link text is replaced by the URI that
       works.
     * a name that resolves is written the way the runtime tree spells it,
       so that the text points at the asset that is actually shipped
-      (``api-design`` -> ``skill://ecc-omp-api-design``).
+      (``api-design`` -> ``skill://forge-api-design``).
     * a slash command that names the owner itself ("User types
       `/my-skill`") is the upstream spelling of "the user invokes this
       skill" -- it is rewritten to the skill URI instead of being cut.

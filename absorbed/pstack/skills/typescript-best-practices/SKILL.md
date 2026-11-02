@@ -1,5 +1,5 @@
 ---
-name: ecc-omp-typescript-best-practices
+name: forge-typescript-best-practices
 description: TypeScript best practices. Use when reading or editing any .ts or .tsx file.
 ---
 

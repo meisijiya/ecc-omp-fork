@@ -1,0 +1,1139 @@
+{
+  "version": 1,
+  "sources": {
+    "pstack": {
+      "repo": "https://github.com/backnotprop/pstack",
+      "commit": "25abb38559ddbabec563646224d09eff9a250eca",
+      "assets": {
+        "correct": {
+          "path": "skills/correct",
+          "tree": "5ebee6f7fe9cd7f97b1c698dbbf4f19ed8c4c5f4",
+          "version": null
+        },
+        "engineering-principles": {
+          "path": "skills/engineering-principles",
+          "tree": null,
+          "version": null
+        },
+        "sharpen": {
+          "path": "skills/sharpen",
+          "tree": "726fcb216692c5a2ad78b5c2ae19c2e6ac66cb67",
+          "version": null
+        },
+        "statechart": {
+          "path": "skills/statechart",
+          "tree": "a79a48c6970be3b63d6efefb0a306b7c87de88d0",
+          "version": null
+        },
+        "typescript-best-practices": {
+          "path": "skills/typescript-best-practices",
+          "tree": "1ccca3c7c0d358c0cd5edd313cd03a31fc75ee5f",
+          "version": null
+        }
+      }
+    },
+    "ecc": {
+      "repo": "https://github.com/affaan-m/ECC",
+      "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+      "assets": {
+        "a11y-architect": {
+          "path": "agents/a11y-architect.md",
+          "tree": "63f6c594c017af8741bf6f9da195552a87e5f6fc",
+          "version": null
+        },
+        "accessibility": {
+          "path": "pi/core/skills/accessibility",
+          "tree": "1b9f71ad866637569eea15730e6bb36ecb8a7a03",
+          "version": null
+        },
+        "agent-architecture-audit": {
+          "path": "pi/core/skills/agent-architecture-audit",
+          "tree": "ca010515a0a51075982cb9b7f2c23fd25d08278e",
+          "version": null
+        },
+        "agent-eval": {
+          "path": "pi/core/skills/agent-eval",
+          "tree": "441ec6d618f25c67be2d2ee3a6498f15e10bd023",
+          "version": null
+        },
+        "agent-evaluator": {
+          "path": "agents/agent-evaluator.md",
+          "tree": "2657d35d9035d91c24ae0a6a4e0a7a4b01cdffac",
+          "version": null
+        },
+        "agent-harness-construction": {
+          "path": "pi/core/skills/agent-harness-construction",
+          "tree": "667e6b5ca398ed607f04e48aa30e78841abd24b8",
+          "version": null
+        },
+        "agent-introspection-debugging": {
+          "path": "pi/core/skills/agent-introspection-debugging",
+          "tree": "462c22a06871221b14db9930b5e07f72b6b06373",
+          "version": null
+        },
+        "agent-security-hardening": {
+          "path": "pi/core/skills/agent-security-hardening",
+          "tree": "a26d9d6b369d56f65a3b542d571ccf54787dbe99",
+          "version": null
+        },
+        "agent-self-evaluation": {
+          "path": "pi/core/skills/agent-self-evaluation",
+          "tree": "1aa0e06f89546f819d3512244a8c93476fe30087",
+          "version": null
+        },
+        "agentic-engineering": {
+          "path": "pi/core/skills/agentic-engineering",
+          "tree": "3911778d1fd81c8ea576a75f9e9e99d2a3dc6372",
+          "version": null
+        },
+        "ai-first-engineering": {
+          "path": "pi/core/skills/ai-first-engineering",
+          "tree": "f026d056d3c04d71da1e00f85ccc59ebd338652e",
+          "version": null
+        },
+        "android-clean-architecture": {
+          "path": "pi/core/skills/android-clean-architecture",
+          "tree": "bbe7734ca66a473a4cc1438835154ba187a74667",
+          "version": null
+        },
+        "angular-developer": {
+          "path": "pi/core/skills/angular-developer",
+          "tree": "4290dad6007ee8fcae32a91a914bdb10fd5bbfbf",
+          "version": null
+        },
+        "api-connector-builder": {
+          "path": "pi/core/skills/api-connector-builder",
+          "tree": "0282c47c1c5113c398527a515e251b143067ca2b",
+          "version": null
+        },
+        "api-design": {
+          "path": "pi/core/skills/api-design",
+          "tree": "cf2611776c37ed6a4855866e28e48074a780bb91",
+          "version": null
+        },
+        "architect": {
+          "path": "agents/architect.md",
+          "tree": "d65bea41b09b14faeb02f1dba606ce9f16933a33",
+          "version": null
+        },
+        "architecture-decision-records": {
+          "path": "pi/core/skills/architecture-decision-records",
+          "tree": "8ef1b47817b880d5c5668fbd3ab8cd231e4fc960",
+          "version": null
+        },
+        "backend-patterns": {
+          "path": "pi/core/skills/backend-patterns",
+          "tree": "70475f53e26735e2bed243107ff921c2c32cdca5",
+          "version": null
+        },
+        "benchmark": {
+          "path": "pi/core/skills/benchmark",
+          "tree": "c87e63b49db036c5925b0bb4b3f97b4df8c1081e",
+          "version": null
+        },
+        "benchmark-optimization-loop": {
+          "path": "pi/core/skills/benchmark-optimization-loop",
+          "tree": "d3b6dfe1228dfd329fc87c8ec3b082a7cf7ffc12",
+          "version": null
+        },
+        "bengali-nlp": {
+          "path": "pi/core/skills/bengali-nlp",
+          "tree": "96bb38d3f31795986437a73d23cd64142f9a6a91",
+          "version": null
+        },
+        "bengali-reviewer": {
+          "path": "agents/bengali-reviewer.md",
+          "tree": "bbe0217503ee1ac0883ec7c7d6e5925a06a600d8",
+          "version": null
+        },
+        "blueprint": {
+          "path": "pi/core/skills/blueprint",
+          "tree": "b6445650a8e88b3d0c88d10bb97f8a83d97f3dfa",
+          "version": null
+        },
+        "build-error-resolver": {
+          "path": "agents/build-error-resolver.md",
+          "tree": "23be5e7c9ed26dbf3751f83eb4853c7add5612a0",
+          "version": null
+        },
+        "bun-runtime": {
+          "path": "pi/core/skills/bun-runtime",
+          "tree": "c108e88a8d3dd5c98054edeca32a171416d79211",
+          "version": null
+        },
+        "change-impact": {
+          "path": "pi/core/skills/change-impact",
+          "tree": "e3fb4dd684715bf86d02ed8d2c3d280f345e0767",
+          "version": null
+        },
+        "chief-of-staff": {
+          "path": "agents/chief-of-staff.md",
+          "tree": "0ceb151f3b9dc6e004f73a05dc4bde34825c9093",
+          "version": null
+        },
+        "click-path-audit": {
+          "path": "pi/core/skills/click-path-audit",
+          "tree": "759065819e6c95b9c89f7807f5209b4c46d88c87",
+          "version": null
+        },
+        "clickhouse-io": {
+          "path": "pi/core/skills/clickhouse-io",
+          "tree": "e348878fe6b4ab2d22a7ed015b2e30c6d3357de0",
+          "version": null
+        },
+        "code-architect": {
+          "path": "agents/code-architect.md",
+          "tree": "4877556d2164c7394359bf20914321fcc30b4545",
+          "version": null
+        },
+        "code-explorer": {
+          "path": "agents/code-explorer.md",
+          "tree": "a97d0c3ce35f0493273f448fb70ec6f72f8c8278",
+          "version": null
+        },
+        "code-reviewer": {
+          "path": "agents/code-reviewer.md",
+          "tree": "884d94ec2d45a51ba091519dbee416c7d563e3d6",
+          "version": null
+        },
+        "code-simplifier": {
+          "path": "agents/code-simplifier.md",
+          "tree": "b14a4926c79551a2fd80629f9b3a5f703f36204f",
+          "version": null
+        },
+        "code-tour": {
+          "path": "pi/core/skills/code-tour",
+          "tree": "43f77e87d04a7459abacc3ef7d08a59a434b8f35",
+          "version": null
+        },
+        "codebase-onboarding": {
+          "path": "pi/core/skills/codebase-onboarding",
+          "tree": "0b07c79e5f5b4d54047eaeaffb484a30d6332012",
+          "version": null
+        },
+        "coding-standards": {
+          "path": "pi/core/skills/coding-standards",
+          "tree": "cba68c74a296bc865d33e6178cb07abc39bb94d6",
+          "version": null
+        },
+        "comment-analyzer": {
+          "path": "agents/comment-analyzer.md",
+          "tree": "a8e0f48e618bebb5a56b59997c306cbe99435201",
+          "version": null
+        },
+        "commit-reviewer": {
+          "path": "agents/commit-reviewer.md",
+          "tree": "3181edcf14afd113fbf72d3413709d61502c5513",
+          "version": null
+        },
+        "compose-multiplatform-patterns": {
+          "path": "pi/core/skills/compose-multiplatform-patterns",
+          "tree": "1f77d9232774a7812e1be3022a1bb060ffbde8d0",
+          "version": null
+        },
+        "content-hash-cache-pattern": {
+          "path": "pi/core/skills/content-hash-cache-pattern",
+          "tree": "59eaf12aade8f5fc48b2d7e77c96d8807c8b5bf8",
+          "version": null
+        },
+        "context-and-decisions": {
+          "path": "pi/core/skills/context-and-decisions",
+          "tree": "8899173500e1b547f8c59e9e65abfce00caa79e1",
+          "version": null
+        },
+        "contract-first": {
+          "path": "pi/core/skills/contract-first",
+          "tree": "29e194d1f3010f43875c0918cfa3a1951872dd9a",
+          "version": null
+        },
+        "conventional-commit-review": {
+          "path": "pi/core/skills/conventional-commit-review",
+          "tree": "928d0cea6d762344ffce8418e31781fc2b830e24",
+          "version": null
+        },
+        "conversation-analyzer": {
+          "path": "agents/conversation-analyzer.md",
+          "tree": "1e557c2dc3b2d6c71d5764e9b0d669c05bd4f883",
+          "version": null
+        },
+        "cost-aware-llm-pipeline": {
+          "path": "pi/core/skills/cost-aware-llm-pipeline",
+          "tree": "e34c5789a5f01ee4144eb9886733c7ca2f0dcca5",
+          "version": null
+        },
+        "cpp-build-resolver": {
+          "path": "agents/cpp-build-resolver.md",
+          "tree": "9eb29d969968f366160d61284800a4039fad8291",
+          "version": null
+        },
+        "cpp-coding-standards": {
+          "path": "pi/core/skills/cpp-coding-standards",
+          "tree": "f61788dbce2ff996ec7d71764f890298f784afb9",
+          "version": null
+        },
+        "cpp-reviewer": {
+          "path": "agents/cpp-reviewer.md",
+          "tree": "d29e7ae19620ba37f5727eadedf92d698dc91cd0",
+          "version": null
+        },
+        "cpp-testing": {
+          "path": "pi/core/skills/cpp-testing",
+          "tree": "2c27de53011040cae5673d8acfa2f0a592c242f7",
+          "version": null
+        },
+        "csharp-reviewer": {
+          "path": "agents/csharp-reviewer.md",
+          "tree": "57bbaf6d65de8cc06b2171eaab7bafaa84cb2efe",
+          "version": null
+        },
+        "csharp-testing": {
+          "path": "pi/core/skills/csharp-testing",
+          "tree": "013a35ba2160a6f7723f5f26495dd4a35d440078",
+          "version": null
+        },
+        "dart-build-resolver": {
+          "path": "agents/dart-build-resolver.md",
+          "tree": "872b99e4eb71aac0a90632468bd0be39e66b88a6",
+          "version": null
+        },
+        "dart-flutter-patterns": {
+          "path": "pi/core/skills/dart-flutter-patterns",
+          "tree": "92253cbba0298bda6e359517abd4bc97196cc03f",
+          "version": null
+        },
+        "dashboard-builder": {
+          "path": "pi/core/skills/dashboard-builder",
+          "tree": "9f05adcf569e07051e316bdcbb00df0788a3e7b2",
+          "version": null
+        },
+        "data-throughput-accelerator": {
+          "path": "pi/core/skills/data-throughput-accelerator",
+          "tree": "69f445408d16c35daad8ce81b84eee7bae81ee87",
+          "version": null
+        },
+        "database-migrations": {
+          "path": "pi/core/skills/database-migrations",
+          "tree": "b0acdc0e55cafeeef965a66c6827dedb240a8cd9",
+          "version": null
+        },
+        "database-reviewer": {
+          "path": "agents/database-reviewer.md",
+          "tree": "8537765b7ca94b5b349267b1b36cb5d9fd92d626",
+          "version": null
+        },
+        "deployment-patterns": {
+          "path": "pi/core/skills/deployment-patterns",
+          "tree": "55265cfe9c4b8a8db109533e1b111fd7cbf9b2f6",
+          "version": null
+        },
+        "design-system": {
+          "path": "pi/core/skills/design-system",
+          "tree": "4a894196d13121f98e730522e93444a9bbc31aa6",
+          "version": null
+        },
+        "dev-team": {
+          "path": "pi/core/skills/dev-team",
+          "tree": "0cb0b6106366226c45d4db53d5b2bbf5a4084c19",
+          "version": null
+        },
+        "django-build-resolver": {
+          "path": "agents/django-build-resolver.md",
+          "tree": "0a7f93f5135a7d5e33d5ac2adf8e18a9e44cb3ee",
+          "version": null
+        },
+        "django-celery": {
+          "path": "pi/core/skills/django-celery",
+          "tree": "4d521219aa19b7479943637cd7419ac4d3638f26",
+          "version": null
+        },
+        "django-patterns": {
+          "path": "pi/core/skills/django-patterns",
+          "tree": "e7288aaa1e251d9bbfa5d38220ece107a6914778",
+          "version": null
+        },
+        "django-reviewer": {
+          "path": "agents/django-reviewer.md",
+          "tree": "73725e4b427f03d12cc43fd8ff313cbdf0772081",
+          "version": null
+        },
+        "django-security": {
+          "path": "pi/core/skills/django-security",
+          "tree": "1db766ef2f5a681573d99999777721969e3a7c9d",
+          "version": null
+        },
+        "django-tdd": {
+          "path": "pi/core/skills/django-tdd",
+          "tree": "e98966e762d0f4b00a7ed4514175e72a2d13b184",
+          "version": null
+        },
+        "django-verification": {
+          "path": "pi/core/skills/django-verification",
+          "tree": "33b7fb5e94f18b4d4a679cb71e8b3bbbafad9abf",
+          "version": null
+        },
+        "doc-updater": {
+          "path": "agents/doc-updater.md",
+          "tree": "5cc7dac99637e3accf23605edf38ed25b92ed4a0",
+          "version": null
+        },
+        "docker-patterns": {
+          "path": "pi/core/skills/docker-patterns",
+          "tree": "d48762112d567a7d61bff5775fd96ead018ffb88",
+          "version": null
+        },
+        "docs-governance": {
+          "path": "pi/core/skills/docs-governance",
+          "tree": "9447842d8441e7a9021bf772d542582729bbe404",
+          "version": null
+        },
+        "docs-lookup": {
+          "path": "agents/docs-lookup.md",
+          "tree": "f018ce4eb09f209760683f2ae52bfb80640f828d",
+          "version": null
+        },
+        "dotnet-patterns": {
+          "path": "pi/core/skills/dotnet-patterns",
+          "tree": "72562d3bd2cad1c68ecd1203e208578dbb7707e7",
+          "version": null
+        },
+        "e2e-runner": {
+          "path": "agents/e2e-runner.md",
+          "tree": "46a7867d8a3b31b15bc633a28a48fdfc22840ef4",
+          "version": null
+        },
+        "e2e-testing": {
+          "path": "pi/core/skills/e2e-testing",
+          "tree": "e09a865ccb75967d1159adddec1090c26eb7df30",
+          "version": null
+        },
+        "ecc-council": {
+          "path": "pi/core/skills/ecc-council",
+          "tree": "1f56ac5ebf4464f6d50b96dff0545eff63d020b7",
+          "version": null
+        },
+        "error-handling": {
+          "path": "pi/core/skills/error-handling",
+          "tree": "9020de9e00f6b271ca8e89313546e0123f40642f",
+          "version": null
+        },
+        "fastapi-patterns": {
+          "path": "pi/core/skills/fastapi-patterns",
+          "tree": "8faabd50202978adc10e348d8a15af94b1a242b1",
+          "version": null
+        },
+        "fastapi-reviewer": {
+          "path": "agents/fastapi-reviewer.md",
+          "tree": "f4c79b95c238085e777fa10b154dd6e6c5cb2a10",
+          "version": null
+        },
+        "flutter-dart-code-review": {
+          "path": "pi/core/skills/flutter-dart-code-review",
+          "tree": "97d34be246dbda5172b3e482b6ffd0de6be0294f",
+          "version": null
+        },
+        "flutter-reviewer": {
+          "path": "agents/flutter-reviewer.md",
+          "tree": "2d8abef302080d15547eb1a1b166dbf8eed7051a",
+          "version": null
+        },
+        "foundation-models-on-device": {
+          "path": "pi/core/skills/foundation-models-on-device",
+          "tree": "c7f0ff3caad90771751d4d90499814ba8e40d8fd",
+          "version": null
+        },
+        "frontend-a11y": {
+          "path": "pi/core/skills/frontend-a11y",
+          "tree": "a7db5965d4d074a40736c60418d01aad8454edac",
+          "version": null
+        },
+        "frontend-patterns": {
+          "path": "pi/core/skills/frontend-patterns",
+          "tree": "380b1cf11c65e7b2f99631ca67176ffefb9c9a63",
+          "version": null
+        },
+        "fsharp-reviewer": {
+          "path": "agents/fsharp-reviewer.md",
+          "tree": "9628c328e0e2ca8e203fc946423753adb4ec47a7",
+          "version": null
+        },
+        "fsharp-testing": {
+          "path": "pi/core/skills/fsharp-testing",
+          "tree": "6291768255ca0207b1de9c2d3ea8421fd87b9812",
+          "version": null
+        },
+        "gan-evaluator": {
+          "path": "agents/gan-evaluator.md",
+          "tree": "0c3c0c9ee06ba7e19d95f1aff15a4d7644d559da",
+          "version": null
+        },
+        "gan-generator": {
+          "path": "agents/gan-generator.md",
+          "tree": "af0c577ff3180a85e051441914d8da22fde6eeb7",
+          "version": null
+        },
+        "gan-planner": {
+          "path": "agents/gan-planner.md",
+          "tree": "57a018249a89523032f2997e54457ed89fb08c86",
+          "version": null
+        },
+        "git-workflow": {
+          "path": "pi/core/skills/git-workflow",
+          "tree": "05020055c65f40ef9f0ba6d0dc141355a6089bf0",
+          "version": null
+        },
+        "go-build-resolver": {
+          "path": "agents/go-build-resolver.md",
+          "tree": "b3dbe383b4f2d6407a5f136c1a58678568330da2",
+          "version": null
+        },
+        "go-reviewer": {
+          "path": "agents/go-reviewer.md",
+          "tree": "72dc7654ae34325cb6af2340ba752c450e8aae16",
+          "version": null
+        },
+        "golang-patterns": {
+          "path": "pi/core/skills/golang-patterns",
+          "tree": "763d95fcd0915b066a537d63a8ee0a1a76b37aac",
+          "version": null
+        },
+        "golang-testing": {
+          "path": "pi/core/skills/golang-testing",
+          "tree": "ec79dd0b5aa1df23d7362a3c22c1f0a7bd4bb594",
+          "version": null
+        },
+        "harmonyos-app-resolver": {
+          "path": "agents/harmonyos-app-resolver.md",
+          "tree": "ef52fd09de9a9acb33d5b978517addb0f06a28d6",
+          "version": null
+        },
+        "harness-optimizer": {
+          "path": "agents/harness-optimizer.md",
+          "tree": "cdb09e31d43349a108476a449bd24d2106b3a6fc",
+          "version": null
+        },
+        "healthcare-reviewer": {
+          "path": "agents/healthcare-reviewer.md",
+          "tree": "187079ca75367173457be39913b8765d4447659f",
+          "version": null
+        },
+        "hexagonal-architecture": {
+          "path": "pi/core/skills/hexagonal-architecture",
+          "tree": "cc5a6b588875ee9b278cb7432127237824cbadfe",
+          "version": null
+        },
+        "homelab-architect": {
+          "path": "agents/homelab-architect.md",
+          "tree": "608d59eb301162be6c9fa6f6b9a0179839bd04dd",
+          "version": null
+        },
+        "inherit-legacy-style": {
+          "path": "pi/core/skills/inherit-legacy-style",
+          "tree": "3c97fa7e4448e930874481bfcd364ae54dbb1008",
+          "version": null
+        },
+        "intent-driven-development": {
+          "path": "pi/core/skills/intent-driven-development",
+          "tree": "d21a3038acffa440454fd4b539c221627c2f7b2b",
+          "version": null
+        },
+        "java-build-resolver": {
+          "path": "agents/java-build-resolver.md",
+          "tree": "ba638dd07208f38df6fef1a0ae86abec69699359",
+          "version": null
+        },
+        "java-coding-standards": {
+          "path": "pi/core/skills/java-coding-standards",
+          "tree": "82d6c06731702476735e392fcb016274d8845191",
+          "version": null
+        },
+        "java-reviewer": {
+          "path": "agents/java-reviewer.md",
+          "tree": "fbe19bf40d8e69954173af9ae545e3c6490e7da5",
+          "version": null
+        },
+        "jpa-patterns": {
+          "path": "pi/core/skills/jpa-patterns",
+          "tree": "9034c5c2be68fdf6d13ed7f495949495bdf46f1b",
+          "version": null
+        },
+        "kotlin-build-resolver": {
+          "path": "agents/kotlin-build-resolver.md",
+          "tree": "45315270f13e4fd2369c376d75dbe3ae7959771a",
+          "version": null
+        },
+        "kotlin-coroutines-flows": {
+          "path": "pi/core/skills/kotlin-coroutines-flows",
+          "tree": "c95b48ef96193698a2e57ca2f0a53b9126bc3f08",
+          "version": null
+        },
+        "kotlin-exposed-patterns": {
+          "path": "pi/core/skills/kotlin-exposed-patterns",
+          "tree": "c32f1dd6b155584d827476c51ecffe29a3c43be9",
+          "version": null
+        },
+        "kotlin-ktor-patterns": {
+          "path": "pi/core/skills/kotlin-ktor-patterns",
+          "tree": "2408c3384551f01e45c8f7764790198d074e460f",
+          "version": null
+        },
+        "kotlin-patterns": {
+          "path": "pi/core/skills/kotlin-patterns",
+          "tree": "2697a080732edb070db208bdb5a0b33eb434facd",
+          "version": null
+        },
+        "kotlin-reviewer": {
+          "path": "agents/kotlin-reviewer.md",
+          "tree": "95ed8a2c32f8ba2f4bdca8cb4f2d772d92ef263a",
+          "version": null
+        },
+        "kotlin-testing": {
+          "path": "pi/core/skills/kotlin-testing",
+          "tree": "1ba730dbefe847fac0f3bcc2ff7d2800e56f283f",
+          "version": null
+        },
+        "kubernetes-patterns": {
+          "path": "pi/core/skills/kubernetes-patterns",
+          "tree": "7bbcc767ec26834d91bf16ef55e6e5a980b3abf6",
+          "version": null
+        },
+        "laravel-patterns": {
+          "path": "pi/core/skills/laravel-patterns",
+          "tree": "1de36d796ac60c388d0cb1d5413c0e4b4196fca9",
+          "version": null
+        },
+        "laravel-security": {
+          "path": "pi/core/skills/laravel-security",
+          "tree": "8131af8604e07b99538d50a55a342ad2e3b3c0ac",
+          "version": null
+        },
+        "laravel-tdd": {
+          "path": "pi/core/skills/laravel-tdd",
+          "tree": "3a25e9b9ff67004233e0c3d0b52600f6d08a148e",
+          "version": null
+        },
+        "laravel-verification": {
+          "path": "pi/core/skills/laravel-verification",
+          "tree": "a9f05de117bc1bfadbc64641843913d8d9c8904c",
+          "version": null
+        },
+        "latency-critical-systems": {
+          "path": "pi/core/skills/latency-critical-systems",
+          "tree": "952ab7443393f558f7c9e8b1abfa58d4507113bc",
+          "version": null
+        },
+        "liquid-glass-design": {
+          "path": "pi/core/skills/liquid-glass-design",
+          "tree": "98ecb5980c1c9330b1610b4d8b568612b2f04e4a",
+          "version": null
+        },
+        "living-docs-governance": {
+          "path": "pi/core/skills/living-docs-governance",
+          "tree": "6a7661e76dd051ee8c4a87684d42bb0639d30158",
+          "version": null
+        },
+        "loop-operator": {
+          "path": "agents/loop-operator.md",
+          "tree": "4da0665eb5ae3f8dd5712005b9de3583d907769b",
+          "version": null
+        },
+        "make-interfaces-feel-better": {
+          "path": "pi/core/skills/make-interfaces-feel-better",
+          "tree": "e4da7e59af9087fa750ec7359fba7e85b7a70808",
+          "version": null
+        },
+        "marketing-agent": {
+          "path": "agents/marketing-agent.md",
+          "tree": "adf46403e2b5acd0143d2f2eb9fea17ba5c460dc",
+          "version": null
+        },
+        "mcp-server-patterns": {
+          "path": "pi/core/skills/mcp-server-patterns",
+          "tree": "fc7007dfcae735eb2fe464d13b39c7d9cddd4131",
+          "version": null
+        },
+        "ml-adoption-playbook": {
+          "path": "pi/core/skills/ml-adoption-playbook",
+          "tree": "89210a8fad7288c3d33bff9c4e65011a04fc2e14",
+          "version": null
+        },
+        "mle-reviewer": {
+          "path": "agents/mle-reviewer.md",
+          "tree": "9b5c8d55a56ed77167ea2d4f4a32d3f6e19f278f",
+          "version": null
+        },
+        "mle-workflow": {
+          "path": "pi/core/skills/mle-workflow",
+          "tree": "3ceb8888f01d772b4ef926a6d5a27d76d068f88d",
+          "version": null
+        },
+        "module-regression": {
+          "path": "pi/core/skills/module-regression",
+          "tree": "9e2e3e8e9c30b13294aab0a399a79cc02a245cec",
+          "version": null
+        },
+        "motion-advanced": {
+          "path": "pi/core/skills/motion-advanced",
+          "tree": "c699827c6bd3cca1e8354922fc294fb958e9feaa",
+          "version": null
+        },
+        "motion-foundations": {
+          "path": "pi/core/skills/motion-foundations",
+          "tree": "f07d4208762c7e9b66953ee5e227a4dfbd29cc61",
+          "version": null
+        },
+        "motion-patterns": {
+          "path": "pi/core/skills/motion-patterns",
+          "tree": "199eab69a0e7ffc90748358e225f242c61f5e159",
+          "version": null
+        },
+        "mybatis-patterns": {
+          "path": "pi/core/skills/mybatis-patterns",
+          "tree": "7a8357b809b99267e0733472c943b23331b291e2",
+          "version": null
+        },
+        "mysql-patterns": {
+          "path": "pi/core/skills/mysql-patterns",
+          "tree": "40372262b0bfa032b06296c17bdf2b5ecf231eac",
+          "version": null
+        },
+        "nestjs-patterns": {
+          "path": "pi/core/skills/nestjs-patterns",
+          "tree": "54b35d7008963cdb5d7cbd87b00df9a4a0d8ced3",
+          "version": null
+        },
+        "network-architect": {
+          "path": "agents/network-architect.md",
+          "tree": "181fc473a94d2a8c29c365573c12b0d449f4e74a",
+          "version": null
+        },
+        "network-config-reviewer": {
+          "path": "agents/network-config-reviewer.md",
+          "tree": "1362f47015c80626ceda49b561d8975b2240318c",
+          "version": null
+        },
+        "network-troubleshooter": {
+          "path": "agents/network-troubleshooter.md",
+          "tree": "4bd666026de7009175bc521a8b3042aeae800ca8",
+          "version": null
+        },
+        "nextjs-turbopack": {
+          "path": "pi/core/skills/nextjs-turbopack",
+          "tree": "66a39fcf4a029fc34d360437b13f12d953f3a7c6",
+          "version": null
+        },
+        "nuxt4-patterns": {
+          "path": "pi/core/skills/nuxt4-patterns",
+          "tree": "7b1041b9ed14311622c1ae78b19033dbf3d6a35e",
+          "version": null
+        },
+        "opensource-forker": {
+          "path": "agents/opensource-forker.md",
+          "tree": "4c5d8cbb83fb479699789d4cca12fe44e0e32148",
+          "version": null
+        },
+        "opensource-packager": {
+          "path": "agents/opensource-packager.md",
+          "tree": "e6e24199dc2a21f01f5ae370fba48bf27ac97185",
+          "version": null
+        },
+        "opensource-sanitizer": {
+          "path": "agents/opensource-sanitizer.md",
+          "tree": "36688a87af8510f85d2f10a2fd012ae9e982c375",
+          "version": null
+        },
+        "parallel-execution-optimizer": {
+          "path": "pi/core/skills/parallel-execution-optimizer",
+          "tree": "8a6526c2e14d0a7b612e459b7eddd55df6503a0b",
+          "version": null
+        },
+        "performance-optimizer": {
+          "path": "agents/performance-optimizer.md",
+          "tree": "4d5de6f963600ce606020caa70f1ae7cc2ad9aad",
+          "version": null
+        },
+        "perl-patterns": {
+          "path": "pi/core/skills/perl-patterns",
+          "tree": "6b41d4b3a3a0281e550e6c0fbd8e24ba3c86e1fb",
+          "version": null
+        },
+        "perl-security": {
+          "path": "pi/core/skills/perl-security",
+          "tree": "26b29f0509b7b558b26dfc43f3f05d51feb5e2a1",
+          "version": null
+        },
+        "perl-testing": {
+          "path": "pi/core/skills/perl-testing",
+          "tree": "3e1a50480da93705543b232d9844a38584e29e32",
+          "version": null
+        },
+        "php-reviewer": {
+          "path": "agents/php-reviewer.md",
+          "tree": "af90974fcf23ffb2936047f71d3fab0954a0547f",
+          "version": null
+        },
+        "planner": {
+          "path": "agents/planner.md",
+          "tree": "e9e282f54d5ea8dbecae31d00c8647960c089f05",
+          "version": null
+        },
+        "postgres-patterns": {
+          "path": "pi/core/skills/postgres-patterns",
+          "tree": "363862ac5bb33ec6621d63565bcf5d7f92db6be6",
+          "version": null
+        },
+        "pr-test-analyzer": {
+          "path": "agents/pr-test-analyzer.md",
+          "tree": "07bf41ebda6590a73a274e4598e3a00dc654a919",
+          "version": null
+        },
+        "prisma-patterns": {
+          "path": "pi/core/skills/prisma-patterns",
+          "tree": "9519f5f8fb5a1c3b972635d3b1aeb90d94e58957",
+          "version": null
+        },
+        "product-capability": {
+          "path": "pi/core/skills/product-capability",
+          "tree": "09ea16cb2d6add2c29f114878266addf180e750a",
+          "version": null
+        },
+        "product-lens": {
+          "path": "pi/core/skills/product-lens",
+          "tree": "5b531ca8600e7020c19e3e68e845b929efa35e19",
+          "version": null
+        },
+        "production-audit": {
+          "path": "pi/core/skills/production-audit",
+          "tree": "79fc1dcd7b600500b198fb9860c99f1cef3a1a17",
+          "version": null
+        },
+        "python-patterns": {
+          "path": "pi/core/skills/python-patterns",
+          "tree": "a760f82665c97712722cf849f7b0d24872678a70",
+          "version": null
+        },
+        "python-reviewer": {
+          "path": "agents/python-reviewer.md",
+          "tree": "b1b3ee6f53dfb21f1d97b70f4ba5be17a142e11f",
+          "version": null
+        },
+        "python-testing": {
+          "path": "pi/core/skills/python-testing",
+          "tree": "230ac65eff21a3d61da4aa3613f2ced435a73ee0",
+          "version": null
+        },
+        "pytorch-build-resolver": {
+          "path": "agents/pytorch-build-resolver.md",
+          "tree": "88f567968a3058aa1a6828fc2d32fa83681bdfe9",
+          "version": null
+        },
+        "pytorch-patterns": {
+          "path": "pi/core/skills/pytorch-patterns",
+          "tree": "380f3287dc3e7b1fc7e2f231aee68674e9a7ef0d",
+          "version": null
+        },
+        "quarkus-patterns": {
+          "path": "pi/core/skills/quarkus-patterns",
+          "tree": "597a0aa853c1a260756d7151e4bcc5d0bb7000ae",
+          "version": null
+        },
+        "quarkus-security": {
+          "path": "pi/core/skills/quarkus-security",
+          "tree": "58086dd779e16cefb2f2e451fbb9fcb9dfa8b541",
+          "version": null
+        },
+        "quarkus-tdd": {
+          "path": "pi/core/skills/quarkus-tdd",
+          "tree": "9144368237b1784385468708724c58ad86ce0098",
+          "version": null
+        },
+        "quarkus-verification": {
+          "path": "pi/core/skills/quarkus-verification",
+          "tree": "1209215272bf509b084a684778341f71b1dbb1e6",
+          "version": null
+        },
+        "rag-pipeline-reviewer": {
+          "path": "agents/rag-pipeline-reviewer.md",
+          "tree": "65bd8bbcab135e903779f35e560e9d7648b53802",
+          "version": null
+        },
+        "rails-patterns": {
+          "path": "pi/core/skills/rails-patterns",
+          "tree": "f8c87f7ea3cf6bf099aeb9322d540e2d2b648b4a",
+          "version": null
+        },
+        "react-build-resolver": {
+          "path": "agents/react-build-resolver.md",
+          "tree": "ecfa77e0f3a9c277d4bc22b1651322242be738db",
+          "version": null
+        },
+        "react-native-patterns": {
+          "path": "pi/core/skills/react-native-patterns",
+          "tree": "a3b27a5b867fa035aebf6a1baf00a6eabab443a4",
+          "version": null
+        },
+        "react-patterns": {
+          "path": "pi/core/skills/react-patterns",
+          "tree": "eda27679d5af43c3d76ce4653851a46b7d2aee21",
+          "version": null
+        },
+        "react-performance": {
+          "path": "pi/core/skills/react-performance",
+          "tree": "90ad71c0ec53c3a73f8b220b502b7e4edda88f99",
+          "version": null
+        },
+        "react-reviewer": {
+          "path": "agents/react-reviewer.md",
+          "tree": "b25b79e7110d22d15587cd7296947de289eec006",
+          "version": null
+        },
+        "react-testing": {
+          "path": "pi/core/skills/react-testing",
+          "tree": "36ad005d734fe78115e1969a4e8c2ff973b0a96c",
+          "version": null
+        },
+        "redis-patterns": {
+          "path": "pi/core/skills/redis-patterns",
+          "tree": "dfbb31c13a1b6509f91cde18ba82e52c10502305",
+          "version": null
+        },
+        "refactor-cleaner": {
+          "path": "agents/refactor-cleaner.md",
+          "tree": "093c8f6478052f3cc78072204fca957ffac82f07",
+          "version": null
+        },
+        "regex-vs-llm-structured-text": {
+          "path": "pi/core/skills/regex-vs-llm-structured-text",
+          "tree": "653c3f4bd73779a019b1096f95226473b539b6ee",
+          "version": null
+        },
+        "ruby-reviewer": {
+          "path": "agents/ruby-reviewer.md",
+          "tree": "cea2dbef1119e2587f7f461ef71510c3f3d4d783",
+          "version": null
+        },
+        "rust-build-resolver": {
+          "path": "agents/rust-build-resolver.md",
+          "tree": "552d267cd5eeed414014eab340935598ff7ff1f8",
+          "version": null
+        },
+        "rust-patterns": {
+          "path": "pi/core/skills/rust-patterns",
+          "tree": "88e647924a1f29d7c75a7a15f3e40dce4b68146e",
+          "version": null
+        },
+        "rust-reviewer": {
+          "path": "agents/rust-reviewer.md",
+          "tree": "380fb0d9fb3753fcdb7f8b80343a35e9fd6cbe8d",
+          "version": null
+        },
+        "rust-testing": {
+          "path": "pi/core/skills/rust-testing",
+          "tree": "168d8a24ffec489070a6da1bf8af19716ba356bc",
+          "version": null
+        },
+        "security-review": {
+          "path": "pi/core/skills/security-review",
+          "tree": "265978ddc5e0822ee3d40408722fb43a88f6cf78",
+          "version": null
+        },
+        "security-reviewer": {
+          "path": "agents/security-reviewer.md",
+          "tree": "b5c5e38d2d8c389650162afe18cfe3ab24f353ad",
+          "version": null
+        },
+        "seo-specialist": {
+          "path": "agents/seo-specialist.md",
+          "tree": "fd127ec08b999d92f0a31a1ccf76e4b8958e7339",
+          "version": null
+        },
+        "silent-failure-hunter": {
+          "path": "agents/silent-failure-hunter.md",
+          "tree": "e38053453908f27687826db7b34ba5849971205b",
+          "version": null
+        },
+        "spec-miner": {
+          "path": "agents/spec-miner.md",
+          "tree": "f5e2e76be3d40be8c1a16a8e0b4b8b52c2b08887",
+          "version": null
+        },
+        "springboot-patterns": {
+          "path": "pi/core/skills/springboot-patterns",
+          "tree": "c5ea2e78864dae862e9add17aea0f1c21f592bf4",
+          "version": null
+        },
+        "springboot-security": {
+          "path": "pi/core/skills/springboot-security",
+          "tree": "7f9b93f7fc95d5f490744e8a20ac34644faab007",
+          "version": null
+        },
+        "springboot-tdd": {
+          "path": "pi/core/skills/springboot-tdd",
+          "tree": "0dbe04e4ce6ed7d11c5eac60f01d12fcfbc040ec",
+          "version": null
+        },
+        "springboot-verification": {
+          "path": "pi/core/skills/springboot-verification",
+          "tree": "9aec763a4e53885ac9f38557280011ba029101f7",
+          "version": null
+        },
+        "swift-actor-persistence": {
+          "path": "pi/core/skills/swift-actor-persistence",
+          "tree": "022e55c5196a83deca83d7ef754896898b0a5d60",
+          "version": null
+        },
+        "swift-build-resolver": {
+          "path": "agents/swift-build-resolver.md",
+          "tree": "5896e74e70c766747c00552ad6615fec92951583",
+          "version": null
+        },
+        "swift-concurrency-6-2": {
+          "path": "pi/core/skills/swift-concurrency-6-2",
+          "tree": "b21b0bfec2eabb70f577ab9661ec6ed6831972fa",
+          "version": null
+        },
+        "swift-protocol-di-testing": {
+          "path": "pi/core/skills/swift-protocol-di-testing",
+          "tree": "4c492a7cbebbdff8d351be9b1aecd0c17f310cda",
+          "version": null
+        },
+        "swift-reviewer": {
+          "path": "agents/swift-reviewer.md",
+          "tree": "c77c2b0db5bdc8faf95aa9f679c952bb0837ec11",
+          "version": null
+        },
+        "swiftui-patterns": {
+          "path": "pi/core/skills/swiftui-patterns",
+          "tree": "16261476dd3e09b576688acb65772c3986049055",
+          "version": null
+        },
+        "tdd-guide": {
+          "path": "agents/tdd-guide.md",
+          "tree": "d4f6443b8fa3b7e31d469d9b557b658f612f6077",
+          "version": null
+        },
+        "tdd-workflow": {
+          "path": "pi/core/skills/tdd-workflow",
+          "tree": "82f53c75a1d6e4e9ecf67bb83c5874c80a936136",
+          "version": null
+        },
+        "test-collaboration": {
+          "path": "pi/core/skills/test-collaboration",
+          "tree": "4b9f00244b7d2b7e8bc99ca4ec160c7b9cc2e4c6",
+          "version": null
+        },
+        "type-design-analyzer": {
+          "path": "agents/type-design-analyzer.md",
+          "tree": "394f2626be1bcb7ff89ba3bb042b6eed99ac6e1f",
+          "version": null
+        },
+        "typescript-reviewer": {
+          "path": "agents/typescript-reviewer.md",
+          "tree": "23af98e654d07bb01c688d2c6f15e58509723d74",
+          "version": null
+        },
+        "verification-loop": {
+          "path": "pi/core/skills/verification-loop",
+          "tree": "b9c43ae24874041cb8cfb18e09c62a0257b4d562",
+          "version": null
+        },
+        "vite-patterns": {
+          "path": "pi/core/skills/vite-patterns",
+          "tree": "7163274f4f95b4247af61bf02e0ecd9348fd0091",
+          "version": null
+        },
+        "vue-patterns": {
+          "path": "pi/core/skills/vue-patterns",
+          "tree": "a49423adce6e0dd29a1fc8de7b3b73dd0ec326ad",
+          "version": null
+        },
+        "vue-reviewer": {
+          "path": "agents/vue-reviewer.md",
+          "tree": "137b520eea65ed529262135e0cc0299fbc2047b2",
+          "version": null
+        }
+      }
+    },
+    "addyosmani": {
+      "repo": "https://github.com/addyosmani/agent-skills",
+      "commit": "8bfcc1f9916f2eea55494d8c1fa7f4bde867dd9e",
+      "assets": {
+        "constraint-driven-development": {
+          "path": "skills/constraint-driven-development",
+          "tree": "7b3206ce9770c2a8d41c2daae9a50e111785815c",
+          "version": null
+        }
+      }
+    },
+    "qa-skills": {
+      "repo": "https://github.com/fishzjp/qa-skills",
+      "commit": "f34e82d9342d9e4299dbd5abd5b388ada65f2fd3",
+      "assets": {
+        "api-testing": {
+          "path": "skills/api-testing",
+          "tree": "ff5435aab234d634fad04647b9499e92f2d394ac",
+          "version": "0.9.0"
+        },
+        "automated-e2e-testing": {
+          "path": "skills/automated-e2e-testing",
+          "tree": "10c06ac285e7237256912c858f320271ed4f8534",
+          "version": "0.9.0"
+        },
+        "bug-analysis": {
+          "path": "skills/bug-analysis",
+          "tree": "4a44d627775275c050624af6803b4a7107406fe4",
+          "version": "0.9.0"
+        },
+        "core": {
+          "path": "skills/core",
+          "tree": "9e4db6afe180093d86e36ed6cd8fbc3ffb44957b",
+          "version": "0.9.0"
+        },
+        "exploratory-testing": {
+          "path": "skills/exploratory-testing",
+          "tree": "f0ec469b8b2fcf7b61dcd0aadbd588ea9c784309",
+          "version": "0.9.0"
+        },
+        "qa": {
+          "path": "skills/qa",
+          "tree": "df4e21bb771443f21b38721faa12168606182758",
+          "version": "0.9.0"
+        },
+        "qa-memory": {
+          "path": "skills/qa-memory",
+          "tree": "a3a994a2f6e6167fc39750336a1bf8d543e8999a",
+          "version": "0.9.0"
+        },
+        "regression-testing": {
+          "path": "skills/regression-testing",
+          "tree": "64f62daa98ea905bc79e1acc8fafc5c6bd6a2a62",
+          "version": "0.9.0"
+        },
+        "requirement-analysis": {
+          "path": "skills/requirement-analysis",
+          "tree": "70cd968cbbf54c9d9558ed0166f1b4e3992eb75d",
+          "version": "0.9.0"
+        },
+        "test-case-review": {
+          "path": "skills/test-case-review",
+          "tree": "17fc768601c0a05427720904e5ad0319ddbebe68",
+          "version": "0.9.0"
+        },
+        "test-case-writing": {
+          "path": "skills/test-case-writing",
+          "tree": "9a350cae867e215f9a2b2b315f129660d66c1e9f",
+          "version": "0.9.0"
+        },
+        "test-reliability": {
+          "path": "skills/test-reliability",
+          "tree": "ea474435a762a1085761d2f9b97e9d6fa35f8141",
+          "version": "0.9.0"
+        },
+        "test-strategy": {
+          "path": "skills/test-strategy",
+          "tree": "ee7ce1e2ce6ba198ab28cda409374e69e585c3fb",
+          "version": "0.9.0"
+        }
+      }
+    }
+  }
+}

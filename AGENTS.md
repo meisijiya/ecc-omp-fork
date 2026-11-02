@@ -4,7 +4,7 @@
 
 ### Issue tracker
 
-Issues live in GitHub Issues for `meisijiya/ecc-omp-fork` (via the `gh` CLI; the repo is resolved from the `origin` remote). See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues for `meisijiya/omp-skill-forge` (via the `gh` CLI; the repo is resolved from the `origin` remote). See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
@@ -25,5 +25,6 @@ silently letting a broken asset reach the runtime. Details in `README.md` â†’ ã€
 | `python tools/check_adapt.py` | omp adaptation invariants (INV-01..INV-15) |
 | `python tools/check_upstream_pin.py` | Upstream pin, its mirror and the pool digest agree |
 | `python tools/check_absorbed.py` | Absorbed pool digests, generated bundle and adaptation residue agree |
-| `python tools/check_zh_descriptions.py` | Chinese trigger descriptions cover every skill and obey the wording rules |
-| `python tools/check_plugin_isolation.py --toggle-test` | Plugin enable/disable visibility (local only; it toggles the plugin) |
+|`python tools/check_zh_descriptions.py`|Chinese trigger descriptions cover every skill and obey the wording rules|
+|`python tools/upstream_versions.py check --offline`|Per-asset version ledger covers every upstream asset|
+|`python tools/check_plugin_isolation.py --toggle-test`|Plugin enable/disable visibility (local only; it toggles the plugin)|

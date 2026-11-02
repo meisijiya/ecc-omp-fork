@@ -7,10 +7,34 @@
     "engineering-principles",
     "constraint-driven-development",
     "statechart",
-    "typescript-best-practices"
+    "typescript-best-practices",
+    "qa",
+    "requirement-analysis",
+    "test-strategy",
+    "test-case-writing",
+    "test-case-review",
+    "exploratory-testing",
+    "automated-e2e-testing",
+    "api-testing",
+    "bug-analysis",
+    "regression-testing",
+    "test-reliability",
+    "core",
+    "qa-memory"
   ],
   "skills": {
-    "groups": ["G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9", "G10"],
+    "groups": [
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "G5",
+      "G6",
+      "G7",
+      "G8",
+      "G9",
+      "G10"
+    ],
     "exclude": [
       "architecture-decision-records",
       "context-and-decisions",
@@ -26,7 +50,16 @@
     "include": []
   },
   "agents": {
-    "groups": ["A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8"],
+    "groups": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8"
+    ],
     "exclude": [
       "code-reviewer",
       "security-reviewer",

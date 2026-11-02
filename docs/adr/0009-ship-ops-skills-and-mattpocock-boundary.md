@@ -42,11 +42,11 @@ mattpocock 一定会用，**ECC fork 不能与 mattpocock 重叠**。
      `dashboard-builder` 从 G10 移到 G2，使其进入 `java-python` profile；
      `lite` profile 仍排除这两个（保持最小集）。
    - **新写 fork 自有的三条**（`own/skills/`，始终物化，三个 profile 都带）：
-     `ecc-omp-release-management`（打 tag、写 changelog、分级发布与回滚、制品可追溯）、
-     `ecc-omp-observability`（日志 / 指标 / 追踪三支柱、SLO 与错误预算、告警设计）、
-     `ecc-omp-incident-response`（P0–P3 定级、先止血后定位、沟通与复盘）。
+     `forge-release-management`（打 tag、写 changelog、分级发布与回滚、制品可追溯）、
+     `forge-observability`（日志 / 指标 / 追踪三支柱、SLO 与错误预算、告警设计）、
+     `forge-incident-response`（P0–P3 定级、先止血后定位、沟通与复盘）。
      上游没有对应资产，这三条不构成与 mattpocock 的重叠。
-4. **选路表同步接线。** `own/skills/ecc-omp-router/SKILL.md` 的「部署与运维」段补上
+4. **选路表同步接线。** `own/skills/forge-router/SKILL.md` 的「部署与运维」段补上
    release / observability / incident / dashboard / production-audit 五个入口。
 
 ## Alternatives Considered
@@ -70,7 +70,7 @@ mattpocock 一定会用，**ECC fork 不能与 mattpocock 重叠**。
 
 - **Pros**: 不用自己写。
 - **Cons**: 用户明确说暂无启用该库的想法；且这三条是 ECC 侧能力，留在自己的插件里
-  才能随 `omp plugin disable ecc-omp-fork` 一起启停，不受外部库状态影响。
+  才能随 `omp plugin disable omp-skill-forge` 一起启停，不受外部库状态影响。
 - **Why not**: 与用户意图相反。
 
 ### Alternative 4: 只放开上游运维 skill，不自写

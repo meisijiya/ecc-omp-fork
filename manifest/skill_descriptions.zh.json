@@ -136,5 +136,18 @@
   "engineering-principles": "一组通用工程原则，按需查一节。动手前想知道幂等或共享状态怎么处理时用。",
   "constraint-driven-development": "把项目质量底线写进 CONSTRAINTS.md，盯住 diff 里被降的门槛。要立覆盖率硬指标时用。",
   "statechart": "用 TLA+ 检查状态机，输出 Mermaid 状态图并给出最短违例路径。验证状态流转时用。",
-  "typescript-best-practices": "TypeScript 类型规则表。写或改 .ts、.tsx 时查判别联合与品牌类型。"
+  "typescript-best-practices": "TypeScript 类型规则表。写或改 .ts、.tsx 时查判别联合与品牌类型。",
+  "qa": "端到端编排需求分析到测试报告的全流程并可断点续跑。要一次把整个需求测完时用。",
+  "requirement-analysis": "从需求文档与代码提炼目标范围角色规则与依赖。测试开工前先建模需求时用。",
+  "test-strategy": "按十轴决定测什么与测到什么深度并产出测试策略。要定测试范围与优先级时用。",
+  "test-case-writing": "把需求与策略写成可执行用例并抽取 schema 校验。要产出测试用例文件时用。",
+  "test-case-review": "审查用例的可执行性与覆盖缺口并给修改清单。用例写完要复核时用。",
+  "exploratory-testing": "用 charter 驱动探索式测试并产出系统理解与风险清单。需求含糊或系统陌生时用。",
+  "automated-e2e-testing": "把可自动化的手工用例转成 Playwright 脚本并真实跑通。要补 E2E 执行或治 flaky 时用。",
+  "api-testing": "按接口契约设计与执行接口测试并产出脚本与结果。做 API 自动化或压测时用。",
+  "bug-analysis": "定位已确认缺陷的根因影响面并给回归建议。要做缺陷根因分析时用。",
+  "regression-testing": "沿改动分析链判断该回归哪些测试并给分级清单。改完代码定回归范围时用。",
+  "test-reliability": "治理 flaky 与不稳定用例并给二次确认判据。测试反复红灯要定位噪声时用。",
+  "qa-memory": "维护被测项目的跨会话质量知识库并治理读写。测试开工前先查项目踩坑记录时用。",
+  "core": "QA 套件共用的方法模板与校验脚本。其余 QA 技能按需读取，写用例前查口径时用。"
 }

@@ -15,6 +15,14 @@
         "file": "LICENSE",
         "copyright": "Copyright (c) 2025 Addy Osmani"
       }
+    },
+    "qa-skills": {
+      "repo": "https://github.com/fishzjp/qa-skills",
+      "commit": "f34e82d9342d9e4299dbd5abd5b388ada65f2fd3",
+      "license": {
+        "file": "LICENSE",
+        "copyright": "Copyright (c) 2026 fishzjp"
+      }
     }
   },
   "skills": {
@@ -22,14 +30,14 @@
       "source": "pstack",
       "path": "skills/correct",
       "files": {
-        "SKILL.md": "9556b40a775ec54c2926aedcea5fff0bc79e30342dddbeb87d1044f6c0da72dc"
+        "SKILL.md": "598c16487a7ee5ffda7d3083463f61021602d092e61d422d89430b5d0c19f009"
       }
     },
     "sharpen": {
       "source": "pstack",
       "path": "skills/sharpen",
       "files": {
-        "SKILL.md": "4e651bd0f8670d8edadd625a597f556a65938eb37d79dee64914d7e6b2d34e24"
+        "SKILL.md": "6ae5174fc7396a0209e99726f96b5a905d5a018a98cf5da55a732cdd944dadda"
       }
     },
     "statechart": {
@@ -39,7 +47,7 @@
         "scripts/test/"
       ],
       "files": {
-        "SKILL.md": "53528db359f2de829f2c64c3ba52bf0013ef349904d774b76bf5f7a851637aae",
+        "SKILL.md": "c4480e7f0144fbb1ab95e6b56b64ea3f24b1814d7f5bbe2aa9a1d368d825124e",
         "references/render.md": "8cca446eb0c8f87f2ef7b97c4b149f59aacdc153134b4217c4bcde09b10ac3c4",
         "scripts/backends/cfg.ts": "aea4d8766d214e7fa08f4881f1037319655e75eb56652e1b6d5d4f13a162e3e1",
         "scripts/backends/mermaid.ts": "75704b2704a9399a39479ff704a580d5b9a1d0fede01fe771df28bf799b434b6",
@@ -76,7 +84,7 @@
       "source": "pstack",
       "path": "skills/typescript-best-practices",
       "files": {
-        "SKILL.md": "a649a62fe52ee5907e5db347118beee6ec2f7bfee5c9079a6b7eac2ec25116a0",
+        "SKILL.md": "f803565c1f7aac98d52122c2f7319d2a126cb3e47ae728bab100505378d6e37f",
         "references/patterns.md": "12e70c9419a8b3f5d6a1ab80e272c1f00a43ac0b3bbf72d68199033570e5de77"
       }
     },
@@ -84,7 +92,7 @@
       "source": "addyosmani",
       "path": "skills/constraint-driven-development",
       "files": {
-        "SKILL.md": "cbdf914b1884fead8f8fedcb9e62f9c857d77e92f508883be1037fa7b9771f33",
+        "SKILL.md": "dcfe61617087831d46fb3d986bd25eaf963d7a135593b3d7691e3d484b14b5c3",
         "references/floor-guard.md": "b24459dd17569a1cc12686afb2253d8a47991325310e6e003cba4b384d7535d9",
         "scripts/quality-gate.mjs": "460decdd1365c8bedb2538e9e4b7b248693bd78ea662268b314df4f5907d5fc2"
       }
@@ -93,7 +101,124 @@
       "source": "pstack",
       "path": "skills/engineering-principles",
       "files": {
-        "SKILL.md": "e9a08ab2d9ccf8bc50616c0bc4cf3a278ee81e8097523c28dd4b8f30bf369bc1"
+        "SKILL.md": "449593344fb52d983757505d37f71cce0566ab9180426e7ff3b25c359d147443"
+      }
+    },
+    "qa": {
+      "source": "qa-skills",
+      "path": "skills/qa",
+      "files": {
+        "SKILL.md": "900fb69db9583be5e7dd21cc3b04388dfab3704615a7e0b27282b37bd5f6631a"
+      }
+    },
+    "requirement-analysis": {
+      "source": "qa-skills",
+      "path": "skills/requirement-analysis",
+      "files": {
+        "SKILL.md": "5bfb5730efca4824fe91b6bd49cb8610b2c6da3cf2c1103566714a66cc692e63"
+      }
+    },
+    "test-strategy": {
+      "source": "qa-skills",
+      "path": "skills/test-strategy",
+      "files": {
+        "SKILL.md": "b8128e71ebaefe51085e62ea96653de7d533c5e6b0761670ebc4fcd8616b9fb3"
+      }
+    },
+    "test-case-writing": {
+      "source": "qa-skills",
+      "path": "skills/test-case-writing",
+      "files": {
+        "SKILL.md": "6bc506f381f7c7fbce459799719a44d867bfd8a0adf6526644708216488275c3",
+        "templates/markmap_template.md": "298c4f1009f50dd1eea50475595c3bb7ee7e314817ee7f7b5aca339f28b58b7e"
+      }
+    },
+    "test-case-review": {
+      "source": "qa-skills",
+      "path": "skills/test-case-review",
+      "files": {
+        "SKILL.md": "cf0c8334e2319b8a5ed445054098fa4ce52fff64b91eba356ddc9b37d4ffa159"
+      }
+    },
+    "exploratory-testing": {
+      "source": "qa-skills",
+      "path": "skills/exploratory-testing",
+      "files": {
+        "SKILL.md": "b811d9394d17d0a1628f75eb7d4419149738ce908239a4a8a0226311ca01e714"
+      }
+    },
+    "automated-e2e-testing": {
+      "source": "qa-skills",
+      "path": "skills/automated-e2e-testing",
+      "files": {
+        "SKILL.md": "c1e2f1cfd3ac763363d6b2013d5e26fa0b917463c07003d1057a6ca35c8437ab",
+        "references/helpers_reference.md": "df589164cd6fb426cfcf1fcc5dc1bcd2cf7b86fd0b5a4194760aa27a248351ea",
+        "references/playwright-conventions.md": "c0af7b3f6d1d87f97b7b8429285fde9e4827a88752223cb9d9b965f9bedd8b50"
+      }
+    },
+    "api-testing": {
+      "source": "qa-skills",
+      "path": "skills/api-testing",
+      "files": {
+        "SKILL.md": "68d517890602a31bc012d6ffc7ba316980d9b59b8b72f31b24fd53d385c36c58",
+        "references/k6-conventions.md": "16b620b522eb91b8b21a3fde895e9c3e35551eb595dc16fe21b8f270a50d4146"
+      }
+    },
+    "bug-analysis": {
+      "source": "qa-skills",
+      "path": "skills/bug-analysis",
+      "files": {
+        "SKILL.md": "92be6861b788fd1592e95f11b68abf6ba2b321afcf43cd9da25601d73beb2df2"
+      }
+    },
+    "regression-testing": {
+      "source": "qa-skills",
+      "path": "skills/regression-testing",
+      "files": {
+        "SKILL.md": "37222314a87aa15867443f14dc90b84db4f4a67dd9d6e4b79c72a3aca5a9299e"
+      }
+    },
+    "test-reliability": {
+      "source": "qa-skills",
+      "path": "skills/test-reliability",
+      "files": {
+        "SKILL.md": "3b68ab92aedd31af183142818837cb08def30eb267876fa7f2697a085509fe44",
+        "references/flaky-playbook.md": "ae2127578e648d38dff06c79a04feecbc99133932ccb47a26cbe8f5a7f789b60"
+      }
+    },
+    "core": {
+      "source": "qa-skills",
+      "path": "skills/core",
+      "files": {
+        "SKILL.md": "24f76a3757df61d04c53d2667705f3ace7e0793a68d3fb2d6ad984d081aa83cc",
+        "case-format.md": "5474061a7ad5cd28d5a1022ca57394f77d205a2cc078f7ff8e3caea030e430d6",
+        "clarify-pattern.md": "4a5b6180a354d5e6a9a9a0fa4d7c773533517a2315634b4977bb72374b03ccd0",
+        "coverage.md": "9a35c4070dee033865f08f9d4d9722fc00288905c4468da253d7355f791c02d0",
+        "evidence.md": "a47ed93ee40a66345c6fe36eda49b7cebaa4665e41c2e412ace5120d4c5dbdad",
+        "executability.md": "87ca19ba7c1c576f5072610252080bb05c9d5f9dfb801bf1c6f7dd2400525bdf",
+        "methods/boundary.md": "4b8d969e5aef851e1109e3d648436d374bfc0a9a229322b34ff87bdc2b0a0a24",
+        "methods/data-driven.md": "78e1f54e198eb92082fe31a416079f7f45579911cb74fe29805f666b4244def9",
+        "methods/data-factory.md": "a6437ea5a5b23a31fd8206fa07dd3dd2bae03bac986419af90aef236cd2424ef",
+        "methods/permission.md": "105b57dce5c300ef081af4bb41e1944c25a40bafb61c8e071e76857bf17997b5",
+        "methods/state-machine.md": "7995cc0bb581c16f9d48d103e5ec5e7d2d30c45c81ad9a42dba7dd0dc4cdf05c",
+        "pipeline-integration.md": "c5d2f9e50126073b062e1a779c56ad143540e19f2352c0d7048a19d325090968",
+        "report-template.md": "5643fb27b43f8d132757a3f2915a47bd30b533076ff73327f6861a73b0ccc59e",
+        "risk-model.md": "d520e4e7c7e7038c2f1d2448d6491872f00cb46c4b460c74ea4df8127522cf3a",
+        "schema-extraction.md": "a6fcfd078b11bb2451fa211f298cb915e6edc4714f18b364bbd2d1462d683802",
+        "scripts/scan_signals.py": "8e27d9aaca968be73691a97e6d6a0bb4aba9aa65e4c413e3b44a5665ba06ea78",
+        "scripts/validate_schema.py": "97188f312fbdc26e71c00e4571cce91e4081cdf985a5fafdd3a6918961712540",
+        "test-type-matrix.md": "9ff267610197e9054bdb33f998eb09294324f2a8d489e367b6adfa7c53c15d44",
+        "testing-principles.md": "f29030e051d12cb6b2e42a2afde0f272db994994bd4cd0a882fb16ec0bb27197",
+        "triage.md": "ae3e319255344b9b2b0460f95a1c4fa2a001a3b4b6a1aa54ec17d4b0f4dfc99f"
+      }
+    },
+    "qa-memory": {
+      "source": "qa-skills",
+      "path": "skills/qa-memory",
+      "files": {
+        "SKILL.md": "4719a91359f3e617860c32e67007865473547385d746258abcb1049c757b61ae",
+        "references/entry-schemas.md": "1ab4a11a6ec39c54a3ef4ec03d9c0503e67e685c8d4517b8c16bc5cec5405a7d",
+        "scripts/memory_validate.py": "223516fd5a99cb1c2775755dfd466363857b455220d08cf517033f0c2cbcfbd6"
       }
     }
   },

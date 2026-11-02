@@ -1,5 +1,5 @@
 ---
-description: 本 fork 的默认开发流程——开工前先读 skill://ecc-omp-router 选路取 skill 与 agent 名字，再先查再写、先计划再实现、验证后再声明完成
+description: 本 fork 的默认开发流程——开工前先读 skill://forge-router 选路取 skill 与 agent 名字，再先查再写、先计划再实现、验证后再声明完成
 globs: ["**/*"]
 ---
 
@@ -12,10 +12,10 @@ globs: ["**/*"]
 
 ## 开工前先选路（选 skill / agent）
 
-本 fork 有 73 条 skill，名字统一带 `ecc-omp-` 前缀。上游 ECC 的其它 skill 名在本 fork 不存在，
+本 fork 有 73 条 skill，名字统一带 `forge-` 前缀。上游 ECC 的其它 skill 名在本 fork 不存在，
 凭记忆猜名字会读不到。
 
-- 非平凡任务开工前读一次 `skill://ecc-omp-router`，按任务类型取 skill 与 agent 的名字，再动手。
+- 非平凡任务开工前读一次 `skill://forge-router`，按任务类型取 skill 与 agent 的名字，再动手。
 - 不确定该用哪条 skill 时先读 router。router 是索引，读完再去 `read skill://<name>` 看正文。
 - 一次性任务、改文案、改配置可以跳过。
 
@@ -23,12 +23,12 @@ globs: ["**/*"]
 
 | 你的提示词 | 用它 |
 | --- | --- |
-| 设计接口、REST、跨服务契约 | `skill://ecc-omp-api-design`、`skill://ecc-omp-contract-first` |
-| 写或改测试 | 对应语言的测试 skill（`ecc-omp-python-testing`、`ecc-omp-kotlin-testing` 等）、框架的 `ecc-omp-springboot-tdd`、`ecc-omp-django-tdd` |
-| 查影响面、评审改动 | `skill://ecc-omp-change-impact`、`skill://ecc-omp-security-review` |
-| 发版、上线 | `skill://ecc-omp-release-management`、`skill://ecc-omp-production-audit` |
-| 线上出问题 | `skill://ecc-omp-incident-response`、`skill://ecc-omp-observability` |
-| 同一个错误反复犯 | `skill://ecc-omp-correct` |
+| 设计接口、REST、跨服务契约 | `skill://forge-api-design`、`skill://forge-contract-first` |
+| 写或改测试 | 对应语言的测试 skill（`forge-python-testing`、`forge-kotlin-testing` 等）、框架的 `forge-springboot-tdd`、`forge-django-tdd` |
+| 查影响面、评审改动 | `skill://forge-change-impact`、`skill://forge-security-review` |
+| 发版、上线 | `skill://forge-release-management`、`skill://forge-production-audit` |
+| 线上出问题 | `skill://forge-incident-response`、`skill://forge-observability` |
+| 同一个错误反复犯 | `skill://forge-correct` |
 
 ## 0. 先查再写
 
@@ -42,7 +42,7 @@ globs: ["**/*"]
 
 改动跨多个文件、涉及架构决策、或需求本身含糊时，先产出计划再动手：
 
-- 派 agent：`ecc-omp-architect`（系统设计与扩展性）。
+- 派 agent：`forge-architect`（系统设计与扩展性）。
 - 产出计划后等用户确认，不要边猜边改。
 
 改动是单点、机械性的（改个文案、加个分支、换常量），跳过计划直接做。
@@ -62,13 +62,13 @@ globs: ["**/*"]
 
 ## 4. 收尾
 
-- 提交信息遵循 Conventional Commits：读 `skill://ecc-omp-conventional-commit-review`。
-- 更新文档：按 `skill://ecc-omp-docs-governance` 的口径，把文档同步到代码里的真相源。
+- 提交信息遵循 Conventional Commits：读 `skill://forge-conventional-commit-review`。
+- 更新文档：按 `skill://forge-docs-governance` 的口径，把文档同步到代码里的真相源。
 - 清理：确认没有遗留的临时文件、调试输出、被注释掉的死代码。
 
 ## 与 skill / agent 的分工
 
 - **skill** 是知识（怎么做对），按需 `read skill://<name>`。
-- **agent** 是并行子任务（评审、探索、修复），用 `task` 派，agent 名用带 `ecc-omp-` 前缀的裸名。
+- **agent** 是并行子任务（评审、探索、修复），用 `task` 派，agent 名用带 `forge-` 前缀的裸名。
 
 两者配合使用，不要只用一个。委派纪律见 `rule://omp-delegation` 规则。

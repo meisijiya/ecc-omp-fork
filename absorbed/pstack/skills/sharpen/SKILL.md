@@ -1,5 +1,5 @@
 ---
-name: ecc-omp-sharpen
+name: forge-sharpen
 description: "Rewrite a task that is too shallow rather than too big: name what a top practitioner would add, the raw material to start from, the tools, and the outside evidence that proves the result. Use when the user asks to deepen a task or rewrite a prompt."
 ---
 

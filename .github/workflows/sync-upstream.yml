@@ -116,7 +116,14 @@ jobs:
       - name: Upstream pin gate
         run: python tools/check_upstream_pin.py
 
-      # The absorbed pool is refreshed by tools/sync_absorbed.py from two
+      # The upstream version ledger (manifest/asset_versions.json) records the
+      # git tree oid of every shipped upstream asset at its pinned commit. This
+      # offline gate proves the ledger still covers the manifest and that no
+      # asset entry was dropped; `record` regenerates it when a pin moves.
+      - name: Upstream version ledger gate
+        run: python tools/upstream_versions.py check --offline
+
+      # The absorbed pool is refreshed by tools/sync_absorbed.py from three
       # third-party repositories pinned in manifest/absorbed.json.  This gate
       # is offline: it proves the stored copies still match their manifest
       # digests and that the generated bundle equals its inputs.

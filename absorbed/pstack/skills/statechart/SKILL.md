@@ -1,5 +1,5 @@
 ---
-name: ecc-omp-statechart
+name: forge-statechart
 description: "Check a TLA+ model of a system that moves between states, such as a product flow, a protocol, or a service, and draw it as a Mermaid statechart. The report gives the shortest path to each state that breaks a rule. Use when a state machine's rules need checking, or to show a bug as a path through states."
 ---
 

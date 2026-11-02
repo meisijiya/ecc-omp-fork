@@ -1,7 +1,7 @@
-# ADR-0007: 运行名带 `ecc-omp-` 前缀，只用于区分
+# ADR-0007: 运行名带前缀，只用于区分
 
 **Date**: 2026-10-25
-**Status**: accepted
+**Status**: superseded by [0013](0013-repository-renamed-to-omp-skill-forge.md)（前缀改成 `forge-`）
 **Deciders**: 本 fork 维护者
 
 ## Context

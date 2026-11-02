@@ -198,7 +198,7 @@ def main():
     lines += [
         "",
         "> 表里的**运行名**是本 fork 物化后实际使用的名字：上游名统一加 "
-        "`ecc-omp-` 前缀（skill / command / agent）。",
+        f"`{refscan.RUNTIME_PREFIX}` 前缀（skill / command / agent）。",
         "> 「上游名」是 affaan-m/ECC 里的名称，用于回溯上游来源；组列写「收纳」的资产"
         "来自 fork 之外的仓库，经改写后随本 fork 发布（ADR-0010，来源见 "
         "`manifest/absorbed.json`），它们的「上游名」一列是来源仓库里的名字，不是 ECC 名。",
@@ -228,14 +228,25 @@ def main():
                 f"{', '.join(on) or '—'} |"
             )
 
+    own_skills = os.path.join(ROOT, "own", "skills")
+    own_purpose = {
+        "forge-router": "选路表：任务 → skill / agent 组合",
+        "forge-release-management": "发布：tag、changelog、分级发布与回滚",
+        "forge-observability": "可观测性：日志 / 指标 / 追踪、SLO、告警",
+        "forge-incident-response": "事故响应：定级、止血、复盘",
+    }
+    found = sorted(os.listdir(own_skills)) if os.path.isdir(own_skills) else []
+    if found != sorted(own_purpose):
+        raise SystemExit(
+            f"own/skills holds {found}, but build_catalog knows {sorted(own_purpose)};"
+            " add the new skill here and to own_purpose")
     lines += [
         "",
         "## fork 自有资产",
         "",
-        "- skill：`ecc-omp-router`（选路表：任务 → skill / agent 组合）",
-        "- skill：`ecc-omp-release-management`（发布：tag、changelog、分级发布与回滚）",
-        "- skill：`ecc-omp-observability`（可观测性：日志 / 指标 / 追踪、SLO、告警）",
-        "- skill：`ecc-omp-incident-response`（事故响应：定级、止血、复盘）",
+    ]
+    lines += [f"- skill：`{n}`（{own_purpose[n]}）" for n in found]
+    lines += [
         "- rules：`omp-tooling` `omp-delegation` `fork-workflow` `fork-verification` `fork-coding-style`",
         "",
     ]

@@ -1,5 +1,5 @@
 ---
-name: ecc-omp-constraint-driven-development
+name: forge-constraint-driven-development
 description: "Establishes a project's quality bar as a written contract and stops agents quietly lowering it: it interviews the user on which dimensions matter, supplies sane default thresholds when they have no number in mind, records everything in CONSTRAINTS.md, and watches the diff for a weakened bar -- new @ts-ignore or eslint-disable suppressions, skipped or deleted tests, assertions stripped out, unimplemented stubs, thresholds edited down. Use when no quality bar is written down, when the user says 「set up constraints」 or 「define our standards」, or when an agent keeps silencing checks and skipping tests to get to green."
 ---
 
@@ -35,7 +35,7 @@ Apply this skill when:
 
 ## Loading Constraints
 
-The interview needs a live user. **Don't run it in non-interactive contexts** (CI, `/loop`, autonomous runs). If constraints are missing and you're in one of those, apply the Floor below, note that you did, and flag the rest for a human.
+The interview needs a live user. **Don't run it in non-interactive contexts** (CI, autonomous runs). If constraints are missing and you're in one of those, apply the Floor below, note that you did, and flag the rest for a human.
 
 ## The Process
 
@@ -194,12 +194,12 @@ The commands now live in two places — the `Checked by` column in `CONSTRAINTS.
 
 The single biggest mistake is running everything everywhere. A check that stalls the agent gets switched off, and a gate people switched off is worse than no gate, because the bar still looks like it exists.
 
-| Phase | Command | What runs | Budget |
-|-------|---------|-----------|--------|
-| BUILD | `/build` | Types, lint, secrets, the floor | under 5s, changed file only |
-| VERIFY | `/test` | Related tests, coverage on changed lines | under 90s |
-| REVIEW | `/review` | Everything, plus the guards below | minutes |
-| SHIP | `/ship` | Direction checks, no regressions | CI |
+| Phase | What runs | Budget |
+|-------|-----------|--------|
+| BUILD | Types, lint, secrets, the floor | under 5s, changed file only |
+| VERIFY | Related tests, coverage on changed lines | under 90s |
+| REVIEW | Everything, plus the guards below | minutes |
+| SHIP | Direction checks, no regressions | CI |
 
 Two rules that keep this tolerable:
 
@@ -224,7 +224,7 @@ Unlike the numbered dimensions, the floor has no de facto tool of its own, so an
 
 **Not all checks are equally circular.** Rank them by one question: can the agent make this pass by writing code that doesn't work?
 
-- **External** — axe-core encodes WCAG, `osv-scanner` reads a vulnerability database, Lighthouse measures a real browser. The agent can't argue with these.
+- **External** — axe-core encodes WCAG, osv-scanner reads a vulnerability database, Lighthouse measures a real browser. The agent can't argue with these.
 - **Project** — your lint rules, your layer boundaries. A human owns the file.
 - **Suite** — your own tests. Most useful, and the only genuinely circular one.
 

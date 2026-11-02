@@ -5,7 +5,20 @@
       "correct",
       "sharpen",
       "engineering-principles",
-      "constraint-driven-development"
+      "constraint-driven-development",
+      "qa",
+      "requirement-analysis",
+      "test-strategy",
+      "test-case-writing",
+      "test-case-review",
+      "exploratory-testing",
+      "automated-e2e-testing",
+      "api-testing",
+      "bug-analysis",
+      "regression-testing",
+      "test-reliability",
+      "core",
+      "qa-memory"
     ],
     "skills": {
       "groups": [
@@ -86,7 +99,7 @@
   "counts": {
     "skills": 65,
     "skills_own": 4,
-    "skills_absorbed": 4,
+    "skills_absorbed": 17,
     "commands": 0,
     "agents": 22,
     "rules": 5

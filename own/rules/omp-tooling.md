@@ -32,8 +32,8 @@ globs: ["**/*"]
    无 tag 的锚定编辑会被 `hashline` 拒绝。
 3. **搜索优先用 `grep` / `glob`**，不要用 `bash` 跑 `grep`/`find`/`ls` 去遍历目录。
 4. **委派用 `task`**，并在 `agent` 字段里给出本 fork 存在的 agent 名。
-   本 fork 的 agent 名是**裸名**（如 `ecc-omp-java-reviewer`、`ecc-omp-python-reviewer`），
-   带本 fork 的 `ecc-omp-` 前缀，但不是 Claude Code 的 `ecc:` 前缀形式。并行就是同一条消息里的多个 `task` 调用；
+   本 fork 的 agent 名是**裸名**（如 `forge-java-reviewer`、`forge-python-reviewer`），
+   带本 fork 的 `forge-` 前缀，但不是 Claude Code 的 `ecc:` 前缀形式。并行就是同一条消息里的多个 `task` 调用；
    用 `task.batch` 的批量形态时必须提供非空的共享 `context`。
 5. **不要臆造不存在的工具**。上游 ECC 规则里出现的 `Agent(subagent_type:)`、
    `mcp__playwright__*`、`mcp__context7__*` 在本机不一定可用，
@@ -46,3 +46,15 @@ globs: ["**/*"]
   只是从列表里隐藏，正文仍可通过 `skill://<name>` 读到。
 - 规则正文：`read` 读 `rule://<name>`。规则是「按需加载」的知识，
   先看规则列表判断适用性，再决定读哪几条。
+
+## 技能自带的脚本
+
+部分技能带可执行脚本（例如 `forge-core` 的 `scripts/validate_schema.py`、`forge-qa-memory`
+的 `scripts/memory_validate.py`、`forge-statechart` 的 `scripts/statechart.ts`）。正文里
+写的是占位形式 `python3 <forge-core-skill>/scripts/validate_schema.py ...`：`<xxx-skill>`
+指该技能在插件内的目录，插件根是 `~/.omp/agent/local/omp-skill-forge`，所以占位换成
+`~/.omp/agent/local/omp-skill-forge/skills/forge-core` 即可执行。不知道安装根在哪时，
+先 `read skill://forge-core/SKILL.md` 之类的路径确认能读到，再用同一目录名拼绝对路径。
+
+脚本一律按「读 → 确认依赖 → 跑」的顺序：多数脚本只依赖标准库（`forge-core` 的两个校验器
+是纯标准库），跑之前不要预装第三方包。

@@ -1,5 +1,7 @@
 # 上游 ECC 的本地克隆（sync_upstream.py 维护，不入库）
 .upstream/
+# 上游版本台账的只读克隆缓存（upstream_versions.py 维护，不入库）
+.upstream-cache/
 
 # Python
 __pycache__/

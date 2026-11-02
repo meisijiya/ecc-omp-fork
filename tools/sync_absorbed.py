@@ -35,11 +35,12 @@ import tempfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import absorbed_fixups  # noqa: E402
+import refscan  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ABSORBED = os.path.join(ROOT, "absorbed")
 MANIFEST = os.path.join(ROOT, "manifest", "absorbed.json")
-CACHE = os.path.join(tempfile.gettempdir(), "ecc-omp-absorbed")
+CACHE = os.path.join(tempfile.gettempdir(), "forge-absorbed")
 
 TEXT_SUFFIXES = (".md", ".ts", ".js", ".mjs", ".json", ".sh", ".txt", ".yaml", ".yml")
 
@@ -178,7 +179,7 @@ def store_tree(src, dst, excludes, key_prefix, report):
 
 def set_runtime_name(text, upstream_name):
     """The stored copy already carries the name it ships under."""
-    runtime = "ecc-omp-" + upstream_name
+    runtime = refscan.RUNTIME_PREFIX + upstream_name
     return re.sub(r"^name: .*$", "name: " + runtime, text, count=1,
                   flags=re.MULTILINE)
 
@@ -222,7 +223,7 @@ def bundle_text(spec, source_root=ABSORBED):
         "按需读取对应小节。")
     return (
         "---\n"
-        "name: ecc-omp-engineering-principles\n"
+        "name: " + refscan.RUNTIME_PREFIX + "engineering-principles\n"
         'description: "%s"\n'
         "---\n\n%s" % (description, "\n".join(parts)))
 
@@ -244,6 +245,7 @@ def main():
                 else ABSORBED)
 
     try:
+        absorbed_fixups.reset_source_counts()
         for slug, spec in manifest["sources"].items():
             root = fetch_source(slug, spec, args.no_fetch)
             for name, entry in manifest["skills"].items():
@@ -287,6 +289,8 @@ def main():
     finally:
         if args.dry_run and os.path.isdir(out_root):
             shutil.rmtree(out_root, ignore_errors=True)
+
+    absorbed_fixups.verify_source_counts()
 
     if args.dry_run:
         print("\n".join(report))

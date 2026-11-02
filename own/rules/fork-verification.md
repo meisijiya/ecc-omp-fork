@@ -8,7 +8,7 @@ globs: ["**/*"]
 ## 测试覆盖口径
 
 上游 ECC 的技能与 agent 默认要求 **80%+ 覆盖率**（本 fork 物化后是
-`skill://ecc-omp-python-testing`、`skill://ecc-omp-springboot-tdd`、`skill://ecc-omp-test-collaboration` 等）。
+`skill://forge-python-testing`、`skill://forge-springboot-tdd`、`skill://forge-test-collaboration` 等）。
 本 fork 沿用这个默认门槛，但项目自身的约定优先：
 
 1. **先看项目自己的门槛**。仓库里有 `pytest.ini` / `pom.xml` / `coverage` 配置，

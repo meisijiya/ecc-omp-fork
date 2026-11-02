@@ -899,6 +899,15 @@ def materialize_skills(names, report, ctx, absorbed=(), zh=None):
                     link_base=base["base"] if base else None,
                     link_exists=refscan.source_exists)
                 for note in notes:
+                    # The stored copy is already adapted; anything the
+                    # materializer still repairs away is a reachability bug
+                    # (a link the fork cannot follow), not a normal trim.
+                    if "drop" in note["action"]:
+                        raise SystemExit(
+                            "skills/%s/%s:%s: %s `%s` -- the stored copy "
+                            "should already be adapted" %
+                            (rt, rel, note["line"], note["action"],
+                             note["name"]))
                     report.append(f"  skills/{rt}/{rel}:{note['line']}: "
                                   f"{note['action']} `{note['name']}`")
                 write_text(p, text)
