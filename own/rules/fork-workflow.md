@@ -1,5 +1,5 @@
 ---
-description: 本 fork 的默认开发流程——先查再写、先计划再实现、验证后再声明完成
+description: 本 fork 的默认开发流程——开工前先读 skill://ecc-omp-router 选路取 skill 与 agent 名字，再先查再写、先计划再实现、验证后再声明完成
 globs: ["**/*"]
 ---
 
@@ -9,6 +9,26 @@ globs: ["**/*"]
 命令行以及 PRD / architecture / system_design / tech_doc / task_list 等规划文档产物；
 上游的 hook 假设写在另一个文件里，本 fork 不携带上游 rules 目录。
 本 fork 在 omp 中的等价流程如下。
+
+## 开工前先选路（选 skill / agent）
+
+本 fork 有 73 条 skill，名字统一带 `ecc-omp-` 前缀。上游 ECC 的其它 skill 名在本 fork 不存在，
+凭记忆猜名字会读不到。
+
+- 非平凡任务开工前读一次 `skill://ecc-omp-router`，按任务类型取 skill 与 agent 的名字，再动手。
+- 不确定该用哪条 skill 时先读 router。router 是索引，读完再去 `read skill://<name>` 看正文。
+- 一次性任务、改文案、改配置可以跳过。
+
+最常用的几条（不够就回 router 查全表）：
+
+| 你的提示词 | 用它 |
+| --- | --- |
+| 设计接口、REST、跨服务契约 | `skill://ecc-omp-api-design`、`skill://ecc-omp-contract-first` |
+| 写或改测试 | 对应语言的测试 skill（`ecc-omp-python-testing`、`ecc-omp-kotlin-testing` 等）、框架的 `ecc-omp-springboot-tdd`、`ecc-omp-django-tdd` |
+| 查影响面、评审改动 | `skill://ecc-omp-change-impact`、`skill://ecc-omp-security-review` |
+| 发版、上线 | `skill://ecc-omp-release-management`、`skill://ecc-omp-production-audit` |
+| 线上出问题 | `skill://ecc-omp-incident-response`、`skill://ecc-omp-observability` |
+| 同一个错误反复犯 | `skill://ecc-omp-correct` |
 
 ## 0. 先查再写
 
