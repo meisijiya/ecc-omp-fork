@@ -291,7 +291,7 @@ CI 用 `GITHUB_TOKEN` + `peter-evans/create-pull-request` 自动开 PR（分支
 | `python tools/check_refs.py [--json]` | **引用自洽**：运行树与 `own/` 里是否还有指向「本 fork 不提供的资产」的悬空引用（`skill://`、`skills/<name>/`、`commands\|agents\|rules/<name>.md`、斜杠命令、反引号裸名） | 0 = 无缺陷悬空（fork 自有目录里的 profile 裁剪引用只列出、不算缺陷）；1 = 有缺陷悬空（打印明细）；2 = profile 指针读不出来（`active_profile` 缺失或未知） | 每次改完运行树或上游文本后；提交前必跑 |
 | `python tools/check_adapt.py [--tree <dir>] [--json]` | **omp 适配不变式**：INV-01..INV-15（无 `model:`、无 `CLAUDE.md`、无 `.claude/`、无 Claude CLI 调用、无 Claude 工具名、skill/agent/rule/command 的 frontmatter 完整性、`/name` 引用必须落在物化 commands 名单内、无「Claude Code」措辞等） | 0 = 无违规；1 = 有违规（逐条给 `文件:行号` + token）；2 = 用法错误或树不可读 | 每次改完运行树后；提交前必跑 |
 | `python tools/check_upstream_pin.py` | **上游 pin 一致性**：`manifest/upstream.json` 形状（`commit` 必须是 40 位小写 hex、`repo` 非空）、`manifest/groups.json` 的 upstream.commit 镜像与 pin 一致、`pool/` 摘要等于 pin 的 `pool_digest`、`NOTICE.md` 引用的上游 commit 等于 pin 的 commit | 0 = 四项全过；1 = 有校验项不符（逐条打印）；2 = `manifest/upstream.json` / `manifest/groups.json` 读不出来 | 每次同步上游之后；提交前必跑 |
-| `python tools/check_zh_descriptions.py [--json]` | **中文触发描述**：每条 skill 都有中文 description（覆盖 upstream 与收纳），长度、标点与禁用句式合规 | 0 = 齐全且合规；1 = 有缺失或不合规（逐条打印）；2 = 表读不出来 | 改 `manifest/skill_descriptions.zh.json` 或增删 skill 之后；提交前必跑 |
+| `python tools/check_zh_descriptions.py [--json]` | **中文触发描述**：每条 skill 与 agent 都有中文 description（覆盖 upstream 与收纳），长度、标点与禁用句式合规 | 0 = 齐全且合规；1 = 有缺失或不合规（逐条打印）；2 = 表读不出来 | 改 `manifest/skill_descriptions.zh.json` / `manifest/agent_descriptions.zh.json` 或增删 skill/agent 之后；提交前必跑 |
 | `python tools/check_absorbed.py [--json]` | **收纳池一致性**：`manifest/absorbed.json` 形状（来源 repo + 40 位 commit）、`absorbed/` 每个 skill 的文件摘要集合与 manifest 一致、生成物 `ecc-omp-engineering-principles` 等于其输入重新拼接的结果、收纳 skill 副本里不残留 `CLAUDE.md` / `.claude/` / `disable-model-invocation` / `paths` / 斜杠触发词（`absorbed/<source>/principles/` 是 bundle 的原始快照，按设计不改写、不在扫描面内） | 0 = 一致；1 = 有缺陷（逐条打印）；2 = manifest 读不出来 | 改了 `absorbed/`、`manifest/absorbed.json` 或 `tools/absorbed_fixups.py` 之后；提交前必跑 |
 | `python tools/check_plugin_isolation.py [--probe\|--toggle-test] [--omp <path>] [--cwd <dir>] [--root <dir>] [--json]` | **插件启停可见性**：本插件四类资产在启用态是否被 omp 提供、禁用态是否全部消失 | 0 = 符合预期；1 = 不一致（打印 FAIL 明细）；2 = 工具错误 | 改了部署方式、插件启停状态或 omp 版本之后 |
 
@@ -362,6 +362,7 @@ hide: true
 | `manifest/upstream.json` | 上游 pin 唯一事实源：`repo` / `commit` / `version` / `pool_digest` |
 | `manifest/absorbed.json` | 收纳来源 pin（`repo` + `commit`）、逐文件 sha256、bundle 配方、各来源许可与版权行 |
 | `manifest/skill_descriptions.zh.json` | 每条 skill 的中文触发描述（物化时写入运行树，`pool/` 保持原样） |
+| `manifest/agent_descriptions.zh.json` | 每条 agent 的中文触发描述（物化时写入运行树，`pool/` 保持原样） |
 | `manifest/external_refs.json` | 本 fork 不提供、但由别的 omp 插件提供的资产（如 `code-review` skill）；这些名字不带本 fork 前缀 |
 | `skills/` `agents/` `rules/` | **物化后的实际生效内容**（入库，便于 diff 上游变更）；skill 目录名、agent 文件名带 `ecc-omp-` 前缀 |
 | `tools/` | 更新、裁剪、部署、生成目录、各项门禁的脚本 |

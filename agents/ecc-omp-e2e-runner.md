@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-e2e-runner
-description: End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback. Use PROACTIVELY for generating, maintaining, and running E2E tests. Manages test journeys, quarantines flaky tests, uploads artifacts (screenshots, videos, traces), and ensures critical user flows work.
+description: 用 Vercel Agent Browser 跑端到端测试，Playwright 兜底。要补 E2E 或治测试抖动时派它。
 tools: read, write, edit, bash, grep, glob
 
 

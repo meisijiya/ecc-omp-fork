@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-performance-optimizer
-description: Performance analysis and optimization specialist. Use PROACTIVELY for identifying bottlenecks, optimizing slow code, reducing bundle sizes, and improving runtime performance. Profiling, memory leaks, render optimization, and algorithmic improvements.
+description: 定位性能瓶颈，优化慢代码与包体积。要做性能分析、查内存泄漏或优化包体积时派它。
 tools: read, write, edit, bash, grep, glob
 
 

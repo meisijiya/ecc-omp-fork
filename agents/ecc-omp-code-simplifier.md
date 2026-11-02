@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-code-simplifier
-description: Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior. Focus on recently modified code unless instructed otherwise.
+description: 精简代码提升清晰度与一致性，行为保持不变。要清理冗余代码或重构近期改动时派它。
 tools: read, write, edit, bash, grep, glob
 
 ---

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-fastapi-reviewer
-description: Reviews FastAPI applications for async correctness, dependency injection, Pydantic schemas, security, OpenAPI quality, testing, and production readiness.
+description: 专审 FastAPI 的异步正确性、依赖注入与 Pydantic 模型。要改 FastAPI 接口或查 OpenAPI 时派它。
 tools: read, grep, glob, bash
 
 

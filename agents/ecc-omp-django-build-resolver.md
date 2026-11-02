@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-django-build-resolver
-description: Django/Python build, migration, and dependency error resolution specialist. Fixes pip/Poetry errors, migration conflicts, import errors, Django configuration issues, and collectstatic failures with minimal changes. Use when Django setup or startup fails.
+description: 修 Django 的依赖、迁移冲突与启动配置错误，改动最小。要 Django 起不来或迁移冲突时派它。
 tools: read, write, edit, bash, grep, glob
 
 

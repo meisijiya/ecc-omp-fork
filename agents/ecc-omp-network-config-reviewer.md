@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-network-config-reviewer
-description: Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational guardrails.
+description: 只读审路由器与交换机配置，查安全、过时引用与风险命令。要变更网络设备或审查配置时派它。
 tools: read, grep
 
 

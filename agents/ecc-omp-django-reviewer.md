@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-django-reviewer
-description: Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grade Django practices. Use for all Django code changes. MUST BE USED for Django projects.
+description: 专审 Django 的 ORM 正确性、DRF 模式与迁移安全。要改 Django 项目或查线上配置时派它。
 tools: read, grep, glob, bash
 
 

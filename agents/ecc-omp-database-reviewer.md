@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-database-reviewer
-description: PostgreSQL database specialist for query optimization, schema design, security, and performance. Use PROACTIVELY when writing SQL, creating migrations, designing schemas, or troubleshooting database performance. Incorporates Supabase best practices.
+description: 专审 PostgreSQL 的查询优化与表结构设计，含安全与 Supabase 实践。要写 SQL、做迁移或调库性能时派它。
 tools: read, grep, glob, bash
 
 

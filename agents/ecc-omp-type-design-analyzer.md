@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-type-design-analyzer
-description: Analyze type design for encapsulation, invariant expression, usefulness, and enforcement.
+description: 评估类型设计能否让非法状态无法表示。要设计核心类型或审抽象好坏时派它。
 tools: read, grep, glob
 
 ---

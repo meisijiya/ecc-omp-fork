@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Gate: every skill this fork ships must have a Chinese trigger description.
+"""Gate: every skill and agent this fork ships must have a Chinese trigger description.
 
     python tools/check_zh_descriptions.py [--json]
 
@@ -9,10 +9,15 @@ Chinese descriptions live in manifest/skill_descriptions.zh.json and are
 written into the runtime tree by tools/apply_selection.py.  This gate
 proves three things offline:
 
-  1. coverage -- every skill of every profile has a Chinese description, and
-     the table names no skill that does not exist;
+  1. coverage -- every skill of every profile and every agent of every
+     profile has a Chinese description, and the table names no asset that
+     does not exist;
   2. style -- each description obeys the writing rules below;
   3. the fork's own skills carry a Chinese description in their own file.
+
+Both tables live in manifest/: skill_descriptions.zh.json and
+agent_descriptions.zh.json.  A missing table is reported as a missing table
+and exits non-zero rather than passing silently.
 
 Writing rules (one line per skill, shown in the omp prompt line):
   * the line costs at most 45 tokens: one Chinese character counts as one
@@ -34,10 +39,11 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TABLE = os.path.join(ROOT, "manifest", "skill_descriptions.zh.json")
+AGENT_TABLE = os.path.join(ROOT, "manifest", "agent_descriptions.zh.json")
 
 MAX_COST = 45.0
 MIN_COST = 12.0
-FORBIDDEN = ["说白了", "首先", "其次", "赋能", "闭环", "抓手"]
+FORBIDDEN = ["说白了", "首先", "其次", "赋能", "闭环", "抓手", "落地"]
 # the fork must not point at another harness (INV-02, INV-03, INV-15)
 HARNESS = ["CLAUDE.md", ".claude/", "Claude Code", "PreToolUse", "AskUserQuestion"]
 # 翻案腔: 立一个读者没有的误解再推翻它。单独的「不是给 X 用的」不算翻案腔。
@@ -69,6 +75,23 @@ def load_table(findings):
     return data
 
 
+def load_agent_table(findings):
+    """Load the agent description table; report 缺表 instead of crashing."""
+    try:
+        with open(AGENT_TABLE, encoding="utf-8") as f:
+            data = json.load(f)
+    except FileNotFoundError:
+        defect(findings, "coverage", "agents", "缺表: manifest/agent_descriptions.zh.json")
+        return None
+    except (OSError, ValueError) as exc:
+        print(f"cannot read {AGENT_TABLE}: {exc}", file=sys.stderr)
+        raise SystemExit(2)
+    if not isinstance(data, dict):
+        print(f"{AGENT_TABLE} is not a JSON object", file=sys.stderr)
+        raise SystemExit(2)
+    return data
+
+
 def declared_skills():
     """Every skill name the repository can materialize."""
     names = set()
@@ -82,8 +105,21 @@ def declared_skills():
     return names
 
 
-def check_style(findings, name, text):
-    where = f"skills/{name}"
+def declared_agents():
+    """Every agent name the repository can materialize."""
+    names = set()
+    groups = json.load(open(os.path.join(ROOT, "manifest", "groups.json"),
+                            encoding="utf-8"))["agents"]
+    for code in groups:
+        names.update(groups[code]["members"])
+    return names
+
+
+def check_style(findings, name, text, owner):
+    # the same writing rules govern skills and agents, but the defect path has
+    # to point at the table the offender came from, else troubleshooting opens
+    # the wrong manifest
+    where = f"{owner}/{name}"
     if not CJK.search(text):
         defect(findings, "coverage", where, "description has no Chinese characters")
     cost = line_cost(text)
@@ -129,7 +165,22 @@ def main():
         if not isinstance(text, str):
             defect(findings, "coverage", f"skills/{name}", "description is not text")
             continue
-        check_style(findings, name, text)
+        check_style(findings, name, text, "skills")
+
+    agent_table = load_agent_table(findings)
+    if agent_table is not None:
+        agent_known = declared_agents()
+        for name in sorted(agent_known - set(agent_table)):
+            defect(findings, "coverage", f"agents/{name}",
+                   "no Chinese description in manifest/agent_descriptions.zh.json")
+        for name in sorted(set(agent_table) - agent_known):
+            defect(findings, "coverage", f"agents/{name}",
+                   "table names an agent the repository does not ship")
+        for name, text in sorted(agent_table.items()):
+            if not isinstance(text, str):
+                defect(findings, "coverage", f"agents/{name}", "description is not text")
+                continue
+            check_style(findings, name, text, "agents")
 
     own = os.path.join(ROOT, "own", "skills")
     if os.path.isdir(own):
@@ -150,7 +201,8 @@ def main():
         print(json.dumps({"findings": findings}, ensure_ascii=False, indent=2))
     else:
         if not findings:
-            print("chinese descriptions: complete (%d skills)" % len(table))
+            agents = "" if agent_table is None else " + %d agents" % len(agent_table)
+            print("chinese descriptions: complete (%d skills%s)" % (len(table), agents))
         for f in findings:
             print(f"{f['kind']}: {f['file']}: {f['detail']}")
         print("\n%d defect(s)" % len(findings))

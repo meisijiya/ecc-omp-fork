@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-network-architect
-description: Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, automation, and troubleshooting detail.
+description: 按需求设计企业或多站点网络架构，只设计不改配置。要规划网络、设计路由方案或做自动化时派它。
 tools: read, grep
 
 

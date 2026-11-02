@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-kotlin-build-resolver
-description: Kotlin/Gradle build, compilation, and dependency error resolution specialist. Fixes build errors, Kotlin compiler errors, and Gradle issues with minimal changes. Use when Kotlin builds fail.
+description: 修 Kotlin 的 Gradle 构建与编译错误，改动最小。要 Kotlin 构建失败或 Gradle 报错时派它。
 tools: read, write, edit, bash, grep, glob
 
 

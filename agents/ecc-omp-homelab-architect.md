@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-homelab-architect
-description: Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollback guidance.
+description: 按硬件清单与经验设计家庭和小型实验室网络，含回滚指引。要组家庭网络或规划分步变更时派它。
 tools: read, grep
 
 

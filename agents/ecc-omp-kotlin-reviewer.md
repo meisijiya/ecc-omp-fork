@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-kotlin-reviewer
-description: Kotlin and Android/KMP code reviewer. Reviews Kotlin code for idiomatic patterns, coroutine safety, Compose best practices, clean architecture violations, and common Android pitfalls.
+description: 审 Kotlin 与 Android/KMP 的惯用法、协程安全与 Compose。要写 Kotlin 或改 Compose 界面时派它。
 tools: read, grep, glob, bash
 
 

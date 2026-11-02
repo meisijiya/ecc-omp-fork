@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-java-build-resolver
-description: Java/Maven/Gradle build, compilation, and dependency error resolution specialist. Automatically detects Spring Boot or Quarkus and applies framework-specific fixes. Fixes build errors, Java compiler errors, and Maven/Gradle issues with minimal changes. Use when Java builds fail.
+description: 修 Java 的 Maven 与 Gradle 构建错误，自动识别框架。要 Java 构建失败或依赖报错时派它。
 tools: read, write, edit, bash, grep, glob
 
 

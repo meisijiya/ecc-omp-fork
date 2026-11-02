@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-refactor-cleaner
-description: Dead code cleanup and consolidation specialist. Use PROACTIVELY for removing unused code, duplicates, and refactoring. Runs analysis tools (knip, depcheck, ts-prune) to identify dead code and safely removes it.
+description: 用 knip 等工具找出死代码并安全删除。要清理无用代码或去重时派它。
 tools: read, write, edit, bash, grep, glob
 
 

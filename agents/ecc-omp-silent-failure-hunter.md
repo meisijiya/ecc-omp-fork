@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-silent-failure-hunter
-description: Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation.
+description: 专查静默失败，盯空 catch、吞异常与无上下文日志。要防错误被吞或查兜底逻辑时派它。
 tools: read, grep, glob, bash
 
 ---

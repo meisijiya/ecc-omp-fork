@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-comment-analyzer
-description: Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.
+description: 检查代码注释的准确完整与腐坏风险。要清理过时注释或做注释审计时派它。
 tools: read, grep, glob
 
 ---

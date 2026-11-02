@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-python-reviewer
-description: Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance. Use for all Python code changes. MUST BE USED for Python projects.
+description: 审 Python 代码的 PEP 8、惯用法与类型标注。要改 Python 项目或查安全时派它。
 tools: read, grep, glob, bash
 
 

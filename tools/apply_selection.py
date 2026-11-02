@@ -313,6 +313,18 @@ def zh_descriptions():
         raise SystemExit("manifest/skill_descriptions.zh.json is not an object")
     return data
 
+def agent_descriptions():
+    """{agent name: Chinese description} read from the fork's own table."""
+    path = os.path.join(ROOT, "manifest", "agent_descriptions.zh.json")
+    if not os.path.isfile(path):
+        raise SystemExit(
+            "manifest/agent_descriptions.zh.json is missing; every agent this "
+            "fork ships needs a Chinese description (tools/check_zh_descriptions.py)")
+    data = load_json("manifest", "agent_descriptions.zh.json")
+    if not isinstance(data, dict):
+        raise SystemExit("manifest/agent_descriptions.zh.json is not an object")
+    return data
+
 
 def set_frontmatter_description(text, description):
     """Replace the `description:` field of the frontmatter of `text`.
@@ -946,7 +958,8 @@ def materialize_commands(names, report, ctx):
     return count
 
 
-def materialize_agents(names, report, ctx):
+def materialize_agents(names, report, ctx, zh=None):
+    zh = zh or {}
     out = os.path.join(ROOT, "agents")
     tmp = out + ".tmp"
     if os.path.isdir(tmp):
@@ -960,7 +973,13 @@ def materialize_agents(names, report, ctx):
         if patch:
             shutil.copy2(patch, dst)
             text = open(dst, encoding="utf-8").read()
-            write_text(dst, set_frontmatter_name(text, rt))
+            text = set_frontmatter_name(text, rt)
+            if n not in zh:
+                raise SystemExit(
+                    f"agents/{n}: no Chinese description in "
+                    f"manifest/agent_descriptions.zh.json")
+            text = set_frontmatter_description(text, zh[n])
+            write_text(dst, text)
             report.append(f"  patched agent (fork replacement): {n}")
         else:
             src = os.path.join(POOL, "agents", n + ".md")
@@ -970,6 +989,11 @@ def materialize_agents(names, report, ctx):
             text = adapt_agent_text(text)
             text = apply_fixups(text, "agents/%s.md" % n)
             text = set_frontmatter_name(text, rt)
+            if n not in zh:
+                raise SystemExit(
+                    f"agents/{n}: no Chinese description in "
+                    f"manifest/agent_descriptions.zh.json")
+            text = set_frontmatter_description(text, zh[n])
             text, notes = refscan.repair_text(
                 text, ctx["mat"], ctx["pool"],
                 owner=rt, external=ctx["external"], owner_kind="agent",
@@ -1028,6 +1052,7 @@ def main():
         resolved[kind] = resolve(groups[kind], sel[kind], kind, known)
 
     zh = zh_descriptions()
+    agent_zh = agent_descriptions()
     absorbed_manifest = load_json("manifest", "absorbed.json")
     absorbed_entries = absorbed_manifest.get("skills", {})
     absorbed = []
@@ -1084,7 +1109,7 @@ def main():
             counts["commands"] = materialize_commands(names, report, ctx)
             print(f"commands: {counts['commands']} materialized")
         else:
-            counts["agents"] = materialize_agents(names, report, ctx)
+            counts["agents"] = materialize_agents(names, report, ctx, agent_zh)
             print(f"agents: {counts['agents']} materialized")
 
     counts["rules"] = materialize_rules()

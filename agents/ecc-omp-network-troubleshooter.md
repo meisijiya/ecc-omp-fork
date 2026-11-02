@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-network-troubleshooter
-description: Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root cause summary.
+description: 按 OSI 层只读诊断连通、路由与 DNS 故障。要网络故障定位或查根因时派它。
 tools: read, bash, grep
 
 

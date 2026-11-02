@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-build-error-resolver
-description: Build and TypeScript error resolution specialist. Use PROACTIVELY when build fails or type errors occur. Fixes build/type errors only with minimal diffs, no architectural edits. Focuses on getting the build green quickly.
+description: 修构建与 TypeScript 报错，只做最小改动不碰架构。要构建失败或类型报错需快速转绿时派它。
 tools: read, write, edit, bash, grep, glob
 
 

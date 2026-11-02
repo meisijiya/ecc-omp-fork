@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-java-reviewer
-description: Expert Java code reviewer for Spring Boot and Quarkus projects. Automatically detects the framework and applies the appropriate review rules. Covers layered architecture, JPA/Panache, MongoDB, security, and concurrency. MUST BE USED for all Java code changes.
+description: 审 Java 的分层架构、JPA 与并发安全，自动识别框架。要改 Spring Boot 或 Quarkus 时派它。
 tools: read, grep, glob, bash
 
 
