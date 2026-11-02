@@ -4,7 +4,7 @@
 
 ### Issue tracker
 
-Issues live in GitHub Issues for `meisijiya/omp-skill-forge` (via the `gh` CLI; the repo is resolved from the `origin` remote). See `docs/agents/issue-tracker.md`.
+Issues live in GitHub Issues for `meisijiya/ecc-omp-fork` (via the `gh` CLI; the repo is resolved from the `origin` remote). See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

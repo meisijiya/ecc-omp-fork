@@ -1,11 +1,17 @@
 # omp-skill-forge
 
-> ECC（[affaan-m/ECC](https://github.com/affaan-m/ECC)）的 **omp 编程子集 fork**。
-> 把 ECC 里跟编程相关的能力抽出来，做成可版本化、可增量更新的独立 omp 插件，
-> 同时把每轮系统提示的 token 开销压到可控范围。
+> 把上游 skill 仓库适配成 omp 插件的工具链与产物。
+> 上游分两类：主池是 [affaan-m/ECC](https://github.com/affaan-m/ECC) 的编程子集快照，
+> 收纳池是 fork 之外的仓库（[backnotprop/pstack](https://github.com/backnotprop/pstack)、
+> [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)、
+> [fishzjp/qa-skills](https://github.com/fishzjp/qa-skills)）里值得整套搬进来的 skill。
+> 两者都经声明式改写、按 profile 裁剪后物化成可版本化、可增量更新的独立插件，
+> 每轮系统提示的 token 开销压到可控范围。
 
 本仓库是**唯一事实源**。运行态安装根（`~/.omp/agent/local/omp-skill-forge`）由
 `tools/deploy.py` 从这里同步过去，omp 通过 `omp plugin link` 指向该安装根。
+GitHub 仓库名仍是 `meisijiya/ecc-omp-fork`（重命名是仓库设置里的一次手动操作），
+插件 id、安装根与运行名前缀已经统一成 `omp-skill-forge` / `forge-`。
 
 默认 profile（`java-python`）下的生效规模：**86 skills + 22 agents + 5 rules**
 （86 = 上游选中的 65 个 + 收纳资产池的 17 个 + 本 fork 自带的 4 个：`forge-router` 与发布 /
@@ -24,14 +30,14 @@
 ### 一条命令装好
 
 ```bash
-git clone git@github.com:meisijiya/omp-skill-forge.git   # 私有库，走 SSH
+git clone git@github.com:meisijiya/ecc-omp-fork.git   # 公开库；https 亦可
 cd omp-skill-forge
 python tools/apply_selection.py     # 按当前 profile 物化 skills/agents/rules
 python tools/build_catalog.py        # 刷新 docs/CATALOG.md（可选，但建议跟上游一起提交）
 python tools/deploy.py              # 同步到 omp 安装根并 link
 ```
 
-仓库是私有的，克隆需要你对 `meisijiya/omp-skill-forge` 的 SSH 读权限；匿名 https 克隆会 404。
+仓库是公开的，https 与 SSH 都能克隆；推送需要 `meisijiya/ecc-omp-fork` 的写权限。
 
 `deploy.py` 做四件事：
 
@@ -69,7 +75,7 @@ omp plugin list                                     # 应能看到 omp-skill-for
 ### 手工安装（不想用脚本）
 
 ```bash
-git clone git@github.com:meisijiya/omp-skill-forge.git   # 私有库，走 SSH
+git clone git@github.com:meisijiya/ecc-omp-fork.git   # 公开库；https 亦可
 cd omp-skill-forge
 python tools/apply_selection.py
 # 把 skills/ agents/ rules/ package.json LICENSE NOTICE.md 复制到任意目录，例如：

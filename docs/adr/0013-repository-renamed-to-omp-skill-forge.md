@@ -16,10 +16,11 @@
 
 ## Decision
 
-1. **仓库与插件 id** 改成 `omp-skill-forge`：仓库名、`package.json` 的 `name`、安装根
+1. **仓库与插件 id** 改成 `omp-skill-forge`：插件 id、`package.json` 的 `name`、安装根
    `~/.omp/agent/local/omp-skill-forge`、`tools/deploy.py` 与
-   `tools/check_plugin_isolation.py` 里的常量同源。GitHub 远端仓库名的改名与推送由
-   维护者在仓库设置里执行，本仓库只保证本地树与工具自洽。
+   `tools/check_plugin_isolation.py` 里的常量同源。GitHub 侧的仓库名仍是
+   `meisijiya/ecc-omp-fork`，因为改远端名是仓库设置里的一次手动操作；文档与
+   `origin` 一律指向现有 URL，改远端名之后再一次性替换，避免留下 404 链接。
 2. **运行名前缀** 改成 `forge-`，仍只落在物化层：`pool/` 与 `manifest/groups.json`
    保留上游名，`tools/refscan.py` 的 `RUNTIME_PREFIX` 是唯一常量，物化、引用改写、
    收纳池重命名、门禁判定都读它。`absorbed_fixups.py` 的批量规则用 `{prefix}`

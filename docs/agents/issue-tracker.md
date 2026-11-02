@@ -1,6 +1,6 @@
 # Issue tracker: GitHub
 
-Issues and specs for this repo live as GitHub issues in `meisijiya/omp-skill-forge` (https://github.com/meisijiya/omp-skill-forge). Use the `gh` CLI for all operations.
+Issues and specs for this repo live as GitHub issues in `meisijiya/ecc-omp-fork` (https://github.com/meisijiya/ecc-omp-fork). Use the `gh` CLI for all operations.
 
 ## Conventions
 
@@ -12,7 +12,7 @@ Issues and specs for this repo live as GitHub issues in `meisijiya/omp-skill-for
 - **Apply / remove labels**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`
 - **Close**: `gh issue close <number> --comment "..."`
 
-The tracker repo is resolved from the `origin` remote (`git@github.com:meisijiya/omp-skill-forge.git`), so `gh` finds it automatically when run inside this checkout. From outside the clone, pass `--repo meisijiya/omp-skill-forge`.
+The tracker repo is resolved from the `origin` remote (`git@github.com:meisijiya/ecc-omp-fork.git`), so `gh` finds it automatically when run inside this checkout. From outside the clone, pass `--repo meisijiya/ecc-omp-fork`.
 
 ## Pull requests as a request surface
 
