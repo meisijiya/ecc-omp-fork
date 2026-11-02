@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-correct
-description: "Find the mistakes agents keep repeating in this repo and make each one impossible. Try architecture first, then types, then a lint whose error names the fix, then a test, and write docs last. Prove each check fails on a real past mistake. Repeat this each time the operator corrects you."
+description: 把反复被纠正的错变成架构或类型上的约束，让同一个错不再犯。
 ---
 
 # Correct

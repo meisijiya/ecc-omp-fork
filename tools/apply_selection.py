@@ -301,6 +301,55 @@ def strip_frontmatter_key(text, key):
     return "---" + fm + rest
 
 
+def zh_descriptions():
+    """{skill name: Chinese description} read from the fork's own table."""
+    path = os.path.join(ROOT, "manifest", "skill_descriptions.zh.json")
+    if not os.path.isfile(path):
+        raise SystemExit(
+            "manifest/skill_descriptions.zh.json is missing; every skill this "
+            "fork ships needs a Chinese description (tools/check_zh_descriptions.py)")
+    data = load_json("manifest", "skill_descriptions.zh.json")
+    if not isinstance(data, dict):
+        raise SystemExit("manifest/skill_descriptions.zh.json is not an object")
+    return data
+
+
+def set_frontmatter_description(text, description):
+    """Replace the `description:` field of the frontmatter of `text`.
+
+    The description is the one line omp puts into the system prompt, and the
+    upstream text is English, so a Chinese prompt does not match it. The
+    Chinese text lives in manifest/skill_descriptions.zh.json and is written
+    here, at materialization time, which keeps pool/ byte-identical to its
+    pin. A folded block scalar is replaced by the single line.
+    """
+    if not text.startswith("---"):
+        return text
+    end = text.find("\n---", 3)
+    if end == -1:
+        return text
+    fm = text[3:end]
+    rest = text[end:]
+    lines = fm.split("\n")
+    out = []
+    i = 0
+    replaced = False
+    while i < len(lines):
+        line = lines[i]
+        if not replaced and line.startswith("description:"):
+            out.append("description: " + description)
+            replaced = True
+            i += 1
+            while i < len(lines) and lines[i][:1] in (" ", "\t"):
+                i += 1  # skip the continuation lines of a folded scalar
+            continue
+        out.append(line)
+        i += 1
+    if not replaced:
+        return text
+    return "---" + "\n".join(out) + rest
+
+
 def set_frontmatter_name(text, name):
     """Set the `name:` field of the frontmatter of `text`.
 
@@ -759,7 +808,8 @@ def rename_patched_skill(directory, runtime):
     write_text(p, set_frontmatter_name(text, runtime))
 
 
-def materialize_skills(names, report, ctx, absorbed=()):
+def materialize_skills(names, report, ctx, absorbed=(), zh=None):
+    zh = zh or {}
     out = os.path.join(ROOT, "skills")
     tmp = out + ".tmp"
     if os.path.isdir(tmp):
@@ -791,6 +841,11 @@ def materialize_skills(names, report, ctx, absorbed=()):
                         text = apply_fixups(text, "skills/%s/%s" % (n, rel))
                         if rel == "SKILL.md":
                             text = set_frontmatter_name(text, rt)
+                            if n not in zh:
+                                raise SystemExit(
+                                    f"skills/{n}: no Chinese description in "
+                                    f"manifest/skill_descriptions.zh.json")
+                            text = set_frontmatter_description(text, zh[n])
                         base = refscan.link_context("skills/%s/%s" % (rt, rel))
                         text, notes = refscan.repair_text(
                             text, ctx["mat"], ctx["pool"],
@@ -819,6 +874,12 @@ def materialize_skills(names, report, ctx, absorbed=()):
                 p = os.path.join(root, f)
                 rel = os.path.relpath(p, dst).replace(os.sep, "/")
                 text = open(p, encoding="utf-8").read()
+                if rel == "SKILL.md":
+                    if name not in zh:
+                        raise SystemExit(
+                            f"absorbed/{name}: no Chinese description in "
+                            f"manifest/skill_descriptions.zh.json")
+                    text = set_frontmatter_description(text, zh[name])
                 base = refscan.link_context("skills/%s/%s" % (rt, rel))
                 text, notes = refscan.repair_text(
                     text, ctx["mat"], ctx["pool"],
@@ -966,6 +1027,7 @@ def main():
             )
         resolved[kind] = resolve(groups[kind], sel[kind], kind, known)
 
+    zh = zh_descriptions()
     absorbed_manifest = load_json("manifest", "absorbed.json")
     absorbed_entries = absorbed_manifest.get("skills", {})
     absorbed = []
@@ -1012,7 +1074,7 @@ def main():
         names = resolved[kind]
         if kind == "skills":
             pool_count, own_count, absorbed_count = materialize_skills(
-                names, report, ctx, absorbed)
+                names, report, ctx, absorbed, zh)
             counts["skills"] = pool_count
             counts["skills_own"] = own_count
             counts["skills_absorbed"] = absorbed_count

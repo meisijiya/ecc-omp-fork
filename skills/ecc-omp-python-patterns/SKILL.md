@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-python-patterns
-description: Pythonic idioms, PEP 8 standards, type hints, and best practices for building robust, efficient, and maintainable Python applications. Use when writing or reviewing Python code and idiomatic structure, typing, or PEP 8 is in question.
+description: Python 惯用法、PEP 8 与类型标注。写或评审 Python 代码时用。
 metadata:
   origin: ECC
 ---

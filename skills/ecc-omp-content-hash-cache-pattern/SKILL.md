@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-content-hash-cache-pattern
-description: Cache expensive file processing results using SHA-256 content hashes — path-independent, auto-invalidating, with service layer separation. Use when repeated file processing is slow and results should be cached and invalidated by content rather than path.
+description: 用 SHA-256内容哈希缓存文件处理结果，按内容失效。重复处理文件慢、要按内容缓存时用。
 metadata:
   origin: ECC
 ---

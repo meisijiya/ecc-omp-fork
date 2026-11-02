@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-kotlin-testing
-description: Kotlin testing patterns with Kotest, MockK, coroutine testing, property-based testing, and Kover coverage. Follows TDD methodology with idiomatic Kotlin practices. Use when writing Kotlin tests with Kotest or MockK, or testing coroutines and checking coverage.
+description: 写 Kotlin 测试，用 Kotest 与 MockK。写单元测试、做接口测试时用。
 metadata:
   origin: ECC
 ---

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-docs-governance
-description: Route broad documentation-governance requests to existing ECC skills and run an opt-in, read-only audit of mapped documentation roles, links, ADR indexes, and evidence references. Use when a user asks for documentation governance, project-knowledge organization, documentation integrity, or a deterministic docs audit without naming a narrower skill.
+description: 把宽泛文档治理请求路由到 ECC 技能并做只读审计。提文档治理、知识整理或文档审计时用。
 metadata:
   origin: ECC
 ---

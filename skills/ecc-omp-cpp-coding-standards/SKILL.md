@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-cpp-coding-standards
-description: C++ coding standards based on the C++ Core Guidelines (isocpp.github.io). Use when writing, reviewing, or refactoring C++ code to enforce modern, safe, and idiomatic practices.
+description: 按 C++ Core Guidelines 定编码规范。写 C++、做评审或重构时用。
 metadata:
   origin: ECC
 ---

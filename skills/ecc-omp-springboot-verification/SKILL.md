@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-springboot-verification
-description: Run the full Spring Boot verification loop — Maven or Gradle build, SpotBugs, PMD, and Checkstyle static analysis, unit and Testcontainers integration tests with JaCoCo coverage, OWASP dependency and secret scans, and diff review — producing a pass/fail readiness report. Use when preparing a Spring Boot pull request, validating coverage thresholds, or running pre-deploy verification.
+description: Spring Boot 验证，含静态分析、集成测试与覆盖率。提 PR 或发版前用。
 metadata:
   origin: ECC
 ---

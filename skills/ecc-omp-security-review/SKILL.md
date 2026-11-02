@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-security-review
-description: Use this skill when adding authentication, handling user input, working with secrets, creating API endpoints, or implementing payment/sensitive features. Provides comprehensive security checklist and patterns.
+description: 提供鉴权、密钥与支付场景的安全检查清单。做敏感功能或处理输入前用。
 metadata:
   origin: ECC
 ---

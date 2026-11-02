@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-router
-description: 开工前读这张表，按任务类型挑本 fork 的 skill 与 agent（名字都带 ecc-omp- 前缀）：接口设计、数据库、测试、评审、发布、运维、文档、跨语言栈。不确定用哪条、或任务跨多个阶段时先读它。
+description: 当用户要开工、要决定读哪条 skill 或派哪个 agent 时，先读这张表挑本 fork 的资产（名字都带 ecc-omp- 前缀）：接口设计、数据库、测试、评审、发布、运维、文档、跨语言栈。已经知道要读哪条时不要读它。
 ---
 
 # 本 fork 的选路表
@@ -24,6 +24,68 @@ description: 开工前读这张表，按任务类型挑本 fork 的 skill 与 ag
 
 下面的组合按「典型任务 → 读哪些 skill / 派哪些 agent」给出。
 **本表不覆盖全部资产**：没列出的技能仍然可用，查 `skills/` 目录即可。
+
+---
+
+## 按用户的话找 skill（先查这张表）
+
+接口与数据：
+
+| 用户可能这么说 | 读 / 派 |
+| --- | --- |
+| 写接口、加接口、接口怎么定 | `ecc-omp-api-design` |
+| 跨服务契约先定下来 | `ecc-omp-contract-first` |
+| 建表、改表、加字段、迁移 | `ecc-omp-database-migrations` 加对应数据库 skill |
+| 查询慢、索引怎么建 | `ecc-omp-postgres-patterns` 或 `ecc-omp-mysql-patterns` |
+| 缓存怎么放、什么能缓存 | `ecc-omp-content-hash-cache-pattern` |
+| 校验登录、鉴权、权限、越权 | `ecc-omp-security-review` |
+
+测试与评审：
+
+| 用户可能这么说 | 读 / 派 |
+| --- | --- |
+| 补测试、写单测 | 对应语言的 `ecc-omp-python-testing` 一类，框架用 `ecc-omp-django-tdd` 一类 |
+| 端到端、浏览器里点一遍 | `ecc-omp-e2e-testing`，agent `ecc-omp-e2e-runner` |
+| 测试覆盖够不够、缺哪些 | `ecc-omp-test-collaboration` |
+| 这次改动会影响到哪里 | `ecc-omp-change-impact` |
+| 帮我评审这次改动 | agent `ecc-omp-java-reviewer` 或 `ecc-omp-python-reviewer` |
+| 报错、异常被吞、兜底不对 | `ecc-omp-error-handling`，agent `ecc-omp-silent-failure-hunter` |
+| 同一个错反复犯 | `ecc-omp-correct` |
+
+交付与运维：
+
+| 用户可能这么说 | 读 / 派 |
+| --- | --- |
+| 发版、打 tag、写 changelog | `ecc-omp-release-management` |
+| 上线前检查一遍 | `ecc-omp-production-audit` 与 `ecc-omp-constraint-driven-development` |
+| 容器、镜像、compose | `ecc-omp-docker-patterns` |
+| K8s、探针、RBAC | `ecc-omp-kubernetes-patterns` |
+| 看日志、指标、告警 | `ecc-omp-observability` |
+| 线上挂了、出事故 | `ecc-omp-incident-response` |
+| 监控面板怎么排 | `ecc-omp-dashboard-builder` |
+| 性能慢、要不要优化 | agent `ecc-omp-performance-optimizer` |
+
+代码与语言：
+
+| 用户可能这么说 | 读 / 派 |
+| --- | --- |
+| 代码太乱、清死代码 | agent `ecc-omp-refactor-cleaner` 或 `ecc-omp-code-simplifier` |
+| 不熟这个仓库、先摸清 | `ecc-omp-codebase-onboarding` 与 `ecc-omp-code-tour` |
+| 分支、合并、rebase | `ecc-omp-git-workflow` |
+| 提交信息怎么写 | `ecc-omp-conventional-commit-review` |
+| 文档怎么写、文档过时了 | `ecc-omp-docs-governance` |
+| 构建挂了、编译报错 | agent `ecc-omp-build-error-resolver` |
+| 状态机、流程会不会走错 | `ecc-omp-statechart`（仅 full） |
+| 任务太浅、先想深一点 | `ecc-omp-sharpen` |
+| 幂等、重试、并发共享状态 | `ecc-omp-engineering-principles` |
+
+按语言挑一条：
+
+| 用户可能这么说 | 读 |
+| --- | --- |
+| Java、Spring、JPA 怎么写 | `ecc-omp-springboot-patterns` 与 `ecc-omp-jpa-patterns` |
+| Python、Django、FastAPI 怎么写 | `ecc-omp-django-patterns` 与 `ecc-omp-fastapi-patterns` |
+| 其它语言栈 | `ecc-omp-golang-patterns` 一类，按语言选一条 |
 
 ---
 

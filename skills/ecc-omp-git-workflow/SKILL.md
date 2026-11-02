@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-git-workflow
-description: Git workflow patterns including branching strategies, commit conventions, keeping history clean and readable, tidying local commits before merging, merge vs rebase, conflict resolution, and collaborative development best practices for teams of all sizes. Use when choosing a branching strategy, writing commit conventions, cleaning up history before a pull request, deciding merge versus rebase, or resolving conflicts.
+description: 梳理 Git 分支与提交规范，保持历史干净。选分支策略、写提交信息或解冲突时用。
 metadata:
   origin: ECC
 ---

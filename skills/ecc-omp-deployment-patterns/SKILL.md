@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-deployment-patterns
-description: Deployment workflows, CI/CD pipeline patterns, Docker containerization, health checks, rollback strategies, and production readiness checklists for web applications. Use when setting up CI/CD, containerizing an app, or checking production readiness before a release.
+description: 梳理上线流程与 CI/CD 流水线，含回滚与健康检查。发版、容器化或上线前核查时用。
 metadata:
   origin: ECC
 ---

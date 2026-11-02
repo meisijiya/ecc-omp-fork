@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-vite-patterns
-description: Vite build tool patterns including config, plugins, HMR, env variables, proxy setup, SSR, library mode, dependency pre-bundling, and build optimization. Activate when working with vite.config.ts, Vite plugins, or Vite-based projects.
+description: Vite 配置与插件模式，含 HMR 与代理设置。做 Vite 项目构建优化时用。
 metadata:
   origin: ECC
 ---

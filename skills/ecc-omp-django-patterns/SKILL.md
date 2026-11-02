@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-django-patterns
-description: Django architecture patterns, REST API design with DRF, ORM best practices, caching, signals, middleware, and production-grade Django apps. Use when building or reviewing Django apps, DRF APIs, ORM queries, or caching.
+description: 写 Django 架构与 DRF 接口，覆盖 ORM 与缓存。建应用、写接口或加缓存时用。
 metadata:
   origin: ECC
 ---

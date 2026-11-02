@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-contract-first
-description: Coordinate frontend/backend or service-to-service work through one authoritative machine-checkable contract (OpenAPI, AsyncAPI, Protocol Buffers, or JSON Schema), with generated consumer types and contract-verified integration. Use when parallel consumer and provider work must evolve an API or event schema without field drift, mock/production shape mismatch, or one side silently redefining the interface.
+description: 用 OpenAPI 等契约同步前后端与微服务，避免字段漂移。并行写前后端、定接口契约时用。
 metadata:
   origin: ECC
 ---

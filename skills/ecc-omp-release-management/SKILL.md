@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-release-management
-description: 给代码打 tag、写 changelog、做分级发布与回滚、核对制品与依赖可追溯性时使用；日常写代码或单修一个 bug 时不要调用。
+description: 打 tag、写 changelog、分级发布与回滚，核对制品可追溯。发版、写发布说明时用。
 ---
 
 # 发布与上线管理（release management / ship）

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-e2e-testing
-description: Playwright E2E testing patterns, Page Object Model, configuration, CI/CD integration, artifact management, and flaky test strategies. Use when writing Playwright tests, structuring page objects, or fixing flaky E2E runs in CI.
+description: Playwright E2E 测试模式，治 flaky。写测试或修 CI 抖动时用。
 metadata:
   origin: ECC
 ---

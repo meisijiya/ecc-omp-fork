@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-python-testing
-description: Python testing strategies using pytest, TDD methodology, fixtures, mocking, parametrization, and coverage requirements. Use when writing pytest tests — fixtures, mocks, parametrization, or coverage.
+description: 写 Python测试，用 pytest 做夹具与参数化。写单元测试、补测试或查覆盖率时用。
 metadata:
   origin: ECC
 ---

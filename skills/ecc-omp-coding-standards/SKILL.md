@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-coding-standards
-description: Baseline cross-project coding conventions for naming, readability, immutability, and code-quality review. Use detailed frontend or backend skills for framework-specific patterns. Use when reviewing code quality or naming with no framework-specific skill that applies.
+description: 跨项目的通用编码规范，覆盖命名、可读性与不可变。审代码质量，查命名风格时用。
 metadata:
   origin: ECC
 ---

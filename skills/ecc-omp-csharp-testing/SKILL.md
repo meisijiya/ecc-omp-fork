@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-csharp-testing
-description: C# and .NET testing patterns with xUnit, FluentAssertions, mocking, integration tests, and test organization best practices. Use when writing or reviewing xUnit tests, mocks, or integration tests in a C# / .NET project.
+description: C# 与 .NET 测试，含 xUnit、mock 与集成测试。写测试或评审时用。
 metadata:
   origin: ECC
 ---

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-bun-runtime
-description: Bun as runtime, package manager, bundler, and test runner. When to choose Bun vs Node, migration notes, and Vercel support.
+description: 用 Bun 当运行时包管理与测试器。选运行时、做 Node 迁移时用。
 metadata:
   origin: ECC
 ---

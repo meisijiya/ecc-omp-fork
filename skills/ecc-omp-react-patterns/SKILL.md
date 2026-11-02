@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-react-patterns
-description: React 18/19 patterns including hooks discipline, server/client component boundaries, Suspense + error boundaries, form actions, data fetching, state management decision trees, and accessibility-first composition. Use when writing or reviewing React components.
+description: 写 React 18/19 组件，含hooks 纪律与服务端边界。写组件、做代码评审时用。
 metadata:
   origin: ECC
 ---

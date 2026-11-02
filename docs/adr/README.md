@@ -14,5 +14,6 @@
 | [0008](0008-no-commands-and-deduplicate-against-installed-plugins.md) | 不发布命令，与其它插件重复的 skill 与 agent 一律不物化 | accepted | 2026-10-28 |
 | [0009](0009-ship-ops-skills-and-mattpocock-boundary.md) | 以 mattpocock 为重叠基准，ECC fork 补齐发布 / 部署 / 运维能力 | accepted | 2026-11-01 |
 | [0010](0010-absorbed-pool-for-third-party-skills.md) | 第三方 skill 以「收纳池」形式纳入，与上游池分离 | accepted | 2026-11-01 |
+| [0011](0011-chinese-skill-descriptions.md) | skill 的提示行描述改成中文，靠一张触发描述表维护 | accepted | 2026-11-02 |
 
 这些 ADR 是 fork 自有的仓库文档，不参与物化，也不随 profile 裁剪。

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-react-testing
-description: React component testing with React Testing Library, Vitest/Jest, MSW for network mocking, accessibility assertions with axe, and the decision boundary between component tests and Playwright/Cypress end-to-end runs. Use when writing or fixing tests for React components, hooks, or pages.
+description: React 组件测试，用 RTL 与 MSW 覆盖交互与无障碍。写 React 组件、补 hook 测试或查 a11y 时用。
 metadata:
   origin: ECC
 ---

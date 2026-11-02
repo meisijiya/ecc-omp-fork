@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-perl-testing
-description: Perl testing patterns using Test2::V0, Test::More, prove runner, mocking, coverage with Devel::Cover, and TDD methodology. Use when writing Perl tests with Test2::V0 or Test::More, or measuring coverage.
+description: 用 prove 与 mock 写 Perl 测试，含覆盖率统计。补测试或写测试时用。
 metadata:
   origin: ECC
 ---

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-golang-patterns
-description: Idiomatic Go patterns, best practices, and conventions for building robust, efficient, and maintainable Go applications. Use when writing or reviewing Go code and idiomatic structure or conventions are in question.
+description: 提供地道 Go 模式与约定，写出健壮易维护的应用。写 Go 或评审代码结构时用。
 metadata:
   origin: ECC
 ---

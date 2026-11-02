@@ -215,23 +215,23 @@ rules 恒为自有 5 条。本 fork 不发布命令。
 
 各 profile 的收益对比（技能描述进系统提示的部分）：
 
-| profile | 技能描述字符数 | 技能名称字符数（运行名） | 合计字符数 | 约合 token |
-| --- | --- | --- | --- | --- |
-| ECC 全量上游 | 95,615 | —（沿用上游自己的口径） | — | ~24K |
-| `full` | 37,338 | 3,431 | 40,769 | ~10.2K |
-| `java-python` | 19,022 | 1,734 | 20,756 | ~5.2K |
-| `lite` | 11,439 | 1,039 | 12,478 | ~3.1K |
+| profile | 描述 token | 名称 token | 合计 token |
+| --- | --- | --- | --- |
+| `full` | 4,555 | 980 | ~5.5K |
+| `java-python` | 2,527 | 495 | ~3.0K |
+| `lite` | 1,375 | 297 | ~1.7K |
 
-数字口径：各 profile 物化后**全部 skill**（上游 + 收纳 + 自有 4 条）的 frontmatter `description`
-字符数，加上它们的**运行名**字符数（含 `ecc-omp-` 前缀），约 4 字符 = 1 token；「ECC 全量上游」一行沿用上游自己的口径，不含名字。
+描述 token 按中文一个字一个 token、其余字符三分之一 token 估算，名称按运行名字符数除以
+3.5 估算。描述改成中文之后，三个 profile 的提示行都省下 1.4K 到 4.3K token：
+`java-python` 从约 5.2K 降到约 3.0K，`full` 从约 9.8K 降到约 5.5K，`lite` 从约 3.1K
+降到约 1.7K。
 
 前缀本身的开销 = 8 字符 × 被改名的资产数（上游 + 收纳，自有资产的名字本就带前缀）：
 `full` 技能名 +1,064、`java-python` +552、`lite` +312；agent 名同样带前缀，`java-python` 下 agent 名 +176。
 
-`full` 物化后实际进系统提示的是 137 个 skill（127 个上游 + 6 个收纳 + 自带的 4 个），
-实测合计 37,338 字符的描述 + 3,431 字符的运行名 = 40,769 字符，约 ~10.2K token。
-收纳资产在其中占 1,767 字符（6 条描述 1,619 + 运行名 148，约 0.44K token）；`java-python` 下
-收纳 4 条占 1,334 字符（4 条描述 1,237 + 运行名 97，约 0.33K token）。
+`full` 物化后实际进系统提示的是 137 个 skill（127 个上游 + 6 个收纳 + 自带的 4 个）。
+收纳资产在其中占约 230 token（6 条中文描述 188 + 运行名 148 折算 42）；`java-python`
+下收纳 4 条占约 157 token（描述 129 + 运行名折算 28）。
 
 切完 profile 若不想把指针改动留在工作区，用下面这条还原（物化/部署脚本都只读它，
 但手工或脚本重写这个 JSON 文件容易改掉缩进或末尾换行，还原后 diff 才干净）：
@@ -291,6 +291,7 @@ CI 用 `GITHUB_TOKEN` + `peter-evans/create-pull-request` 自动开 PR（分支
 | `python tools/check_refs.py [--json]` | **引用自洽**：运行树与 `own/` 里是否还有指向「本 fork 不提供的资产」的悬空引用（`skill://`、`skills/<name>/`、`commands\|agents\|rules/<name>.md`、斜杠命令、反引号裸名） | 0 = 无缺陷悬空（fork 自有目录里的 profile 裁剪引用只列出、不算缺陷）；1 = 有缺陷悬空（打印明细）；2 = profile 指针读不出来（`active_profile` 缺失或未知） | 每次改完运行树或上游文本后；提交前必跑 |
 | `python tools/check_adapt.py [--tree <dir>] [--json]` | **omp 适配不变式**：INV-01..INV-15（无 `model:`、无 `CLAUDE.md`、无 `.claude/`、无 Claude CLI 调用、无 Claude 工具名、skill/agent/rule/command 的 frontmatter 完整性、`/name` 引用必须落在物化 commands 名单内、无「Claude Code」措辞等） | 0 = 无违规；1 = 有违规（逐条给 `文件:行号` + token）；2 = 用法错误或树不可读 | 每次改完运行树后；提交前必跑 |
 | `python tools/check_upstream_pin.py` | **上游 pin 一致性**：`manifest/upstream.json` 形状（`commit` 必须是 40 位小写 hex、`repo` 非空）、`manifest/groups.json` 的 upstream.commit 镜像与 pin 一致、`pool/` 摘要等于 pin 的 `pool_digest`、`NOTICE.md` 引用的上游 commit 等于 pin 的 commit | 0 = 四项全过；1 = 有校验项不符（逐条打印）；2 = `manifest/upstream.json` / `manifest/groups.json` 读不出来 | 每次同步上游之后；提交前必跑 |
+| `python tools/check_zh_descriptions.py [--json]` | **中文触发描述**：每条 skill 都有中文 description（覆盖 upstream 与收纳），长度、标点与禁用句式合规 | 0 = 齐全且合规；1 = 有缺失或不合规（逐条打印）；2 = 表读不出来 | 改 `manifest/skill_descriptions.zh.json` 或增删 skill 之后；提交前必跑 |
 | `python tools/check_absorbed.py [--json]` | **收纳池一致性**：`manifest/absorbed.json` 形状（来源 repo + 40 位 commit）、`absorbed/` 每个 skill 的文件摘要集合与 manifest 一致、生成物 `ecc-omp-engineering-principles` 等于其输入重新拼接的结果、收纳 skill 副本里不残留 `CLAUDE.md` / `.claude/` / `disable-model-invocation` / `paths` / 斜杠触发词（`absorbed/<source>/principles/` 是 bundle 的原始快照，按设计不改写、不在扫描面内） | 0 = 一致；1 = 有缺陷（逐条打印）；2 = manifest 读不出来 | 改了 `absorbed/`、`manifest/absorbed.json` 或 `tools/absorbed_fixups.py` 之后；提交前必跑 |
 | `python tools/check_plugin_isolation.py [--probe\|--toggle-test] [--omp <path>] [--cwd <dir>] [--root <dir>] [--json]` | **插件启停可见性**：本插件四类资产在启用态是否被 omp 提供、禁用态是否全部消失 | 0 = 符合预期；1 = 不一致（打印 FAIL 明细）；2 = 工具错误 | 改了部署方式、插件启停状态或 omp 版本之后 |
 
@@ -360,6 +361,7 @@ hide: true
 | `manifest/applied.json` | 上次物化实际生效的 profile 与数量（部署前用来校验是否过期） |
 | `manifest/upstream.json` | 上游 pin 唯一事实源：`repo` / `commit` / `version` / `pool_digest` |
 | `manifest/absorbed.json` | 收纳来源 pin（`repo` + `commit`）、逐文件 sha256、bundle 配方、各来源许可与版权行 |
+| `manifest/skill_descriptions.zh.json` | 每条 skill 的中文触发描述（物化时写入运行树，`pool/` 保持原样） |
 | `manifest/external_refs.json` | 本 fork 不提供、但由别的 omp 插件提供的资产（如 `code-review` skill）；这些名字不带本 fork 前缀 |
 | `skills/` `agents/` `rules/` | **物化后的实际生效内容**（入库，便于 diff 上游变更）；skill 目录名、agent 文件名带 `ecc-omp-` 前缀 |
 | `tools/` | 更新、裁剪、部署、生成目录、各项门禁的脚本 |
@@ -393,6 +395,9 @@ python tools/check_upstream_pin.py
 
 # 收纳池门禁：来源 pin / 逐文件摘要 / 生成物 / 许可 / 换行符 / 残留文本
 python tools/check_absorbed.py
+
+# 中文触发描述门禁：覆盖、长度与句式
+python tools/check_zh_descriptions.py
 
 # 刷新收纳池（拉取两个来源的 pin → 重放改写规则 → 刷摘要 → 重新生成 bundle）
 python tools/sync_absorbed.py

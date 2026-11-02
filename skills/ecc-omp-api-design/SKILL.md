@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-api-design
-description: REST API design patterns including resource naming, status codes, pagination, filtering, error responses, versioning, and rate limiting for production APIs. Use when designing or reviewing REST endpoints, resource names, status codes, pagination, or versioning.
+description: 设计生产级 REST 接口，覆盖资源命名、状态码与分页版本管理。写接口或做接口评审时用。
 metadata:
   origin: ECC
 ---

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-perl-patterns
-description: Modern Perl 5.36+ idioms, best practices, and conventions for building robust, maintainable Perl applications. Use when writing or reviewing modern Perl 5.36+ code.
+description: Perl 5.36+ 现代惯用法与约定。写或评审 Perl 代码时用。
 metadata:
   origin: ECC
 ---

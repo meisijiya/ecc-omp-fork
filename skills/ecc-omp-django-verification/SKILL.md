@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-django-verification
-description: Run the full Django verification loop — environment check, mypy/ruff/black linting, migration safety, pytest with coverage targets, pip-audit and bandit security scans, settings and logging review, and diff review — producing a phased pass/fail report before release or PR. Use when preparing a Django pull request, validating migrations or coverage, or running pre-deploy readiness checks.
+description: 跑 Django 全量验证循环并出通过报告。提 PR、查迁移或发版前用。
 metadata:
   origin: ECC
 ---

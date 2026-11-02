@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-cpp-testing
-description: Use only when writing/updating/fixing C++ tests, configuring GoogleTest/CTest, diagnosing failing or flaky tests, or adding coverage/sanitizers.
+description: 编写与修复 C++ 测试，配 GoogleTest/CTest 并查偶发失败。写 C++ 测试、补覆盖率或接 sanitizer 时用。
 metadata:
   origin: ECC
 ---

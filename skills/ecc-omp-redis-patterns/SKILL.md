@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-redis-patterns
-description: Redis data structure patterns, caching strategies, distributed locks, rate limiting, pub/sub, and connection management for production applications. Use when adding caching, a distributed lock, rate limiting, or pub/sub with Redis, or when key design needs review.
+description: Redis 数据结构与缓存策略，含分布式锁与限流。给应用加缓存或分布式锁时用。
 metadata:
   origin: ECC
 ---

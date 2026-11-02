@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-database-migrations
-description: "Safe, reversible database migration patterns: forward-only production changes, expand-contract zero-downtime renames, concurrent indexes, batched backfills, and per-tool workflows for PostgreSQL, Prisma, Drizzle, Kysely, Django, and golang-migrate. Use when writing a schema or data migration, adding a column or index to a large table, planning a rollback, or preparing a zero-downtime deploy."
+description: 安全可逆的数据库迁移模式，含扩容收缩与并发索引。写迁移、给大表加字段或规划回滚时用。
 metadata:
   origin: ECC
 ---

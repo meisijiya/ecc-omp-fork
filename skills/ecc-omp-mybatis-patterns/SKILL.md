@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-mybatis-patterns
-description: MyBatis and MyBatis-Spring patterns for mapper design, XML and annotation SQL, result mapping, dynamic SQL safety, transactions, batching, pagination, and query performance. Use when building or reviewing Java persistence code with MyBatis, Spring Boot, MyBatis-Spring, or MyBatis-based legacy applications.
+description: 覆盖 MyBatis mapper、SQL 与事务分页。写持久层或评审 SQL 时用。
 metadata:
   origin: ECC
 ---

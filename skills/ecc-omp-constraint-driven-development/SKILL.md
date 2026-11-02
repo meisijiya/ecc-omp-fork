@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-constraint-driven-development
-description: "Establishes a project's quality bar as a written contract and stops agents quietly lowering it: it interviews the user on which dimensions matter, supplies sane default thresholds when they have no number in mind, records everything in CONSTRAINTS.md, and watches the diff for a weakened bar -- new @ts-ignore or eslint-disable suppressions, skipped or deleted tests, assertions stripped out, unimplemented stubs, thresholds edited down. Use when no quality bar is written down, when the user says 「set up constraints」 or 「define our standards」, or when an agent keeps silencing checks and skipping tests to get to green."
+description: 把项目质量底线写进 CONSTRAINTS.md，盯住 diff 里被降的门槛。要立覆盖率硬指标时用。
 ---
 
 # Constraint-Driven Development

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-inherit-legacy-style
-description: Prevent AI style drift on legacy projects by scanning the codebase for implicit conventions, resolving conflicts with the operator one at a time, and writing an enforceable .ai-style-rules.md (Golden Files, naming rules, DONTs) plus an optional AGENTS.md hook. Use when onboarding an AI agent onto a hand-written legacy codebase or extracting a project's unwritten coding rules.
+description: 扫描老代码库里的隐性约定，写可执行的风格规则文件。接手老仓库、防 AI 改歪风格时用。
 metadata:
   origin: community
 ---

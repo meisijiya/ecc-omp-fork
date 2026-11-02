@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-django-celery
-description: Django + Celery async task patterns — configuration, task design, beat scheduling, retries, canvas workflows, monitoring, and testing. Use when adding background jobs, scheduled tasks, or async processing to a Django app.
+description: Django 与 Celery 异步任务模式，含调度与重试。加后台或定时任务时用。
 metadata:
   origin: ECC
 ---

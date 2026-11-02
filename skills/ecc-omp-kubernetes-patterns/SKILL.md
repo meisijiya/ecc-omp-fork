@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-kubernetes-patterns
-description: Kubernetes workload patterns, resource management, RBAC, probes, autoscaling, ConfigMap/Secret handling, and kubectl debugging for production-grade deployments. Use when writing or reviewing Kubernetes manifests, or debugging probes, RBAC, autoscaling, or resource limits.
+description: 给 Kubernetes 建工作负载模式，含 RBAC 与探针。写清单或排查探针时用。
 metadata:
   origin: ECC
 ---

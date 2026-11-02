@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-code-tour
-description: Create CodeTour `.tour` files — persona-targeted, step-by-step walkthroughs with real file and line anchors. Use for onboarding tours, architecture walkthroughs, PR tours, RCA tours, and structured "explain how this works" requests. Use when the user asks for a code tour, onboarding walkthrough, PR tour, or an explanation of how a subsystem works.
+description: 生成代码走查文件，带真实文件与行号锚点。讲代码、接手新仓库或代码评审时用。
 metadata:
   origin: ECC
 ---

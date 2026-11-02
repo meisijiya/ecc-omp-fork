@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-production-audit
-description: Local-evidence production readiness audit for shipped apps, pre-launch reviews, post-merge checks, and "what breaks in prod?" questions without sending repo data to an external audit service. Use when auditing production readiness before launch, after a merge, or when asked what breaks in prod.
+description: 用本地证据做生产就绪审计，覆盖发版前与合并后。发版前、合并后或查线上会炸什么时用。
 metadata:
   origin: community
 ---

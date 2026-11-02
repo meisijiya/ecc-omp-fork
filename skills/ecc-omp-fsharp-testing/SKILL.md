@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-fsharp-testing
-description: F# testing patterns with xUnit, FsUnit, Unquote, FsCheck property-based testing, integration tests, and test organization best practices. Use when writing F# tests with xUnit, FsUnit, Unquote, or FsCheck.
+description: F# 测试模式，主用 xUnit 与 FsCheck。写 F# 测试或补测试时用。
 metadata:
   origin: ECC
 ---

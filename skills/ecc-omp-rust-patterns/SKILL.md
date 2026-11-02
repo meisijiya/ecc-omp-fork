@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-rust-patterns
-description: Idiomatic Rust patterns, ownership, error handling, traits, concurrency, and best practices for building safe, performant applications. Use when writing or reviewing Rust code and ownership, error handling, traits, or concurrency is in question.
+description: 提供地道 Rust 模式，覆盖所有权与并发。写 Rust 或评审错误处理与并发时用。
 metadata:
   origin: ECC
 ---

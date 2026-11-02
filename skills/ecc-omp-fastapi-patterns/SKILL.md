@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-fastapi-patterns
-description: FastAPI best practices covering project structure, Pydantic v2 schemas, dependency injection, async handlers, authentication, authorization, transactional service layers, and testing with httpx and pytest. Use when building or reviewing FastAPI apps — Pydantic schemas, dependencies, async handlers, auth, or tests.
+description: FastAPI 最佳实践，覆盖 Pydantic 模型、依赖注入与鉴权。写 FastAPI 接口，加鉴权或补测试时用。
 metadata:
   origin: ECC
 ---

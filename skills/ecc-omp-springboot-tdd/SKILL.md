@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-springboot-tdd
-description: Test-driven development for Spring Boot using JUnit 5, Mockito, MockMvc, Testcontainers, and JaCoCo. Use when adding features, fixing bugs, or refactoring.
+description: 用 JUnit 给 Spring Boot 做测试驱动开发。加功能、修 bug 或重构 Spring Boot 时用。
 metadata:
   origin: ECC
 ---

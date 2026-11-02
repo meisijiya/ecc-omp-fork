@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-mysql-patterns
-description: MySQL and MariaDB schema, query, indexing, transaction, replication, and connection-pool patterns for production backends. Use when designing MySQL or MariaDB schemas and indexes, or when a query, transaction, or replica lags.
+description: MySQL 与 MariaDB 的库表与索引写法，含事务复制。建表、加索引或查主从延迟时用。
 metadata:
   origin: ECC
 ---

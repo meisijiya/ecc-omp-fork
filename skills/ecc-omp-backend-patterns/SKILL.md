@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-backend-patterns
-description: Backend architecture patterns, API design, database optimization, and server-side best practices for Node.js, Express, and Next.js API routes. Use when building or reviewing Node.js, Express, or Next.js API routes and their data access.
+description: Node.js 与 Express、Next.js 后端架构。写接口或评审接口时用。
 metadata:
   origin: ECC
 ---

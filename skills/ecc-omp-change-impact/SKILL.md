@@ -1,7 +1,6 @@
 ---
 name: ecc-omp-change-impact
-description: >-
-  Perform evidence-backed impact analysis before changing code, data, interfaces, or governance documents, then compare the planned impact with the actual diff after implementation. Covers call paths, data and schema, API contracts, tests, documentation, ADRs, deployment, migration, and rollback. Use for cross-module or high-risk changes, database migrations, authentication, public interfaces, blast-radius questions, pre-change checks, and post-implementation alignment.
+description: 改动前用证据做影响面分析，改后比对实际差异与计划。跨模块改动、做迁移或改鉴权前用。
 ---
 
 # Change Impact Analysis

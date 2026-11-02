@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-django-tdd
-description: Django testing strategies with pytest-django, TDD methodology, factory_boy, mocking, coverage, and testing Django REST Framework APIs. Use when writing Django or DRF tests with pytest-django, or driving a Django feature test-first.
+description: 用 pytest-django 给 Django 与 DRF 写测试，走测试驱动。写 Django 测试、补 DRF 接口测试时用。
 metadata:
   origin: ECC
 ---

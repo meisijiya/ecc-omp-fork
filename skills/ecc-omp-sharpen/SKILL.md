@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-sharpen
-description: "Rewrite a task that is too shallow rather than too big: name what a top practitioner would add, the raw material to start from, the tools, and the outside evidence that proves the result. Use when the user asks to deepen a task or rewrite a prompt."
+description: 把任务改深不改大。说出专家会多做哪一步、靠什么证明结果。任务太浅要重写时用。
 ---
 
 I want a deeper version of this task, not a bigger one. Before rewriting it, do four things:

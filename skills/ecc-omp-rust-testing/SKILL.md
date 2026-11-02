@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-rust-testing
-description: Rust testing patterns including unit tests, integration tests, async testing, property-based testing, mocking, and coverage. Follows TDD methodology. Use when writing Rust tests — unit, integration, async, property-based, or coverage.
+description: Rust 测试写法，覆盖单元测试与异步测试。写 Rust 测试、补覆盖率或做属性测试时用。
 metadata:
   origin: ECC
 ---

@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-postgres-patterns
-description: PostgreSQL database patterns for query optimization, schema design, indexing, and security. Based on Supabase best practices. Use when designing PostgreSQL schemas, indexes, or RLS policies, or when a query is too slow.
+description: PostgreSQL 的查询优化、建表与索引写法。设计 PG 表，加索引或写 RLS 策略时用。
 metadata:
   origin: ECC
 ---

@@ -16,7 +16,7 @@ Single-context layout: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs
 
 ## Gates
 
-Five gates guard this repo. Run them before declaring work done; each one fails loudly instead of
+Six gates guard this repo. Run them before declaring work done; each one fails loudly instead of
 silently letting a broken asset reach the runtime. Details in `README.md` → 「门禁清单」.
 
 | Command | Guards |
@@ -25,4 +25,5 @@ silently letting a broken asset reach the runtime. Details in `README.md` → �
 | `python tools/check_adapt.py` | omp adaptation invariants (INV-01..INV-15) |
 | `python tools/check_upstream_pin.py` | Upstream pin, its mirror and the pool digest agree |
 | `python tools/check_absorbed.py` | Absorbed pool digests, generated bundle and adaptation residue agree |
+| `python tools/check_zh_descriptions.py` | Chinese trigger descriptions cover every skill and obey the wording rules |
 | `python tools/check_plugin_isolation.py --toggle-test` | Plugin enable/disable visibility (local only; it toggles the plugin) |

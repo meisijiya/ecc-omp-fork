@@ -123,6 +123,11 @@ jobs:
       - name: Absorbed pool gate
         run: python tools/check_absorbed.py
 
+      # Chinese trigger descriptions: every skill needs one, and it has to
+      # obey the length and wording rules.
+      - name: Chinese description gate
+        run: python tools/check_zh_descriptions.py
+
       # The three profiles share one working tree, so they run one after the
       # other instead of as a parallel matrix.  check_refs.py judges the tree
       # against the active profile, so it runs inside the loop as well: the

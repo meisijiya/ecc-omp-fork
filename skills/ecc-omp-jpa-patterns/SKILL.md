@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-jpa-patterns
-description: JPA/Hibernate patterns for entity design, relationships, query optimization, transactions, auditing, indexing, pagination, and pooling in Spring Boot. Use when designing JPA entities or relationships, or when a Hibernate query, transaction, or N+1 problem needs fixing.
+description: JPA 与 Hibernate 实体关系与查询优化。建实体或治事务、N+1 时用。
 metadata:
   origin: ECC
 ---

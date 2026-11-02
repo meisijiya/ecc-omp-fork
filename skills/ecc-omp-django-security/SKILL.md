@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-django-security
-description: Django security best practices, authentication, authorization, CSRF protection, SQL injection prevention, XSS prevention, and secure deployment configurations. Use when reviewing Django authentication, authorization, input handling, or deployment settings.
+description: 守护 Django 安全，覆盖鉴权、CSRF 与 XSS。审登录权限或部署配置时用。
 metadata:
   origin: ECC
 ---

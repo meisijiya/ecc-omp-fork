@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-compose-multiplatform-patterns
-description: Compose Multiplatform and Jetpack Compose patterns for KMP projects — state management, navigation, theming, performance, and platform-specific UI. Use when building Compose or Jetpack Compose UI, state, navigation, or theming in a KMP project.
+description: KMP 项目里 Compose 的状态、导航与主题模式。写界面或做状态管理时用。
 metadata:
   origin: ECC
 ---

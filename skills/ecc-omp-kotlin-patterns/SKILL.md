@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-kotlin-patterns
-description: Idiomatic Kotlin patterns, best practices, and conventions for building robust, efficient, and maintainable Kotlin applications with coroutines, null safety, and DSL builders. Use when writing or reviewing Kotlin code and idiomatic structure or null safety is in question.
+description: Kotlin 惯用法，含协程、空安全与 DSL。写或评审 Kotlin 代码时用。
 metadata:
   origin: ECC
 ---

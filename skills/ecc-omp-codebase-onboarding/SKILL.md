@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-codebase-onboarding
-description: Analyze an unfamiliar codebase and generate a structured onboarding guide with architecture map, key entry points, conventions, and a starter AGENTS.md. Use when joining a new project or setting up omp for the first time in a repo.
+description: 分析陌生仓库并生成上手指南。读陌生代码、摸清仓库或写 AGENTS.md 时用。
 metadata:
   origin: ECC
 ---

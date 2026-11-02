@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-golang-testing
-description: Go testing patterns including table-driven tests, subtests, benchmarks, fuzzing, and test coverage. Follows TDD methodology with idiomatic Go practices. Use when writing Go tests — table-driven cases, subtests, benchmarks, fuzzing, or coverage.
+description: Go 测试写法，覆盖表驱动、基准与模糊测试。写 Go 测试，补覆盖率或做模糊测试时用。
 metadata:
   origin: ECC
 ---

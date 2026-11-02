@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-incident-response
-description: 遇到线上事故、告警定级、值班响应、回滚决策、复盘报告或故障演练时使用的事故处理与值班技能；不适用于日常功能开发与常规代码审查。
+description: 处理线上事故。定级、止血、决定回滚还是修、记录沟通与复盘。线上出事时用。
 ---
 
 # 事故处理与值班（incident response / on-call）

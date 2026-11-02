@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-error-handling
-description: Patterns for robust error handling across TypeScript, Python, and Go. Covers typed errors, error boundaries, retries, circuit breakers, and user-facing error messages. Use when designing error types, retries, circuit breakers, or user-facing failure messages in TypeScript, Python, or Go.
+description: 为 TypeScript、Python 与 Go 做错误处理与熔断。写异常处理或重试时用。
 metadata:
   origin: ECC
 ---

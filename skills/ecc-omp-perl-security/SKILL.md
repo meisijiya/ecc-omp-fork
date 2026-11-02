@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-perl-security
-description: Comprehensive Perl security covering taint mode, input validation, safe process execution, DBI parameterized queries, web security (XSS/SQLi/CSRF), and perlcritic security policies. Use when reviewing Perl input handling, process execution, DBI queries, or web-facing code.
+description: 审 Perl 安全，含污染模式与参数化查询。审输入处理、查 web代码或跑 DBI 时用。
 metadata:
   origin: ECC
 ---

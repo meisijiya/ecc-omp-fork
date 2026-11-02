@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-engineering-principles
-description: "工程原则清单：何时适用 + 具体要求，覆盖幂等、可验证单元、共享状态、设计空间、第一性原理、体验优先等。非平凡工作开工前或评审时按需读取对应小节。"
+description: 一组通用工程原则，按需查一节。动手前想知道幂等或共享状态怎么处理时用。
 ---
 
 # Engineering principles

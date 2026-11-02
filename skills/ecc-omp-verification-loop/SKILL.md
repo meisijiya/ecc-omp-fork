@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-verification-loop
-description: Run a six-phase verification of the current session's work — build, type check, lint, tests with coverage, security grep, and diff review — then produce a PASS/FAIL verification report. Use when verifying work after completing a feature or refactor, before creating a PR, or when quality gates must pass.
+description: 对改动跑六阶段校验，覆盖构建、类型检查与测试。做完功能，重构或发 PR 前校验时用。
 license: MIT
 metadata:
   origin: ECC

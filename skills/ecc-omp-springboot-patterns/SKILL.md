@@ -1,6 +1,6 @@
 ---
 name: ecc-omp-springboot-patterns
-description: Spring Boot architecture patterns, REST API design, layered services, data access, caching, async processing, and logging. Use for Java Spring Boot backend work. Use when building or reviewing a Spring Boot backend — REST layer, services, data access, caching, or async work.
+description: 写 Spring Boot后端架构，含 REST 与缓存。写接口、做代码评审或加缓存时用。
 metadata:
   origin: ECC
 ---
