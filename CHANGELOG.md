@@ -22,7 +22,8 @@
   端到端与接口测试执行、Bug 根因、回归范围、flaky 治理、跨会话质量知识库。
   详见 [ADR-0014](docs/adr/0014-qa-skills-absorption.md)。
 - **逐资产上游版本台账**：`tools/upstream_versions.py` 与 `manifest/asset_versions.json`，
-  按 git tree oid 记 4 个来源 222 个资产的内容指纹，`check` 报漂移、`check --offline`
+  按 git tree oid 记 4 个来源 224 个资产的内容指纹（ECC 205 / pstack 5 / qa-skills 13 /
+  addyosmani 1），`check` 报漂移、`check --offline`
   校验覆盖并接入 CI。详见 [ADR-0015](docs/adr/0015-per-asset-upstream-version-ledger.md)。
 - **插件自己的运维 skill**：`forge-pipeline`（更新与发布流水线）、`forge-ci-triage`
   （CI 失败定位）、`forge-absorb-third-party-skill`（收纳第三方 skill），随插件分发。
