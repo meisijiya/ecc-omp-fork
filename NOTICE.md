@@ -4,8 +4,8 @@
 
 - 上游许可：MIT，版权归 Affaan Mustafa（完整文本见 `LICENSE`）。
 - 上游版本：2.2.3
-- 上游 commit：`90606c8315ee09cafc303515c5f33024db6b9882`（2026-10-20，与 `manifest/upstream.json` 的 pin 一致）
-- 上游内容来源：仓库的 `pi/core/`（132 skills + 24 commands，官方为 Pi 生态生成的精简档）
+- 上游 commit：`b38be6a7f6350964d59328b52f0624e1d1d552d1`（与 `manifest/upstream.json` 的 pin 一致）
+- 上游内容来源：仓库的 `pi/core/`（134 skills + 24 commands，官方为 Pi 生态生成的精简档）
   与 `agents/`（71 个 agent 定义）。
 
 ## 本 fork 的改动
@@ -32,9 +32,11 @@
    - **资产名改写**：指向被改名资产的引用（`skill://api-design` → `skill://forge-api-design`、
      反引号裸名 → 带前缀的运行名）会一并改写；散文里不是资产引用的普通词不动。
 4. **工具化**：新增 `tools/`（上游更新、重放选择、部署、生成目录、引用门禁）。
-5. **自有资产**：`own/skills/` 下除选路表 `forge-router` 外，新增三条发布 / 运维 skill
-   （`forge-release-management`、`forge-observability`、`forge-incident-response`），
-   为本 fork 原创内容，随 fork 一起分发（MIT）。第三方正文见下节「第三方收纳资产」。
+5. **自有资产**：`own/skills/` 下除选路表 `forge-router` 外，另有六条本 fork 原创的 skill
+   ——发布与运维三条（`forge-release-management`、`forge-observability`、
+   `forge-incident-response`），插件自身的运维三条（`forge-pipeline`、`forge-ci-triage`、
+   `forge-absorb-third-party-skill`），随 fork 一起分发（MIT）。
+   第三方正文见下节「第三方收纳资产」。
 
 正文改动由脚本确定性生成，`pool/` 中的上游快照保持原样，便于逐条比对。
 
@@ -51,11 +53,13 @@
 | [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) | MIT，Copyright (c) 2025 Addy Osmani | `absorbed/addyosmani/LICENSE` |
 | [fishzjp/qa-skills](https://github.com/fishzjp/qa-skills) | MIT，Copyright (c) 2026 fishzjp | `absorbed/qa-skills/LICENSE` |
 
-收纳的 19 条运行条目：
+收纳池共 19 条，进入运行树的是 18 条：
 
 - pstack 与 addyosmani：`forge-correct`、`forge-sharpen`、`forge-engineering-principles`
   （由 8 份 principle 快照拼接生成）、`forge-constraint-driven-development`、
-  `forge-statechart`、`forge-typescript-best-practices`。后两条只进 `full` profile。
+  `forge-statechart`。`forge-constraint-driven-development` 与 `forge-statechart` 只进
+  `full` profile；pstack 的 `forge-typescript-best-practices` 留在收纳池里但不再物化，
+  它的职责由 ECC 上游的 `forge-typescript-patterns` 承担（同一件事只留一个入口）。
 - qa-skills 的 QA 套件：`forge-qa`、`forge-requirement-analysis`、`forge-test-strategy`、
   `forge-test-case-writing`、`forge-test-case-review`、`forge-exploratory-testing`、
   `forge-automated-e2e-testing`、`forge-api-testing`、`forge-bug-analysis`、

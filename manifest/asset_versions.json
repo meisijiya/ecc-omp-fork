@@ -34,7 +34,7 @@
     },
     "ecc": {
       "repo": "https://github.com/affaan-m/ECC",
-      "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+      "commit": "b38be6a7f6350964d59328b52f0624e1d1d552d1",
       "assets": {
         "a11y-architect": {
           "path": "agents/a11y-architect.md",
@@ -83,7 +83,7 @@
         },
         "agentic-engineering": {
           "path": "pi/core/skills/agentic-engineering",
-          "tree": "3911778d1fd81c8ea576a75f9e9e99d2a3dc6372",
+          "tree": "d4096ad47d79ef18ed04794b6f8ed1f904d7bf37",
           "version": null
         },
         "ai-first-engineering": {
@@ -238,7 +238,7 @@
         },
         "context-and-decisions": {
           "path": "pi/core/skills/context-and-decisions",
-          "tree": "8899173500e1b547f8c59e9e65abfce00caa79e1",
+          "tree": "69706b9066d8baebe220b29335588f47fa76db2a",
           "version": null
         },
         "contract-first": {
@@ -358,7 +358,7 @@
         },
         "django-security": {
           "path": "pi/core/skills/django-security",
-          "tree": "1db766ef2f5a681573d99999777721969e3a7c9d",
+          "tree": "929374eadfccbf16f8a32b14ddeb8332a30dd7d3",
           "version": null
         },
         "django-tdd": {
@@ -383,7 +383,7 @@
         },
         "docs-governance": {
           "path": "pi/core/skills/docs-governance",
-          "tree": "9447842d8441e7a9021bf772d542582729bbe404",
+          "tree": "ca3c45c3c500324ba3655dba7249e5a46bec6b73",
           "version": null
         },
         "docs-lookup": {
@@ -418,7 +418,7 @@
         },
         "fastapi-patterns": {
           "path": "pi/core/skills/fastapi-patterns",
-          "tree": "8faabd50202978adc10e348d8a15af94b1a242b1",
+          "tree": "df69f4aa698df06662dbd3ffc23f8fadaa272c61",
           "version": null
         },
         "fastapi-reviewer": {
@@ -493,7 +493,7 @@
         },
         "golang-patterns": {
           "path": "pi/core/skills/golang-patterns",
-          "tree": "763d95fcd0915b066a537d63a8ee0a1a76b37aac",
+          "tree": "fbd2f84c5c5476f604c18eef61dd8adca35a9798",
           "version": null
         },
         "golang-testing": {
@@ -603,7 +603,7 @@
         },
         "laravel-security": {
           "path": "pi/core/skills/laravel-security",
-          "tree": "8131af8604e07b99538d50a55a342ad2e3b3c0ac",
+          "tree": "7fc3d8334af9ae381f771abb091c03523e0d4532",
           "version": null
         },
         "laravel-tdd": {
@@ -628,7 +628,7 @@
         },
         "living-docs-governance": {
           "path": "pi/core/skills/living-docs-governance",
-          "tree": "6a7661e76dd051ee8c4a87684d42bb0639d30158",
+          "tree": "921841c42990023e3651699bfab24bdca2ace092",
           "version": null
         },
         "loop-operator": {
@@ -664,6 +664,11 @@
         "mle-workflow": {
           "path": "pi/core/skills/mle-workflow",
           "tree": "3ceb8888f01d772b4ef926a6d5a27d76d068f88d",
+          "version": null
+        },
+        "module-governance": {
+          "path": "pi/core/skills/module-governance",
+          "tree": "ce4dd68650f8fd10546b6e8b431049fc2ee05332",
           "version": null
         },
         "module-regression": {
@@ -728,7 +733,7 @@
         },
         "opensource-forker": {
           "path": "agents/opensource-forker.md",
-          "tree": "4c5d8cbb83fb479699789d4cca12fe44e0e32148",
+          "tree": "b2c07103b6d072600a4ebba04a79cfd4a8ef7e67",
           "version": null
         },
         "opensource-packager": {
@@ -738,12 +743,12 @@
         },
         "opensource-sanitizer": {
           "path": "agents/opensource-sanitizer.md",
-          "tree": "36688a87af8510f85d2f10a2fd012ae9e982c375",
+          "tree": "c61e1de4aa38aebb82c7fe596658cfc31c15b41f",
           "version": null
         },
         "parallel-execution-optimizer": {
           "path": "pi/core/skills/parallel-execution-optimizer",
-          "tree": "8a6526c2e14d0a7b612e459b7eddd55df6503a0b",
+          "tree": "4f06a093d796f93766f6789b5c5b36bc2f415567",
           "version": null
         },
         "performance-optimizer": {
@@ -758,7 +763,7 @@
         },
         "perl-security": {
           "path": "pi/core/skills/perl-security",
-          "tree": "26b29f0509b7b558b26dfc43f3f05d51feb5e2a1",
+          "tree": "a21ca91716bdde04503eba7d54702c9156652230",
           "version": null
         },
         "perl-testing": {
@@ -818,7 +823,7 @@
         },
         "python-testing": {
           "path": "pi/core/skills/python-testing",
-          "tree": "230ac65eff21a3d61da4aa3613f2ced435a73ee0",
+          "tree": "695c8c3ca6b758d9c98f324d064f8263d70afd68",
           "version": null
         },
         "pytorch-build-resolver": {
@@ -1013,7 +1018,7 @@
         },
         "tdd-workflow": {
           "path": "pi/core/skills/tdd-workflow",
-          "tree": "82f53c75a1d6e4e9ecf67bb83c5874c80a936136",
+          "tree": "b445be0df65fae209e92047b52990a8436f79442",
           "version": null
         },
         "test-collaboration": {
@@ -1026,14 +1031,19 @@
           "tree": "394f2626be1bcb7ff89ba3bb042b6eed99ac6e1f",
           "version": null
         },
+        "typescript-patterns": {
+          "path": "pi/core/skills/typescript-patterns",
+          "tree": "17645d0bb211c5efded3e00d649ac3ab6356b81e",
+          "version": null
+        },
         "typescript-reviewer": {
           "path": "agents/typescript-reviewer.md",
-          "tree": "23af98e654d07bb01c688d2c6f15e58509723d74",
+          "tree": "c72b2edd6acfbd3b2ed6f82241c841d359d13afa",
           "version": null
         },
         "verification-loop": {
           "path": "pi/core/skills/verification-loop",
-          "tree": "b9c43ae24874041cb8cfb18e09c62a0257b4d562",
+          "tree": "39868fe42ac9cfbda008f2428744baf4904702e7",
           "version": null
         },
         "vite-patterns": {

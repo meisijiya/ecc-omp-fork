@@ -234,6 +234,9 @@ def main():
         "forge-release-management": "发布：tag、changelog、分级发布与回滚",
         "forge-observability": "可观测性：日志 / 指标 / 追踪、SLO、告警",
         "forge-incident-response": "事故响应：定级、止血、复盘",
+        "forge-pipeline": "本插件的更新与发布流水线：门禁顺序、profile 规模、Windows 坑",
+        "forge-ci-triage": "本插件 CI 失败定位：日志分组读、本地三 profile 复现、门禁分工",
+        "forge-absorb-third-party-skill": "把第三方仓库的 skill 收纳进 absorbed 池",
     }
     found = sorted(os.listdir(own_skills)) if os.path.isdir(own_skills) else []
     if found != sorted(own_purpose):

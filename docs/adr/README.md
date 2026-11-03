@@ -19,5 +19,6 @@
 | [0013](0013-repository-renamed-to-omp-skill-forge.md) | 仓库与运行名改叫 omp-skill-forge / forge- | accepted | 2026-11-03 |
 | [0014](0014-qa-skills-absorption.md) | 以收纳池纳入 qa-skills 的 QA 套件，划清与 e2e-testing 的分工 | accepted | 2026-11-03 |
 | [0015](0015-per-asset-upstream-version-ledger.md) | 逐资产的版本台账按内容寻址，同步必须经过物化链路 | accepted | 2026-11-03 |
+| [0016](0016-plugin-identity-consolidation.md) | 插件身份收口：远端改名、运维 skill 进仓、TypeScript 入口去重 | accepted | 2026-11-03 |
 
 这些 ADR 是 fork 自有的仓库文档，不参与物化，也不随 profile 裁剪。

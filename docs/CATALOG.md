@@ -7,7 +7,7 @@
 
 | profile | 说明 | skills | commands | agents |
 | --- | --- | --- | --- | --- |
-| `full` | 上游 pi/core 全量技能（去掉与其它插件重复的 5 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。 | 146 | 0 | 49 |
+| `full` | 上游 pi/core 全量技能（去掉与其它插件重复的 5 个）加编程相关 agent。不含命令。token 开销最大，仅在需要冷门技术栈时用。 | 147 | 0 | 49 |
 | `java-python` | Java/Kotlin + Python/Django/FastAPI 主力 + 通用工程规范。面向后端/测试开发日常。 | 82 | 0 | 22 |
 | `lite` | 最小可用集：只保留后端核心规范 + Java/Python 主力 + 通用评审 agent。每轮提示开销最低。 | 39 | 0 | 11 |
 
@@ -124,6 +124,7 @@
 | G8 | ⬜ `forge-swift-actor-persistence` | `swift-actor-persistence` | full |
 | G8 | ⬜ `forge-swift-protocol-di-testing` | `swift-protocol-di-testing` | full |
 | G8 | ⬜ `forge-react-native-patterns` | `react-native-patterns` | full |
+| G8 | ⬜ `forge-typescript-patterns` | `typescript-patterns` | full |
 | G9 | ⬜ `forge-agent-architecture-audit` | `agent-architecture-audit` | full |
 | G9 | ⬜ `forge-agent-harness-construction` | `agent-harness-construction` | full |
 | G9 | ⬜ `forge-agent-introspection-debugging` | `agent-introspection-debugging` | full |
@@ -138,6 +139,7 @@
 | G9 | ⬜ `forge-mle-workflow` | `mle-workflow` | full |
 | G9 | ⬜ `forge-pytorch-patterns` | `pytorch-patterns` | full |
 | G9 | ⬜ `forge-bengali-nlp` | `bengali-nlp` | full |
+| G9 | ⬜ `forge-module-governance` | `module-governance` | full |
 | G10 | ⬜ `forge-design-system` | `design-system` | full |
 | G10 | ⬜ `forge-motion-advanced` | `motion-advanced` | full |
 | G10 | ⬜ `forge-motion-foundations` | `motion-foundations` | full |
@@ -155,7 +157,6 @@
 | 收纳 | ✅ `forge-engineering-principles` | `engineering-principles` | full, java-python |
 | 收纳 | ✅ `forge-constraint-driven-development` | `constraint-driven-development` | full, java-python |
 | 收纳 | ⬜ `forge-statechart` | `statechart` | full |
-| 收纳 | ⬜ `forge-typescript-best-practices` | `typescript-best-practices` | full |
 | 收纳 | ✅ `forge-qa` | `qa` | full, java-python |
 | 收纳 | ✅ `forge-requirement-analysis` | `requirement-analysis` | full, java-python |
 | 收纳 | ✅ `forge-test-strategy` | `test-strategy` | full, java-python |
@@ -253,8 +254,11 @@
 
 ## fork 自有资产
 
+- skill：`forge-absorb-third-party-skill`（把第三方仓库的 skill 收纳进 absorbed 池）
+- skill：`forge-ci-triage`（本插件 CI 失败定位：日志分组读、本地三 profile 复现、门禁分工）
 - skill：`forge-incident-response`（事故响应：定级、止血、复盘）
 - skill：`forge-observability`（可观测性：日志 / 指标 / 追踪、SLO、告警）
+- skill：`forge-pipeline`（本插件的更新与发布流水线：门禁顺序、profile 规模、Windows 坑）
 - skill：`forge-release-management`（发布：tag、changelog、分级发布与回滚）
 - skill：`forge-router`（选路表：任务 → skill / agent 组合）
 - rules：`omp-tooling` `omp-delegation` `fork-workflow` `fork-verification` `fork-coding-style`

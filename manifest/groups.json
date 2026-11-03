@@ -3,7 +3,7 @@
   "upstream": {
     "repo": "https://github.com/affaan-m/ECC",
     "version": "2.2.3",
-    "commit": "90606c8315ee09cafc303515c5f33024db6b9882",
+    "commit": "b38be6a7f6350964d59328b52f0624e1d1d552d1",
     "skill_source": "pi/core/skills",
     "command_source": "pi/core/commands",
     "agent_source": "agents"
@@ -12,90 +12,184 @@
     "G1": {
       "title": "后端 / API / 架构设计",
       "members": [
-        "api-design", "backend-patterns", "hexagonal-architecture",
-        "architecture-decision-records", "contract-first", "api-connector-builder",
-        "content-hash-cache-pattern", "regex-vs-llm-structured-text", "mcp-server-patterns"
+        "api-design",
+        "backend-patterns",
+        "hexagonal-architecture",
+        "architecture-decision-records",
+        "contract-first",
+        "api-connector-builder",
+        "content-hash-cache-pattern",
+        "regex-vs-llm-structured-text",
+        "mcp-server-patterns"
       ]
     },
     "G2": {
       "title": "通用工程规范与流程",
       "members": [
-        "coding-standards", "error-handling", "intent-driven-development", "change-impact",
-        "context-and-decisions", "inherit-legacy-style", "code-tour", "codebase-onboarding",
-        "conventional-commit-review", "git-workflow", "docs-governance", "living-docs-governance",
-        "security-review", "tdd-workflow", "test-collaboration", "verification-loop",
-        "module-regression", "e2e-testing", "production-audit", "parallel-execution-optimizer",
-        "benchmark", "benchmark-optimization-loop", "latency-critical-systems",
-        "deployment-patterns", "docker-patterns", "kubernetes-patterns", "dashboard-builder"
+        "coding-standards",
+        "error-handling",
+        "intent-driven-development",
+        "change-impact",
+        "context-and-decisions",
+        "inherit-legacy-style",
+        "code-tour",
+        "codebase-onboarding",
+        "conventional-commit-review",
+        "git-workflow",
+        "docs-governance",
+        "living-docs-governance",
+        "security-review",
+        "tdd-workflow",
+        "test-collaboration",
+        "verification-loop",
+        "module-regression",
+        "e2e-testing",
+        "production-audit",
+        "parallel-execution-optimizer",
+        "benchmark",
+        "benchmark-optimization-loop",
+        "latency-critical-systems",
+        "deployment-patterns",
+        "docker-patterns",
+        "kubernetes-patterns",
+        "dashboard-builder"
       ]
     },
     "G3": {
       "title": "Java / JVM 生态",
       "members": [
-        "java-coding-standards", "springboot-patterns", "springboot-security", "springboot-tdd",
-        "springboot-verification", "jpa-patterns", "mybatis-patterns", "kotlin-patterns",
-        "kotlin-testing", "kotlin-coroutines-flows", "kotlin-exposed-patterns",
+        "java-coding-standards",
+        "springboot-patterns",
+        "springboot-security",
+        "springboot-tdd",
+        "springboot-verification",
+        "jpa-patterns",
+        "mybatis-patterns",
+        "kotlin-patterns",
+        "kotlin-testing",
+        "kotlin-coroutines-flows",
+        "kotlin-exposed-patterns",
         "kotlin-ktor-patterns"
       ]
     },
     "G4": {
       "title": "Python 生态",
       "members": [
-        "python-patterns", "python-testing", "django-patterns", "django-tdd",
-        "django-verification", "django-security", "django-celery", "fastapi-patterns"
+        "python-patterns",
+        "python-testing",
+        "django-patterns",
+        "django-tdd",
+        "django-verification",
+        "django-security",
+        "django-celery",
+        "fastapi-patterns"
       ]
     },
     "G5": {
       "title": "其他后端语言与框架",
       "members": [
-        "golang-patterns", "golang-testing", "rust-patterns", "rust-testing",
-        "cpp-coding-standards", "cpp-testing", "csharp-testing", "fsharp-testing",
-        "perl-patterns", "perl-security", "perl-testing", "bun-runtime",
-        "compose-multiplatform-patterns", "quarkus-patterns", "quarkus-security",
-        "quarkus-tdd", "quarkus-verification", "laravel-patterns", "laravel-security",
-        "laravel-tdd", "laravel-verification", "rails-patterns", "dotnet-patterns",
+        "golang-patterns",
+        "golang-testing",
+        "rust-patterns",
+        "rust-testing",
+        "cpp-coding-standards",
+        "cpp-testing",
+        "csharp-testing",
+        "fsharp-testing",
+        "perl-patterns",
+        "perl-security",
+        "perl-testing",
+        "bun-runtime",
+        "compose-multiplatform-patterns",
+        "quarkus-patterns",
+        "quarkus-security",
+        "quarkus-tdd",
+        "quarkus-verification",
+        "laravel-patterns",
+        "laravel-security",
+        "laravel-tdd",
+        "laravel-verification",
+        "rails-patterns",
+        "dotnet-patterns",
         "nestjs-patterns"
       ]
     },
     "G6": {
       "title": "数据 / 存储 / 吞吐",
       "members": [
-        "postgres-patterns", "mysql-patterns", "redis-patterns", "prisma-patterns",
-        "clickhouse-io", "database-migrations", "data-throughput-accelerator"
+        "postgres-patterns",
+        "mysql-patterns",
+        "redis-patterns",
+        "prisma-patterns",
+        "clickhouse-io",
+        "database-migrations",
+        "data-throughput-accelerator"
       ]
     },
     "G7": {
       "title": "前端 / Web 开发",
       "members": [
-        "react-patterns", "react-testing", "react-performance", "nextjs-turbopack",
-        "vue-patterns", "vite-patterns", "nuxt4-patterns", "frontend-patterns",
-        "frontend-a11y", "accessibility", "angular-developer"
+        "react-patterns",
+        "react-testing",
+        "react-performance",
+        "nextjs-turbopack",
+        "vue-patterns",
+        "vite-patterns",
+        "nuxt4-patterns",
+        "frontend-patterns",
+        "frontend-a11y",
+        "accessibility",
+        "angular-developer"
       ]
     },
     "G8": {
       "title": "移动端 / 跨端",
       "members": [
-        "android-clean-architecture", "dart-flutter-patterns", "flutter-dart-code-review",
-        "swiftui-patterns", "swift-concurrency-6-2", "swift-actor-persistence",
-        "swift-protocol-di-testing", "react-native-patterns"
+        "android-clean-architecture",
+        "dart-flutter-patterns",
+        "flutter-dart-code-review",
+        "swiftui-patterns",
+        "swift-concurrency-6-2",
+        "swift-actor-persistence",
+        "swift-protocol-di-testing",
+        "react-native-patterns",
+        "typescript-patterns"
       ]
     },
     "G9": {
       "title": "AI / Agent / 方法论",
       "members": [
-        "agent-architecture-audit", "agent-harness-construction",
-        "agent-introspection-debugging", "agent-security-hardening", "agent-self-evaluation",
-        "agent-eval", "agentic-engineering", "ai-first-engineering",
-        "cost-aware-llm-pipeline", "foundation-models-on-device", "ml-adoption-playbook",
-        "mle-workflow", "pytorch-patterns", "bengali-nlp"
+        "agent-architecture-audit",
+        "agent-harness-construction",
+        "agent-introspection-debugging",
+        "agent-security-hardening",
+        "agent-self-evaluation",
+        "agent-eval",
+        "agentic-engineering",
+        "ai-first-engineering",
+        "cost-aware-llm-pipeline",
+        "foundation-models-on-device",
+        "ml-adoption-playbook",
+        "mle-workflow",
+        "pytorch-patterns",
+        "bengali-nlp",
+        "module-governance"
       ]
     },
     "G10": {
       "title": "UI 打磨 / 产品 / 协作（非核心编程）",
       "members": [
-        "design-system", "motion-advanced", "motion-foundations", "motion-patterns",
-        "make-interfaces-feel-better", "liquid-glass-design", "click-path-audit",
-        "blueprint", "dev-team", "ecc-council", "product-capability",
+        "design-system",
+        "motion-advanced",
+        "motion-foundations",
+        "motion-patterns",
+        "make-interfaces-feel-better",
+        "liquid-glass-design",
+        "click-path-audit",
+        "blueprint",
+        "dev-team",
+        "ecc-council",
+        "product-capability",
         "product-lens"
       ]
     }
@@ -103,110 +197,190 @@
   "commands": {
     "C1": {
       "title": "规划 / 需求",
-      "members": ["plan", "plan-prd", "prp-plan", "prp-prd"]
+      "members": [
+        "plan",
+        "plan-prd",
+        "prp-plan",
+        "prp-prd"
+      ]
     },
     "C2": {
       "title": "实现 / 修复",
-      "members": ["prp-implement", "feature-dev", "build-fix"]
+      "members": [
+        "prp-implement",
+        "feature-dev",
+        "build-fix"
+      ]
     },
     "C3": {
       "title": "评审 / 重构",
-      "members": ["code-review", "refactor-clean"]
+      "members": [
+        "code-review",
+        "refactor-clean"
+      ]
     },
     "C4": {
       "title": "测试 / 覆盖率",
-      "members": ["test-coverage", "fastapi-review"]
+      "members": [
+        "test-coverage",
+        "fastapi-review"
+      ]
     },
     "C5": {
       "title": "Git / PR / 提交",
-      "members": ["pr", "prp-pr", "prp-commit"]
+      "members": [
+        "pr",
+        "prp-pr",
+        "prp-commit"
+      ]
     },
     "C6": {
       "title": "文档 / 代码地图",
-      "members": ["update-docs", "update-codemaps"]
+      "members": [
+        "update-docs",
+        "update-codemaps"
+      ]
     },
     "C7": {
       "title": "语言专项 build/test",
       "members": [
-        "cpp-test", "flutter-test", "go-test", "gradle-build", "kotlin-test",
-        "react-test", "rust-test"
+        "cpp-test",
+        "flutter-test",
+        "go-test",
+        "gradle-build",
+        "kotlin-test",
+        "react-test",
+        "rust-test"
       ]
     },
     "C8": {
       "title": "杂项",
-      "members": ["aside"]
+      "members": [
+        "aside"
+      ]
     }
   },
   "agents": {
     "A1": {
       "title": "通用评审与重构",
       "members": [
-        "code-reviewer", "commit-reviewer", "pr-test-analyzer", "comment-analyzer",
-        "silent-failure-hunter", "type-design-analyzer", "security-reviewer",
-        "code-simplifier", "refactor-cleaner"
+        "code-reviewer",
+        "commit-reviewer",
+        "pr-test-analyzer",
+        "comment-analyzer",
+        "silent-failure-hunter",
+        "type-design-analyzer",
+        "security-reviewer",
+        "code-simplifier",
+        "refactor-cleaner"
       ]
     },
     "A2": {
       "title": "通用工程 / 架构 / 规划",
       "members": [
-        "architect", "code-architect", "code-explorer", "planner", "build-error-resolver",
-        "performance-optimizer", "tdd-guide", "e2e-runner", "spec-miner"
+        "architect",
+        "code-architect",
+        "code-explorer",
+        "planner",
+        "build-error-resolver",
+        "performance-optimizer",
+        "tdd-guide",
+        "e2e-runner",
+        "spec-miner"
       ]
     },
     "A3": {
       "title": "Java / JVM",
       "members": [
-        "java-reviewer", "java-build-resolver", "kotlin-reviewer", "kotlin-build-resolver"
+        "java-reviewer",
+        "java-build-resolver",
+        "kotlin-reviewer",
+        "kotlin-build-resolver"
       ]
     },
     "A4": {
       "title": "Python",
       "members": [
-        "python-reviewer", "django-reviewer", "django-build-resolver", "fastapi-reviewer"
+        "python-reviewer",
+        "django-reviewer",
+        "django-build-resolver",
+        "fastapi-reviewer"
       ]
     },
     "A5": {
       "title": "Web / TypeScript",
       "members": [
-        "typescript-reviewer", "react-reviewer", "react-build-resolver", "vue-reviewer"
+        "typescript-reviewer",
+        "react-reviewer",
+        "react-build-resolver",
+        "vue-reviewer"
       ]
     },
     "A6": {
       "title": "其他语言",
       "members": [
-        "go-reviewer", "go-build-resolver", "rust-reviewer", "rust-build-resolver",
-        "cpp-reviewer", "cpp-build-resolver", "csharp-reviewer", "php-reviewer",
-        "ruby-reviewer", "swift-reviewer", "swift-build-resolver", "dart-build-resolver",
-        "flutter-reviewer", "fsharp-reviewer", "harmonyos-app-resolver",
+        "go-reviewer",
+        "go-build-resolver",
+        "rust-reviewer",
+        "rust-build-resolver",
+        "cpp-reviewer",
+        "cpp-build-resolver",
+        "csharp-reviewer",
+        "php-reviewer",
+        "ruby-reviewer",
+        "swift-reviewer",
+        "swift-build-resolver",
+        "dart-build-resolver",
+        "flutter-reviewer",
+        "fsharp-reviewer",
+        "harmonyos-app-resolver",
         "pytorch-build-resolver"
       ]
     },
     "A7": {
       "title": "数据 / 网络 / 基础设施 / 运维",
       "members": [
-        "database-reviewer", "network-architect", "network-config-reviewer",
-        "network-troubleshooter", "homelab-architect", "rag-pipeline-reviewer",
+        "database-reviewer",
+        "network-architect",
+        "network-config-reviewer",
+        "network-troubleshooter",
+        "homelab-architect",
+        "rag-pipeline-reviewer",
         "mle-reviewer"
       ]
     },
     "A8": {
       "title": "文档 / 开源发布",
       "members": [
-        "doc-updater", "docs-lookup", "opensource-forker", "opensource-packager",
+        "doc-updater",
+        "docs-lookup",
+        "opensource-forker",
+        "opensource-packager",
         "opensource-sanitizer"
       ]
     },
     "A9": {
       "title": "非编程域（建议排除）",
       "members": [
-        "a11y-architect", "bengali-reviewer", "healthcare-reviewer", "chief-of-staff",
-        "marketing-agent", "seo-specialist", "conversation-analyzer", "agent-evaluator",
-        "harness-optimizer", "loop-operator"
+        "a11y-architect",
+        "bengali-reviewer",
+        "healthcare-reviewer",
+        "chief-of-staff",
+        "marketing-agent",
+        "seo-specialist",
+        "conversation-analyzer",
+        "agent-evaluator",
+        "harness-optimizer",
+        "loop-operator"
       ]
     },
     "A10": {
       "title": "GAN 实验回路",
-      "members": ["gan-planner", "gan-generator", "gan-evaluator"]
+      "members": [
+        "gan-planner",
+        "gan-generator",
+        "gan-evaluator"
+      ]
     }
   }
 }

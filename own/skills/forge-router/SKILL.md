@@ -81,6 +81,9 @@ description: 当用户要开工、要决定读哪条 skill 或派哪个 agent �
 | 容器、镜像、compose | `forge-docker-patterns` |
 | K8s、探针、RBAC | `forge-kubernetes-patterns` |
 | 看日志、指标、告警 | `forge-observability` |
+| 同步上游、发布或部署这个插件本身 | `forge-pipeline` |
+| 这个插件的 CI 挂了 | `forge-ci-triage` |
+| 要把第三方仓库的 skill 收进本插件 | `forge-absorb-third-party-skill` |
 | 线上挂了、出事故 | `forge-incident-response` |
 | 监控面板怎么排 | `forge-dashboard-builder` |
 | 性能慢、要不要优化 | agent `forge-performance-optimizer` |
@@ -223,7 +226,7 @@ description: 当用户要开工、要决定读哪条 skill 或派哪个 agent �
 | 任务本身不够深（不是不够大），要重写任务再动手 | `skill://forge-sharpen` |
 | 非平凡工作的通用工程原则（幂等、可验证单元、共享状态、设计空间、第一性原理、体验优先） | `skill://forge-engineering-principles` |
 | 状态机 / 协议 / 多阶段流程要证明规则不被违反 | `skill://forge-statechart`（仅 full profile） |
-| 读写 `.ts` / `.tsx` | `skill://forge-typescript-best-practices`（仅 full profile） |
+| 读写 `.ts` / `.tsx` | `skill://forge-typescript-patterns`（仅 full profile；严格编译配置、类型设计与窄化） |
 | 测试从需求到报告整条链路怎么走 | `skill://forge-qa`（收纳自 fishzjp/qa-skills，`forge-core` 是它的共享知识库；`lite` 不收） |
 
 ---
